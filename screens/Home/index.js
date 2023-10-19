@@ -1,6 +1,6 @@
 import { FlatList, Dimensions } from "react-native";
 import { Text, View, Avatar } from "react-native-ui-lib";
-import Sos from "../../components/sos";
+import Sos from "../../components/Sos";
 import UserAvatar from "./UserAvatar";
 import BoatCard from "./BoatCard";
 import EmptyCard from "./EmptyCard";

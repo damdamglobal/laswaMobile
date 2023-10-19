@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Colors, Typography, Spacings, Assets } from "react-native-ui-lib";
 import Navigation from "./navigation/index";
 import { actuatedNormalize } from "./components/FontResponsive";
+
 Colors.loadColors({
   primaryColor: "#0A519B",
   whiteColor: "#fff",
@@ -14,6 +15,7 @@ Colors.loadColors({
 Typography.loadTypographies({
   heading: { fontSize: actuatedNormalize(36), fontWeight: "600" },
   subheading: { fontSize: actuatedNormalize(20), fontWeight: "500" },
+  subheader: { fontSize: actuatedNormalize(15), fontWeight: "bold" },
   smallF: { fontSize: actuatedNormalize(10), fontWeight: "400" },
 });
 

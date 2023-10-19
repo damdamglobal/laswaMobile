@@ -1,4 +1,8 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+} from "@react-navigation/stack";
 import React, { useEffect, useRef } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon, { Icons } from "../components/Icons";
@@ -7,8 +11,28 @@ import { Colors } from "react-native-ui-lib";
 import HomeScreen from "../screens/Home/index";
 import AddFleet from "../screens/AddFleet";
 import Profile from "../screens/Profile";
-import TripHistory from "../screens/TripHistory";
+import TripHistory from "../screens/TripsHistory/index";
+import BoatDetail from "../screens/BoatDetail";
 import * as Animatable from "react-native-animatable";
+
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
+const options = {
+  gestureEnabled: true,
+  gestureDirection: "horizontal",
+  cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+  headerShown: false,
+};
+
+const HomeStack = () => {
+  return (
+    <Stack.Navigator screenOptions={options}>
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
+      <Stack.Screen name="BoatDetail" component={BoatDetail} />
+    </Stack.Navigator>
+  );
+};
 
 const TabArr = [
   {
@@ -16,7 +40,7 @@ const TabArr = [
     label: "Home",
     type: Icons.Feather,
     icon: "home",
-    component: HomeScreen,
+    component: HomeStack,
   },
   {
     route: "Trip History",
@@ -40,8 +64,6 @@ const TabArr = [
     component: Profile,
   },
 ];
-
-const Tab = createBottomTabNavigator();
 
 const TabButton = (props) => {
   const { item, onPress, accessibilityState } = props;
@@ -103,7 +125,7 @@ const TabButton = (props) => {
   );
 };
 
-export default function AnimTab3() {
+export default function BottomTab() {
   return (
     <Tab.Navigator
       screenOptions={{
