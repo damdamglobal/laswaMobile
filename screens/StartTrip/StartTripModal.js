@@ -1,16 +1,72 @@
 import React, { useEffect, useState } from "react";
 import { Dimensions, TextInput, TouchableOpacity, Modal } from "react-native";
-import { Text, View, Colors, Dialog } from "react-native-ui-lib";
+import { Text, View, Colors, Incubator } from "react-native-ui-lib";
 import { actuatedNormalize } from "../../components/FontResponsive";
 import { elevate } from "react-native-elevate";
 import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { InitialStartTrip } from "../../APIs";
 const { width, height } = Dimensions.get("window");
+const { Toast } = Incubator;
 
 export default function StartTripModal(props) {
   const [isVisible, setIsVisible] = useState(false);
   const [navigation, setNavigation] = useState(props.props);
+  const [tripOrigin, setTripOrigin] = useState("");
+  const [tripDestination, setTripDestination] = useState("");
+  const [toastVisible, setToastVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [token, setToken] = React.useState("");
+  const [toastColor, setToastColor] = useState("red");
+  const [serverMessage, setServerMessage] = useState("");
+  const [item, setItem] = useState(props.props.route.params.item);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    async function fetchStoresData() {
+      let loginToken = await AsyncStorage.getItem("token");
+      setToken(JSON.parse(loginToken));
+    }
+
+    fetchStoresData();
+  }, []);
+
+  const initialStartTrip = async () => {
+    setServerMessage("");
+    if (!tripOrigin || !tripDestination) {
+      setServerMessage("fill all the  required Field");
+      setToastVisible(true);
+      return;
+    }
+
+    setLoading(true);
+    axios
+      .post(
+        `${InitialStartTrip}`,
+        {
+          tripOrigin: tripOrigin,
+          tripDestination: tripDestination,
+          boatId: item._id,
+        },
+        {
+          headers: { Authorization: "Bearer " + token },
+        }
+      )
+      .then((res) => {
+        setServerMessage(res.data.message);
+        setToastVisible(true);
+        setToastColor("green");
+        setIsVisible(false);
+        navigation.navigation.navigate("AddPassengerManifest", { item: item });
+      })
+      .catch((err) => {
+        setServerMessage(err.response.data.message);
+        setToastVisible(true);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   return (
     <View marginT-30>
@@ -52,7 +108,7 @@ export default function StartTripModal(props) {
                 </View>
               </View>
               <View flex bottom>
-                <Text>Origin</Text>
+                <Text>Destination</Text>
                 <Text smallF marginT-10>
                   Enter Location Destination
                 </Text>
@@ -96,8 +152,10 @@ export default function StartTripModal(props) {
                   <View flex>
                     <Text>Origin</Text>
                     <TextInput
+                      onChangeText={(text) => setTripOrigin(text)}
                       style={styles.TextInput}
                       placeholder="Enter Current Location"
+                      autoFocus
                     />
                   </View>
                   <View flex centerV row>
@@ -111,8 +169,9 @@ export default function StartTripModal(props) {
                     </View>
                   </View>
                   <View flex bottom>
-                    <Text>Origin</Text>
+                    <Text>Destination</Text>
                     <TextInput
+                      onChangeText={(text) => setTripDestination(text)}
                       style={styles.TextInput}
                       placeholder="Enter Location Destination"
                     />
@@ -121,20 +180,56 @@ export default function StartTripModal(props) {
               </View>
             </View>
             <View flex bottom>
-              <TouchableOpacity
-                onPress={() => {
-                  setIsVisible(false);
-                  navigation.navigation.navigate("AddPassengerManifest");
-                }}
-              >
-                <View style={styles.btn} background-primaryColor center>
-                  <Text whiteColor>Start Trip</Text>
-                </View>
-              </TouchableOpacity>
+              {loading ? (
+                <TouchableOpacity>
+                  <View
+                    style={styles.btn}
+                    background-primaryColor
+                    center
+                    marginT-40
+                  >
+                    <Text whiteColor>processing...</Text>
+                  </View>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  onPress={() => {
+                    initialStartTrip();
+                  }}
+                >
+                  <View style={styles.btn} background-primaryColor center>
+                    <Text whiteColor>Start Trip</Text>
+                  </View>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         </View>
+        <Toast
+          visible={toastVisible}
+          position={"top"}
+          autoDismiss={5000}
+          message={serverMessage}
+          swipeable={true}
+          onDismiss={() => setToastVisible(false)}
+          backgroundColor={toastColor}
+          messageStyle={{
+            color: "white",
+          }}
+        ></Toast>
       </Modal>
+      <Toast
+        visible={toastVisible}
+        position={"top"}
+        autoDismiss={5000}
+        message={serverMessage}
+        swipeable={true}
+        onDismiss={() => setToastVisible(false)}
+        backgroundColor={toastColor}
+        messageStyle={{
+          color: "white",
+        }}
+      ></Toast>
     </View>
   );
 }

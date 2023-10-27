@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import MapView from "react-native-maps";
-import { StyleSheet, Dimensions, TouchableHighlight } from "react-native";
+import { StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { elevate } from "react-native-elevate";
 import { Text, View, Colors } from "react-native-ui-lib";
@@ -8,20 +8,35 @@ import { actuatedNormalize } from "../../components/FontResponsive";
 import SOS from "../../components/Sos";
 import StartTripModal from "./StartTripModal";
 const { width, height } = Dimensions.get("window");
+const ASPECT_RATIO = width / height;
+const LATITUDE = 6.5244;
+const LONGITUDE = 3.3792;
+const LATITUDE_DELTA = 0.0922;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 export default function MapScreen(props) {
+  const [item, setItem] = useState(props.route.params.item);
+
   return (
     <View style={styles.container}>
-      <MapView style={styles.map} />
+      <MapView
+        initialRegion={{
+          latitude: LATITUDE,
+          longitude: LONGITUDE,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        }}
+        style={styles.map}
+      />
       <View style={styles.header} row centerV paddingH-20>
         <View flex>
-          <TouchableHighlight onPress={() => props.navigation.pop()}>
+          <TouchableOpacity onPress={() => props.navigation.pop()}>
             <AntDesign
               color="#181818"
               size={actuatedNormalize(20)}
               name="left"
             />
-          </TouchableHighlight>
+          </TouchableOpacity>
         </View>
         <View flex center>
           <Text>Boat Details</Text>

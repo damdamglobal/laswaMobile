@@ -1,4 +1,4 @@
-import { Dimensions, Image } from "react-native";
+import { Dimensions, Image, ImageBackground } from "react-native";
 import { Text, View, Colors } from "react-native-ui-lib";
 import { actuatedNormalize } from "../../components/FontResponsive";
 import { elevate } from "react-native-elevate";
@@ -8,7 +8,7 @@ const { width, height } = Dimensions.get("window");
 export default function BoatCard() {
   return (
     <View center style={styles.card}>
-      <Image
+      <ImageBackground
         source={{
           uri: "https://firebasestorage.googleapis.com/v0/b/haulee-1b003.appspot.com/o/boat.jpeg?alt=media&token=7c5a96e6-db0d-4b05-be5d-e5a9e4c9996d",
         }}
@@ -16,7 +16,11 @@ export default function BoatCard() {
           width: "100%",
           height: "100%",
         }}
-      />
+      >
+        <View center background-whiteColor>
+          <Text subheader>No Record</Text>
+        </View>
+      </ImageBackground>
     </View>
   );
 }
@@ -24,9 +28,9 @@ export default function BoatCard() {
 const styles = {
   card: {
     marginTop: actuatedNormalize(30),
-    height: actuatedNormalize(420),
+    height: height / 4,
     width: width - actuatedNormalize(50),
-    borderRadius: actuatedNormalize(30),
+    borderRadius: actuatedNormalize(10),
     overflow: "hidden",
     backgroundColor: Colors.sosColor,
     ...elevate(2),

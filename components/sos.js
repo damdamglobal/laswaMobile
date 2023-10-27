@@ -7,7 +7,7 @@ const { width, height } = Dimensions.get("window");
 
 export default function SOS() {
   return (
-    <View center style={styles.sos}>
+    <View center style={styles.sos} background-sosColor>
       <Text whiteColor>SOS</Text>
     </View>
   );
@@ -18,7 +18,6 @@ const styles = {
     height: actuatedNormalize(50),
     width: actuatedNormalize(50),
     borderRadius: actuatedNormalize(50),
-    backgroundColor: Colors.sosColor,
     ...elevate(2),
   },
 };

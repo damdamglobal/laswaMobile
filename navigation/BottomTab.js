@@ -9,8 +9,8 @@ import Icon, { Icons } from "../components/Icons";
 import { Colors } from "react-native-ui-lib";
 
 import HomeScreen from "../screens/Home/index";
-import AddFleet from "../screens/AddFleet";
-import Profile from "../screens/Profile";
+import AddFleet from "../screens/AddBoat/index";
+import Profile from "../screens/Profile/index";
 import TripHistory from "../screens/TripsHistory/index";
 import BoatDetail from "../screens/BoatDetail";
 import * as Animatable from "react-native-animatable";
@@ -43,7 +43,7 @@ const TabArr = [
     component: HomeStack,
   },
   {
-    route: "Trip History",
+    route: "TripHistory",
     label: "Trip History",
     type: Icons.FontAwesome5,
     icon: "history",
