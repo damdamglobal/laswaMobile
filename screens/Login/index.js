@@ -4,9 +4,11 @@ import {
   ScrollView,
   TextInput,
   Dimensions,
+  Image,
 } from "react-native";
 import { actuatedNormalize } from "../../components/FontResponsive";
 import { View, Text, Colors, Badge, Incubator } from "react-native-ui-lib";
+import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { Login } from "../../APIs";
@@ -15,8 +17,10 @@ import {
   SplashscreenContext,
   MainScreenContext,
 } from "../../context/index";
+import { elevate } from "react-native-elevate";
 
-const { Toast } = Incubator;
+const { TextField, Toast } = Incubator;
+
 const { width, height } = Dimensions.get("window");
 
 export default function LoginScreen(props) {
@@ -28,6 +32,7 @@ export default function LoginScreen(props) {
   const [loading, setLoading] = useState(false);
   const [toastColor, setToastColor] = useState("red");
   const [serverMessage, setServerMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(true);
 
   const LoginFun = async () => {
     setServerMessage("");
@@ -88,9 +93,22 @@ export default function LoginScreen(props) {
       <ScrollView
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
       >
         <View style={styles.block} centerV>
-          <Text center subheading primaryColor>
+          <View center>
+            <View center style={styles.sos}>
+              <Image
+                source={require("../../assets/splashq.png")}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+              />
+            </View>
+          </View>
+
+          <Text subheading primaryColor marginT-20 marginH-20>
             Login
           </Text>
           <View center>
@@ -100,16 +118,34 @@ export default function LoginScreen(props) {
                 onChangeText={(text) => setEmail(text)}
                 style={styles.TextInput}
                 placeholder="Enter Email"
+                autoCapitalize="none"
+                textContentType="emailAddress"
               />
             </View>
-            <View marginT-20>
+
+            <View marginT-20 style={{ position: "relative" }}>
               <Text smallF>Password</Text>
               <TextInput
                 onChangeText={(text) => setPassword(text)}
                 style={styles.TextInput}
                 placeholder="Enter Password"
-                secureTextEntry
+                autoCapitalize="none"
+                secureTextEntry={showPassword}
               />
+              <TouchableOpacity
+                style={{
+                  position: "absolute",
+                  top: actuatedNormalize(30),
+                  right: actuatedNormalize(10),
+                }}
+                onPress={() => setShowPassword(!showPassword)}
+              >
+                <Entypo
+                  color="#181818"
+                  size={actuatedNormalize(20)}
+                  name="eye-with-line"
+                />
+              </TouchableOpacity>
             </View>
 
             {loading ? (
@@ -163,7 +199,7 @@ export default function LoginScreen(props) {
             }}
           >
             <Text marginT-50 center subheader underline>
-              Get Start
+              Get Started
             </Text>
           </TouchableOpacity>
         </View>
@@ -209,5 +245,22 @@ const styles = {
   },
   underline: {
     textDecorationLine: "underline",
+  },
+  sos: {
+    height: width / 4,
+    width: width / 4,
+    borderRadius: actuatedNormalize(100),
+    backgroundColor: Colors.whiteColor,
+    overflow: "hidden",
+    ...elevate(2),
+  },
+  input: {
+    backgroundColor: "white",
+    padding: actuatedNormalize(10),
+    borderRadius: actuatedNormalize(50),
+    marginVertical: actuatedNormalize(10),
+    minHeight: actuatedNormalize(50),
+    justifyContent: "center",
+    ...elevate(4),
   },
 };

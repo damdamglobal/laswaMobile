@@ -5,6 +5,7 @@ import {
   ScrollView,
   TextInput,
   Image,
+  KeyboardAvoidingView,
 } from "react-native";
 import { Text, View, Incubator } from "react-native-ui-lib";
 import { actuatedNormalize } from "../../components/FontResponsive";
@@ -112,71 +113,88 @@ export default function AddFleet(props) {
           <SOS />
         </View>
       </View>
-      <Text center subhead marginT-20>
-        step 1
-      </Text>
-      <TouchableOpacity onPress={() => pickImage()}>
-        <View center style={styles.img}>
-          {img ? (
-            <View flex>
-              <Image
-                source={{
-                  uri: img,
-                }}
-                style={{
-                  height: height / 4,
-                  width: width / 1.5,
-                }}
-              />
-            </View>
-          ) : (
-            <MaterialIcons
-              color="#fff"
-              size={actuatedNormalize(60)}
-              name="add-a-photo"
-            />
-          )}
-        </View>
-      </TouchableOpacity>
-      <View marginT-20>
-        <TextInput
-          onChangeText={(text) => setRegNumber(text)}
-          style={styles.TextInput}
-          placeholder="Enter Reg. Number"
-        />
-      </View>
-      <View marginT-20>
-        <TextInput
-          onChangeText={(text) => setModel(text)}
-          style={styles.TextInput}
-          placeholder="Enter Model"
-        />
-      </View>
-      <View marginT-20>
-        <TextInput
-          onChangeText={(text) => setCapacity(text)}
-          style={styles.TextInput}
-          placeholder="Enter Capacity"
-        />
-      </View>
-
-      {loading ? (
-        <TouchableOpacity>
-          <View style={styles.btn} background-primaryColor center marginT-40>
-            <Text whiteColor>processing...</Text>
-          </View>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          onPress={() => {
-            addBoat();
-          }}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        enabled
+      >
+        <ScrollView
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
         >
-          <View style={styles.btn} background-primaryColor center marginT-40>
-            <Text whiteColor>Submit</Text>
+          <Text center subhead marginT-20>
+            step 1
+          </Text>
+          <TouchableOpacity onPress={() => pickImage()}>
+            <View center style={styles.img}>
+              {img ? (
+                <View flex>
+                  <Image
+                    source={{
+                      uri: img,
+                    }}
+                    style={{
+                      height: height / 4,
+                      width: width / 1.5,
+                    }}
+                  />
+                </View>
+              ) : (
+                <MaterialIcons
+                  color="#fff"
+                  size={actuatedNormalize(60)}
+                  name="add-a-photo"
+                />
+              )}
+            </View>
+          </TouchableOpacity>
+          <View marginT-20>
+            <TextInput
+              onChangeText={(text) => setRegNumber(text)}
+              style={styles.TextInput}
+              placeholder="Enter Reg. Number"
+            />
           </View>
-        </TouchableOpacity>
-      )}
+          <View marginT-20>
+            <TextInput
+              onChangeText={(text) => setModel(text)}
+              style={styles.TextInput}
+              placeholder="Enter Model"
+            />
+          </View>
+          <View marginT-20>
+            <TextInput
+              onChangeText={(text) => setCapacity(text)}
+              style={styles.TextInput}
+              placeholder="Enter Capacity"
+            />
+          </View>
+
+          {loading ? (
+            <TouchableOpacity>
+              <View style={styles.btn} background- center marginT-40>
+                <Text whiteColor>processing...</Text>
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              onPress={() => {
+                addBoat();
+              }}
+            >
+              <View
+                style={styles.btn}
+                background-primaryColor
+                center
+                marginT-40
+              >
+                <Text>Submit</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        </ScrollView>
+      </KeyboardAvoidingView>
       <Toast
         visible={toastVisible}
         position={"top"}
@@ -207,10 +225,12 @@ const styles = {
     width: width - actuatedNormalize(50),
     padding: actuatedNormalize(20),
     borderRadius: actuatedNormalize(10),
+    backgroundColor: "#F6F6FF",
   },
   img: {
     height: height / 4,
-    width: width / 1.5,
+    width: width / 1.2,
+    marginHorizontal: actuatedNormalize(5),
     backgroundColor: "#0A519B",
     marginTop: actuatedNormalize(20),
   },

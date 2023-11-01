@@ -33,7 +33,7 @@ export default function Home(props) {
     if (reload) {
       page = 1;
     } else {
-      page = currentPage + 1;
+      page = 1; //currentPage + 1;
     }
     setLoading(true);
     axios
@@ -43,11 +43,13 @@ export default function Home(props) {
       .then((res) => {
         setCurrentPage(page);
         setTotalPage(res.data.count);
-        if (reload) {
+        setBoats(res.data.Boat);
+
+        /* if (reload) {
           setBoats(res.data.Boat);
         } else {
           setBoats((initDate) => [...initDate, ...res.data.Boat]);
-        }
+        }*/
       })
       .catch((err) => {
         setServerMessage(err.response.data.message);
@@ -67,7 +69,7 @@ export default function Home(props) {
           <Sos />
         </View>
       </View>
-      <View flex>
+      <View>
         <View row centerV marginT-40>
           <View flex left>
             <Text subheading>My Fleet </Text>

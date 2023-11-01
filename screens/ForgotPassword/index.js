@@ -5,14 +5,17 @@ import {
   TextInput,
   Dimensions,
   Modal,
+  Image,
 } from "react-native";
 import { actuatedNormalize } from "../../components/FontResponsive";
 import { View, Text, Colors, Badge, Incubator } from "react-native-ui-lib";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { elevate } from "react-native-elevate";
 import axios from "axios";
 import { ResetPassword, ConfirmResetPassword } from "../../APIs";
 const { Toast } = Incubator;
+import { Entypo, MaterialIcons } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("window");
 
@@ -25,6 +28,7 @@ export default function ForgotPassword(props) {
   const [toastColor, setToastColor] = useState("red");
   const [serverMessage, setServerMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(true);
 
   const resetPassword = () => {
     if (email == "") {
@@ -125,7 +129,18 @@ export default function ForgotPassword(props) {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.block} centerV>
-          <Text center subheading primaryColor>
+          <View center>
+            <View center style={styles.sos}>
+              <Image
+                source={require("../../assets/splashq.png")}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+              />
+            </View>
+          </View>
+          <Text marginH-20 subheading primaryColor>
             Forgot Password
           </Text>
           <View center>
@@ -135,6 +150,8 @@ export default function ForgotPassword(props) {
                 onChangeText={(text) => setEmail(text)}
                 style={styles.TextInput}
                 placeholder="Enter Email"
+                textContentType="emailAddress"
+                autoCapitalize="none"
               />
             </View>
 
@@ -186,7 +203,18 @@ export default function ForgotPassword(props) {
       <Modal animationType="slide" transparent={true} visible={otpModal}>
         <View style={styles.modal}>
           <View centerH style={[styles.subModal, { backgroundColor: "#fff" }]}>
-            <Text marginV-20 subheading>
+            <View center>
+              <View center style={styles.sos}>
+                <Image
+                  source={require("../../assets/splashq.png")}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                  }}
+                />
+              </View>
+            </View>
+            <Text marginH-20 subheading primaryColor>
               Enter OTP
             </Text>
             <OTPInputView
@@ -207,14 +235,29 @@ export default function ForgotPassword(props) {
               codeInputHighlightStyle={styles.underlineStyleHighLighted}
             />
 
-            <View marginT-20>
+            <View marginT-20 style={{ position: "relative" }}>
               <Text smallF>New Password</Text>
               <TextInput
                 onChangeText={(text) => setPassword(text)}
                 style={styles.TextInput}
                 placeholder="Enter New Password"
-                secureTextEntry
+                autoCapitalize="none"
+                secureTextEntry={showPassword}
               />
+              <TouchableOpacity
+                style={{
+                  position: "absolute",
+                  top: actuatedNormalize(30),
+                  right: actuatedNormalize(10),
+                }}
+                onPress={() => setShowPassword(!showPassword)}
+              >
+                <Entypo
+                  color="#181818"
+                  size={actuatedNormalize(20)}
+                  name="eye-with-line"
+                />
+              </TouchableOpacity>
             </View>
             {loading ? (
               <TouchableOpacity>
@@ -315,5 +358,13 @@ const styles = {
     flex: 1,
     height: height / actuatedNormalize(10),
     backgroundColor: "rgba(28, 28, 28, 0.5)",
+  },
+  sos: {
+    height: width / 4,
+    width: width / 4,
+    borderRadius: actuatedNormalize(100),
+    backgroundColor: Colors.whiteColor,
+    overflow: "hidden",
+    ...elevate(2),
   },
 };

@@ -13,6 +13,7 @@ import AddFleet from "../screens/AddBoat/index";
 import Profile from "../screens/Profile/index";
 import TripHistory from "../screens/TripsHistory/index";
 import BoatDetail from "../screens/BoatDetail";
+import AboutLaswa from "../screens/AboutLaswa/index";
 import * as Animatable from "react-native-animatable";
 
 const Tab = createBottomTabNavigator();
@@ -30,6 +31,15 @@ const HomeStack = () => {
     <Stack.Navigator screenOptions={options}>
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="BoatDetail" component={BoatDetail} />
+    </Stack.Navigator>
+  );
+};
+
+const ProfileStack = () => {
+  return (
+    <Stack.Navigator screenOptions={options}>
+      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="AboutLaswa" component={AboutLaswa} />
     </Stack.Navigator>
   );
 };
@@ -61,7 +71,7 @@ const TabArr = [
     label: "Profile",
     type: Icons.Feather,
     icon: "user",
-    component: Profile,
+    component: ProfileStack,
   },
 ];
 
@@ -150,6 +160,7 @@ export default function BottomTab() {
             options={{
               tabBarShowLabel: false,
               tabBarButton: (props) => <TabButton {...props} item={item} />,
+              lazy: false,
             }}
           />
         );

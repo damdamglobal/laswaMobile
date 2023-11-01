@@ -57,7 +57,9 @@ export default function StartTripModal(props) {
         setToastVisible(true);
         setToastColor("green");
         setIsVisible(false);
-        navigation.navigation.navigate("AddPassengerManifest", { item: item });
+        navigation.navigation.navigate("AddPassengerManifest", {
+          item: res.data.Trip,
+        });
       })
       .catch((err) => {
         setServerMessage(err.response.data.message);
@@ -74,25 +76,25 @@ export default function StartTripModal(props) {
         <View row>
           <View marginL-20 centerH>
             <View style={styles.origin} center>
-              <AntDesign
+              <FontAwesome5
                 color="#fff"
                 size={actuatedNormalize(10)}
-                name="circledown"
+                name="dot-circle"
               />
             </View>
             <View style={styles.line} />
             <View style={styles.destination} center>
-              <AntDesign
+              <FontAwesome5
                 color="#fff"
                 size={actuatedNormalize(10)}
-                name="upcircle"
+                name="dot-circle"
               />
             </View>
           </View>
           <TouchableOpacity onPress={() => setIsVisible(true)}>
             <View flex marginL-20>
               <View flex>
-                <Text>Origin</Text>
+                <Text>Select Terminal</Text>
                 <Text smallF marginT-10>
                   Enter Current Location
                 </Text>
@@ -108,7 +110,7 @@ export default function StartTripModal(props) {
                 </View>
               </View>
               <View flex bottom>
-                <Text>Destination</Text>
+                <Text>Destination Terminal</Text>
                 <Text smallF marginT-10>
                   Enter Location Destination
                 </Text>
@@ -133,24 +135,24 @@ export default function StartTripModal(props) {
               <View row>
                 <View marginL-20 centerH>
                   <View style={styles.origin} center>
-                    <AntDesign
+                    <FontAwesome5
                       color="#fff"
                       size={actuatedNormalize(10)}
-                      name="circledown"
+                      name="dot-circle"
                     />
                   </View>
                   <View style={styles.line} />
                   <View style={styles.destination} center>
-                    <AntDesign
+                    <FontAwesome5
                       color="#fff"
                       size={actuatedNormalize(10)}
-                      name="upcircle"
+                      name="dot-circle"
                     />
                   </View>
                 </View>
                 <View flex marginL-20>
                   <View flex>
-                    <Text>Origin</Text>
+                    <Text>Start Terminal</Text>
                     <TextInput
                       onChangeText={(text) => setTripOrigin(text)}
                       style={styles.TextInput}
@@ -169,7 +171,7 @@ export default function StartTripModal(props) {
                     </View>
                   </View>
                   <View flex bottom>
-                    <Text>Destination</Text>
+                    <Text>Destination Terminal</Text>
                     <TextInput
                       onChangeText={(text) => setTripDestination(text)}
                       style={styles.TextInput}
@@ -248,18 +250,18 @@ const styles = {
     height: actuatedNormalize(20),
     width: actuatedNormalize(20),
     borderRadius: actuatedNormalize(10),
-    backgroundColor: Colors.primaryColor,
+    backgroundColor: "gray",
   },
   destination: {
     height: actuatedNormalize(20),
     width: actuatedNormalize(20),
     borderRadius: actuatedNormalize(10),
-    backgroundColor: Colors.primaryColor,
+    backgroundColor: "#0A519B", //Colors.primaryColor,
   },
   line: {
     height: actuatedNormalize(100),
     width: actuatedNormalize(3),
-    backgroundColor: Colors.primaryColor,
+    backgroundColor: "#0A519B", //Colors.primaryColor,
   },
   verticalLine: {
     width: width - actuatedNormalize(140),

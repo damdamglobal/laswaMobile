@@ -83,7 +83,13 @@ export default function TripHistories(props) {
         showsVerticalScrollIndicator={false}
         // snapToInterval={width - actuatedNormalize(100)}
         data={trips}
-        renderItem={({ item }) => <TripHistory props={props} item={item} />}
+        renderItem={({ item }) => (
+          <TripHistory
+            props={props}
+            item={item}
+            getAuthUserTrips={getAuthUserTrips}
+          />
+        )}
         ListEmptyComponent={() => <EmptyCard />}
         keyExtractor={(item, index) => index.toString()}
       />

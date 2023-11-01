@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  Image,
 } from "react-native";
 import { Text, View, Colors, Button, Icon } from "react-native-ui-lib";
 import { actuatedNormalize } from "../../components/FontResponsive";
@@ -102,18 +103,26 @@ export default function AddFleet(props) {
             Delete Account
           </Text>
         </View>
-        <View row centerV marginT-20>
-          <View center style={styles.icon}>
-            <MaterialIcons
-              color="#181818"
-              size={actuatedNormalize(15)}
-              name="apartment"
-            />
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.push("AboutLaswa");
+          }}
+        >
+          <View row centerV marginT-20>
+            <View center style={styles.icon}>
+              <Image
+                source={require("../../assets/splashq.png")}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+              />
+            </View>
+            <Text marginH-20 subhead>
+              About LASWA
+            </Text>
           </View>
-          <Text marginH-20 subhead>
-            About LASWA
-          </Text>
-        </View>
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             setAuth(true);

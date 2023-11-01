@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Dimensions, Image, TouchableOpacity } from "react-native";
+import {
+  Dimensions,
+  Image,
+  TouchableOpacity,
+  ImageBackground,
+} from "react-native";
 import { Text, View, Colors } from "react-native-ui-lib";
 import { actuatedNormalize } from "../../components/FontResponsive";
 import { elevate } from "react-native-elevate";
@@ -18,7 +23,7 @@ export default function BoatCard(props) {
       }}
     >
       <View center style={styles.card} marginH-5>
-        <Image
+        <ImageBackground
           source={{
             uri: item.imgUrl,
           }}
@@ -26,7 +31,15 @@ export default function BoatCard(props) {
             width: "100%",
             height: "100%",
           }}
-        />
+        >
+          {item.activeTrip ? (
+            <View right>
+              <View background-whiteColor padding-10 margin-20>
+                <Text primaryColor>Active</Text>
+              </View>
+            </View>
+          ) : null}
+        </ImageBackground>
       </View>
     </TouchableOpacity>
   );
@@ -39,7 +52,7 @@ const styles = {
     width: width - actuatedNormalize(70),
     borderRadius: actuatedNormalize(30),
     overflow: "hidden",
-    backgroundColor: Colors.sosColor,
+    backgroundColor: "#F6F6FF",
     ...elevate(2),
   },
 };

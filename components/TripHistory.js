@@ -15,7 +15,7 @@ import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
 import PassengerDetail from "./PassengerDetail";
 import EmptyCard from "./EmptyCard";
 import dayjs from "dayjs";
-import { StartTrip } from "../APIs";
+import { StartTrip, CancelTrip, EndTrip } from "../APIs";
 import axios from "axios";
 
 const { Toast } = Incubator;
@@ -62,6 +62,63 @@ export default function TripHistory(props) {
         setServerMessage(res.data.message);
         setToastVisible(true);
         setToastColor("green");
+        props.getAuthUserTrips(token, "reload");
+      })
+      .catch((err) => {
+        setServerMessage(err.response.data.message);
+        setToastVisible(true);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const cancelTrip = async () => {
+    setServerMessage("");
+    setLoading(true);
+    axios
+      .put(
+        `${CancelTrip}`,
+        {
+          tripId: item._id,
+        },
+        {
+          headers: { Authorization: "Bearer " + token },
+        }
+      )
+      .then((res) => {
+        setServerMessage(res.data.message);
+        setToastVisible(true);
+        setToastColor("green");
+        props.getAuthUserTrips(token, "reload");
+      })
+      .catch((err) => {
+        setServerMessage(err.response.data.message);
+        setToastVisible(true);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const endTrip = async () => {
+    setServerMessage("");
+    setLoading(true);
+    axios
+      .put(
+        `${EndTrip}`,
+        {
+          tripId: item._id,
+        },
+        {
+          headers: { Authorization: "Bearer " + token },
+        }
+      )
+      .then((res) => {
+        setServerMessage(res.data.message);
+        setToastVisible(true);
+        setToastColor("green");
+        props.getAuthUserTrips(token, "reload");
       })
       .catch((err) => {
         setServerMessage(err.response.data.message);
@@ -136,7 +193,7 @@ export default function TripHistory(props) {
                 </TouchableOpacity>
               </View>
 
-              <View flex style={styles.btnOutline} marginH-25>
+              <View flex style={styles.btnOutline} center marginH-25>
                 <TouchableOpacity
                   onPress={() => {
                     props.props.navigation.push("AddPassengerManifest", {
@@ -145,6 +202,25 @@ export default function TripHistory(props) {
                   }}
                 >
                   <Text>Add Manifest</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          ) : null}
+          {item.status == "On-Transit" ? (
+            <View row marginT-10>
+              <View flex style={styles.btnOutline} center marginH-25>
+                <TouchableOpacity onPress={() => cancelTrip()}>
+                  <Text>Cancel Trip</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View flex style={styles.btnOutline} center marginH-25>
+                <TouchableOpacity
+                  onPress={() => {
+                    endTrip();
+                  }}
+                >
+                  <Text>End Trip</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -211,13 +287,13 @@ const styles = {
     height: actuatedNormalize(20),
     width: actuatedNormalize(20),
     borderRadius: actuatedNormalize(10),
-    backgroundColor: Colors.primaryColor,
+    backgroundColor: "gray",
   },
   destination: {
     height: actuatedNormalize(20),
     width: actuatedNormalize(20),
     borderRadius: actuatedNormalize(10),
-    backgroundColor: Colors.primaryColor,
+    backgroundColor: "#0A519B",
   },
   line: {
     height: actuatedNormalize(100),

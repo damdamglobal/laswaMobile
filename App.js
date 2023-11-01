@@ -15,6 +15,7 @@ import {
 Colors.loadColors({
   primaryColor: "#0A519B",
   whiteColor: "#fff",
+  whiteColorF: "#F6F6F6",
   sosColor: "#FF473E",
   errorColor: "#FF001E",
   successColor: "#00AF12",

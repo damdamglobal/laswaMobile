@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   TouchableOpacity,
   ScrollView,
+  KeyboardAvoidingView,
   TextInput,
   Dimensions,
   Modal,
@@ -143,98 +144,105 @@ export default function AddManifest(props) {
           <SOS />
         </View>
       </View>
-      <ScrollView
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        enabled
       >
-        <View flex marginT-20>
-          <View row>
-            <View left flex>
-              <Text subheader>Passenger Detail</Text>
+        <ScrollView
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View flex marginT-20>
+            <View row>
+              <View left flex>
+                <Text subheader>Passenger Detail</Text>
+              </View>
+              <View right flex>
+                {passengerCount.length ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setIsVisible(true);
+                    }}
+                  >
+                    <Badge label={passengerCount.length} size={16} />
+                    <FontAwesome5
+                      color="#181818"
+                      size={actuatedNormalize(20)}
+                      name="clipboard-list"
+                    />
+                  </TouchableOpacity>
+                ) : null}
+              </View>
             </View>
-            <View right flex>
-              {passengerCount.length ? (
+            <View marginT-20>
+              <Text smallF>Full Name</Text>
+              <TextInput
+                onChangeText={(text) => setFullName(text)}
+                style={styles.TextInput}
+                placeholder="Enter FullName"
+                value={fullName}
+              />
+            </View>
+            <View marginT-10>
+              <Text smallF>Home Address</Text>
+              <TextInput
+                onChangeText={(text) => setAddress(text)}
+                style={styles.TextInput}
+                placeholder="Enter Home Address"
+                value={address}
+              />
+            </View>
+            <View marginT-10>
+              <Text smallF>Phone Number</Text>
+              <TextInput
+                value={phoneNumber}
+                onChangeText={(text) => setPhoneNumber(text)}
+                style={styles.TextInput}
+                placeholder="Enter Phone Number"
+              />
+            </View>
+            <View row marginT-30>
+              <View left flex>
+                <Text subheader>Next of Kin Details</Text>
+              </View>
+              <View right flex></View>
+            </View>
+            <View marginT-10>
+              <Text smallF>Full Name</Text>
+              <TextInput
+                value={nextKin}
+                onChangeText={(text) => setNextKin(text)}
+                style={styles.TextInput}
+                placeholder="Enter Next of Kin Full name"
+              />
+            </View>
+            <View marginT-10>
+              <Text smallF>Phone Number</Text>
+              <TextInput
+                value={nextKinPhoneNumber}
+                onChangeText={(text) => setNextKinPhoneNumber(text)}
+                style={styles.TextInput}
+                placeholder="Enter Next of Kin Phone Number"
+              />
+            </View>
+            <View center marginT-50>
+              <View flex bottom>
                 <TouchableOpacity
                   onPress={() => {
-                    setIsVisible(true);
+                    addPassengerToTrip();
                   }}
                 >
-                  <Badge label={passengerCount.length} size={16} />
-                  <FontAwesome5
-                    color="#181818"
-                    size={actuatedNormalize(20)}
-                    name="clipboard-list"
-                  />
+                  <View style={styles.btn} center background-primaryColor>
+                    <Text whiteColor>Add More Passenger</Text>
+                  </View>
                 </TouchableOpacity>
-              ) : null}
+              </View>
             </View>
           </View>
-          <View marginT-20>
-            <Text smallF>Full Name</Text>
-            <TextInput
-              onChangeText={(text) => setFullName(text)}
-              style={styles.TextInput}
-              placeholder="Enter FullName"
-              value={fullName}
-            />
-          </View>
-          <View marginT-10>
-            <Text smallF>Home Address</Text>
-            <TextInput
-              onChangeText={(text) => setAddress(text)}
-              style={styles.TextInput}
-              placeholder="Enter Home Address"
-              value={address}
-            />
-          </View>
-          <View marginT-10>
-            <Text smallF>Phone Number</Text>
-            <TextInput
-              value={phoneNumber}
-              onChangeText={(text) => setPhoneNumber(text)}
-              style={styles.TextInput}
-              placeholder="Enter Phone Number"
-            />
-          </View>
-          <View row marginT-30>
-            <View left flex>
-              <Text subheader>Next of Kin Details</Text>
-            </View>
-            <View right flex></View>
-          </View>
-          <View marginT-10>
-            <Text smallF>Full Name</Text>
-            <TextInput
-              value={nextKin}
-              onChangeText={(text) => setNextKin(text)}
-              style={styles.TextInput}
-              placeholder="Enter Next of Kin Full name"
-            />
-          </View>
-          <View marginT-10>
-            <Text smallF>Phone Number</Text>
-            <TextInput
-              value={nextKinPhoneNumber}
-              onChangeText={(text) => setNextKinPhoneNumber(text)}
-              style={styles.TextInput}
-              placeholder="Enter Next of Kin Phone Number"
-            />
-          </View>
-          <View center marginT-50>
-            <View flex bottom>
-              <TouchableOpacity
-                onPress={() => {
-                  addPassengerToTrip();
-                }}
-              >
-                <View style={styles.btn} center background-primaryColor>
-                  <Text whiteColor>Add More Passenger</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
       <Modal animationType="slide" transparent={true} visible={isVisible}>
         <View style={styles.modal}>
           <View style={styles.modalCard}>

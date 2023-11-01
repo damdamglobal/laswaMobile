@@ -5,18 +5,21 @@ import {
   TextInput,
   Dimensions,
   Modal,
+  Image,
+  KeyboardAvoidingView,
 } from "react-native";
 import PhoneCode from "react-native-phone-input";
 import Code from "../../components/PhoneCode";
-
+import { Entypo } from "@expo/vector-icons";
 import { actuatedNormalize } from "../../components/FontResponsive";
-import { View, Text, Incubator, Badge } from "react-native-ui-lib";
+import { View, Text, Incubator, Badge, Colors } from "react-native-ui-lib";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
 import { SignUp, ActivateUser } from "../../APIs";
 const { Toast } = Incubator;
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext, SplashscreenContext } from "../../context/index";
+import { elevate } from "react-native-elevate";
 
 const { width, height } = Dimensions.get("window");
 
@@ -34,6 +37,7 @@ export default function SignUpScreen(props) {
   const [toastColor, setToastColor] = useState("red");
   const [serverMessage, setServerMessage] = useState("");
   const [toastVisible, setToastVisible] = useState(false);
+  const [showPassword, setShowPassword] = useState(true);
 
   const GetCode = (payload) => {
     let Obj = Code.Data;
@@ -154,112 +158,158 @@ export default function SignUpScreen(props) {
 
   return (
     <View flex background-whiteColor>
-      <ScrollView
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        enabled
       >
-        <View style={styles.block} centerV>
-          <Text center subheading primaryColor>
-            Get Started
-          </Text>
-          <View center>
-            <View marginT-20>
-              <Text smallF>First Name</Text>
-              <TextInput
-                onChangeText={(text) => setFirstName(text)}
-                style={styles.TextInput}
-                placeholder="Enter First Name"
-              />
+        <ScrollView
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={styles.block} centerV>
+            <View center>
+              <View center style={styles.sos}>
+                <Image
+                  source={require("../../assets/splashq.png")}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                  }}
+                />
+              </View>
             </View>
-            <View marginT-20>
-              <Text smallF>Last Name</Text>
-              <TextInput
-                onChangeText={(text) => setLastName(text)}
-                style={styles.TextInput}
-                placeholder="Enter Last Name"
-              />
-            </View>
-            <View marginT-20>
-              <Text smallF>Email</Text>
-              <TextInput
-                onChangeText={(text) => setEmail(text)}
-                style={styles.TextInput}
-                placeholder="Enter Email"
-              />
-            </View>
-            <View style={styles.blockPhone} marginT-20>
-              <Text smallF>Phone Number</Text>
-              <PhoneCode
-                flagStyle={{ margin: 5 }}
-                allowZeroAfterCountryCode={false}
-                value={phoneNumber}
-                textStyle={{ color: "black" }}
-                initialCountry="ng"
-                onChangePhoneNumber={(y) => setPhoneNumber(y)}
-                onSelectCountry={(tx) => {
-                  GetCode(tx);
-                }}
-              />
-            </View>
-            <View marginT-20>
-              <Text smallF>Password</Text>
-              <TextInput
-                onChangeText={(text) => setPassword(text)}
-                style={styles.TextInput}
-                placeholder="Enter Password"
-                secureTextEntry
-              />
-            </View>
-
-            {loading ? (
-              <TouchableOpacity>
-                <View
-                  style={styles.btn}
-                  background-primaryColor
-                  center
-                  marginT-40
-                >
-                  <Text whiteColor>processing...</Text>
-                </View>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                onPress={() => {
-                  signUp();
-                }}
-              >
-                <View
-                  style={styles.btn}
-                  background-primaryColor
-                  center
-                  marginT-40
-                >
-                  <Text whiteColor>Submit</Text>
-                </View>
-              </TouchableOpacity>
-            )}
-          </View>
-
-          <View center row marginT-50>
-            <View style={styles.line} />
-            <Text>OR</Text>
-            <View style={styles.line} />
-          </View>
-          <TouchableOpacity
-            onPress={() => {
-              props.navigation.pop();
-            }}
-          >
-            <Text marginT-20 center underline subheader>
-              Login
+            <Text marginH-20 subheading primaryColor>
+              Get Started
             </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+            <View center>
+              <View marginT-20>
+                <Text smallF>First Name</Text>
+                <TextInput
+                  onChangeText={(text) => setFirstName(text)}
+                  style={styles.TextInput}
+                  placeholder="Enter First Name"
+                />
+              </View>
+              <View marginT-20>
+                <Text smallF>Last Name</Text>
+                <TextInput
+                  onChangeText={(text) => setLastName(text)}
+                  style={styles.TextInput}
+                  placeholder="Enter Last Name"
+                />
+              </View>
+              <View marginT-20>
+                <Text smallF>Email</Text>
+                <TextInput
+                  onChangeText={(text) => setEmail(text)}
+                  style={styles.TextInput}
+                  placeholder="Enter Email"
+                  textContentType="emailAddress"
+                  autoCapitalize="none"
+                />
+              </View>
+              <View style={styles.blockPhone} marginT-20>
+                <Text smallF>Phone Number</Text>
+                <PhoneCode
+                  flagStyle={{ margin: 5 }}
+                  allowZeroAfterCountryCode={false}
+                  value={phoneNumber}
+                  textStyle={{ color: "black" }}
+                  initialCountry="ng"
+                  onChangePhoneNumber={(y) => setPhoneNumber(y)}
+                  onSelectCountry={(tx) => {
+                    GetCode(tx);
+                  }}
+                />
+              </View>
+              <View marginT-20 style={{ position: "relative" }}>
+                <Text smallF>Password</Text>
+                <TextInput
+                  onChangeText={(text) => setPassword(text)}
+                  style={styles.TextInput}
+                  placeholder="Enter Password"
+                  secureTextEntry={showPassword}
+                  autoCapitalize="none"
+                />
+                <TouchableOpacity
+                  style={{
+                    position: "absolute",
+                    top: actuatedNormalize(30),
+                    right: actuatedNormalize(10),
+                  }}
+                  onPress={() => setShowPassword(!showPassword)}
+                >
+                  <Entypo
+                    color="#181818"
+                    size={actuatedNormalize(20)}
+                    name="eye-with-line"
+                  />
+                </TouchableOpacity>
+              </View>
+
+              {loading ? (
+                <TouchableOpacity>
+                  <View
+                    style={styles.btn}
+                    background-primaryColor
+                    center
+                    marginT-40
+                  >
+                    <Text whiteColor>processing...</Text>
+                  </View>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  onPress={() => {
+                    signUp();
+                  }}
+                >
+                  <View
+                    style={styles.btn}
+                    background-primaryColor
+                    center
+                    marginT-40
+                  >
+                    <Text whiteColor>Submit</Text>
+                  </View>
+                </TouchableOpacity>
+              )}
+            </View>
+
+            <View center row marginT-50>
+              <View style={styles.line} />
+              <Text>OR</Text>
+              <View style={styles.line} />
+            </View>
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.pop();
+              }}
+            >
+              <Text marginT-20 center underline subheader>
+                Login
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
       <Modal animationType="slide" transparent={true} visible={otpModal}>
         <View style={styles.modal}>
           <View centerH style={[styles.subModal, { backgroundColor: "#fff" }]}>
-            <Text marginV-20 subheading>
+            <View center>
+              <View center style={styles.sos}>
+                <Image
+                  source={require("../../assets/splashq.png")}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                  }}
+                />
+              </View>
+            </View>
+            <Text marginH-20 subheading primaryColor>
               Enter OTP
             </Text>
             <OTPInputView
@@ -359,5 +409,13 @@ const styles = {
     flex: 1,
     height: height / actuatedNormalize(10),
     backgroundColor: "rgba(28, 28, 28, 0.5)",
+  },
+  sos: {
+    height: width / 4,
+    width: width / 4,
+    borderRadius: actuatedNormalize(100),
+    backgroundColor: Colors.whiteColor,
+    overflow: "hidden",
+    ...elevate(2),
   },
 };
