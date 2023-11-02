@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FlatList, Dimensions } from "react-native";
 import { Text, View, Avatar } from "react-native-ui-lib";
 import axios from "axios";
@@ -9,14 +9,15 @@ import BoatCard from "./BoatCard";
 import EmptyCard from "./EmptyCard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const { width, height } = Dimensions.get("window");
+import { BoatScreenContext } from "../../context/index";
 
 export default function Home(props) {
   const [token, setToken] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [serverMessage, setServerMessage] = React.useState("");
-  const [boat, setBoats] = useState([]);
   const [currentPage, setCurrentPage] = useState(null);
   const [totalPage, setTotalPage] = useState(null);
+  const [boat, setBoats] = useContext(BoatScreenContext);
 
   useEffect(() => {
     async function fetchStoresData() {

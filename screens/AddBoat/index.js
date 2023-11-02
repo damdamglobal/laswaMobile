@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Dimensions,
   TouchableOpacity,
@@ -11,11 +11,13 @@ import { Text, View, Incubator } from "react-native-ui-lib";
 import { actuatedNormalize } from "../../components/FontResponsive";
 import SOS from "../../components/Sos";
 import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
-import { AddBoat } from "../../APIs";
+import { AddBoat, GetUserBoat } from "../../APIs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
+import { BoatScreenContext } from "../../context/index";
+
 const { Toast } = Incubator;
 
 const { width, height } = Dimensions.get("window");
@@ -30,6 +32,7 @@ export default function AddFleet(props) {
   const [token, setToken] = React.useState("");
   const [img, setImage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [boat, setBoats] = useContext(BoatScreenContext);
 
   useEffect(() => {
     async function fetchStoresData() {
@@ -54,6 +57,24 @@ export default function AddFleet(props) {
       );
       setImage(manipResult.uri);
     }
+  };
+
+  const getUserBoat = async (payload) => {
+    setLoading(true);
+    axios
+      .get(`${GetUserBoat}`, {
+        headers: { Authorization: "Bearer " + payload },
+      })
+      .then((res) => {
+        props.navigation.navigate("Home");
+        setBoats(res.data.Boat);
+      })
+      .catch((err) => {
+        setServerMessage(err.response.data.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const addBoat = () => {
@@ -87,6 +108,11 @@ export default function AddFleet(props) {
         setServerMessage(res.data.message);
         setToastColor("green");
         setToastVisible(true);
+        setImage("");
+        setRegNumber("");
+        setModel("");
+        setCapacity("");
+        getUserBoat(token);
       })
       .catch((err) => {
         console.log(err.response, "OPO");
@@ -154,6 +180,7 @@ export default function AddFleet(props) {
               onChangeText={(text) => setRegNumber(text)}
               style={styles.TextInput}
               placeholder="Enter Reg. Number"
+              value={regNumber}
             />
           </View>
           <View marginT-20>
@@ -161,6 +188,7 @@ export default function AddFleet(props) {
               onChangeText={(text) => setModel(text)}
               style={styles.TextInput}
               placeholder="Enter Model"
+              value={model}
             />
           </View>
           <View marginT-20>
@@ -168,6 +196,7 @@ export default function AddFleet(props) {
               onChangeText={(text) => setCapacity(text)}
               style={styles.TextInput}
               placeholder="Enter Capacity"
+              value={capacity}
             />
           </View>
 
@@ -189,7 +218,7 @@ export default function AddFleet(props) {
                 center
                 marginT-40
               >
-                <Text>Submit</Text>
+                <Text whiteColor>Submit</Text>
               </View>
             </TouchableOpacity>
           )}
@@ -225,7 +254,7 @@ const styles = {
     width: width - actuatedNormalize(50),
     padding: actuatedNormalize(20),
     borderRadius: actuatedNormalize(10),
-    backgroundColor: "#F6F6FF",
+    backgroundColor: "#181818",
   },
   img: {
     height: height / 4,

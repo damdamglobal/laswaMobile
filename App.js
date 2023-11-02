@@ -1,6 +1,7 @@
 import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, SafeAreaView } from "react-native";
+import { StyleSheet, Text } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import { Colors, Typography, Spacings, Assets } from "react-native-ui-lib";
 import Navigation from "./navigation/index";
@@ -10,6 +11,8 @@ import {
   SplashscreenProvider,
   OnboardingScreenProvider,
   MainScreenProvider,
+  BoatScreenProvider,
+  TripsScreenProvider,
 } from "./context/index";
 
 Colors.loadColors({
@@ -33,20 +36,26 @@ Typography.loadTypographies({
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <SafeAreaView style={styles.container}>
-        <StatusBar style="auto" />
-        <MainScreenProvider>
-          <OnboardingScreenProvider>
-            <AuthProvider>
-              <SplashscreenProvider>
-                <Navigation />
-              </SplashscreenProvider>
-            </AuthProvider>
-          </OnboardingScreenProvider>
-        </MainScreenProvider>
-      </SafeAreaView>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <SafeAreaView style={styles.container}>
+          <StatusBar style="auto" />
+          <MainScreenProvider>
+            <OnboardingScreenProvider>
+              <AuthProvider>
+                <SplashscreenProvider>
+                  <BoatScreenProvider>
+                    <TripsScreenProvider>
+                      <Navigation />
+                    </TripsScreenProvider>
+                  </BoatScreenProvider>
+                </SplashscreenProvider>
+              </AuthProvider>
+            </OnboardingScreenProvider>
+          </MainScreenProvider>
+        </SafeAreaView>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
 

@@ -68,7 +68,7 @@ export default function TripHistories(props) {
     <View flex paddingH-20 background-whiteColor>
       <View row centerV>
         <View flex></View>
-        <View flex center>
+        <View flex-2 center>
           <Text subheading>Trips History</Text>
         </View>
         <View right flex>

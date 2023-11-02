@@ -11,17 +11,23 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.damdamltd.laswa"
+      "bundleIdentifier": "com.damdamltd.laswa",
+      "config": {
+        "googleMapsApiKey": "AIzaSyCsy_7A6aLRfwYH_PctoscYNodg0PFbAz0"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCsy_7A6aLRfwYH_PctoscYNodg0PFbAz0"
+        }
       },
       "package": "com.damdamltd.laswa"
     },
@@ -33,6 +39,14 @@
         "projectId": "8cee6c16-2c7c-4002-b77f-3f78f2f700bc"
       }
     },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow Laswa to use your location."
+        }
+      ]
+    ],
     "owner": "damdamltd"
   }
 }

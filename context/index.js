@@ -5,6 +5,28 @@ export const SplashscreenContext = React.createContext();
 export const MainScreenContext = React.createContext();
 export const BusinessProfileContext = React.createContext();
 export const OnboardingScreenContext = React.createContext();
+export const BoatScreenContext = React.createContext();
+export const TripsScreenContext = React.createContext();
+
+export const BoatScreenProvider = (props) => {
+  const [boat, setBoat] = useState([]);
+
+  return (
+    <BoatScreenContext.Provider value={[boat, setBoat]}>
+      {props.children}
+    </BoatScreenContext.Provider>
+  );
+};
+
+export const TripsScreenProvider = (props) => {
+  const [trip, setTrip] = useState([]);
+
+  return (
+    <TripsScreenContext.Provider value={[trip, setTrip]}>
+      {props.children}
+    </TripsScreenContext.Provider>
+  );
+};
 
 export const OnboardingScreenProvider = (props) => {
   const [onboard, setOnboard] = useState(false);

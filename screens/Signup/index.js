@@ -294,49 +294,64 @@ export default function SignUpScreen(props) {
             </TouchableOpacity>
           </View>
         </ScrollView>
-      </KeyboardAvoidingView>
-      <Modal animationType="slide" transparent={true} visible={otpModal}>
-        <View style={styles.modal}>
-          <View centerH style={[styles.subModal, { backgroundColor: "#fff" }]}>
-            <View center>
-              <View center style={styles.sos}>
-                <Image
-                  source={require("../../assets/splashq.png")}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                  }}
-                />
+        <Modal animationType="slide" transparent={true} visible={otpModal}>
+          <View style={styles.modal}>
+            <View
+              centerH
+              style={[styles.subModal, { backgroundColor: "#fff" }]}
+            >
+              <View center>
+                <View center style={styles.sos}>
+                  <Image
+                    source={require("../../assets/splashq.png")}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                    }}
+                  />
+                </View>
               </View>
-            </View>
-            <Text marginH-20 subheading primaryColor>
-              Enter OTP
-            </Text>
-            <OTPInputView
-              style={{
-                width: "80%",
-                height: actuatedNormalize(50),
-              }}
-              pinCount={6}
-              //code={activationCode} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
-              // onCodeChanged={(code) => {setActivationCode({ code });}}
-              autoFocusOnLoad
-              codeInputFieldStyle={[
-                styles.underlineStyleBase,
-                { color: "#181818" },
-              ]}
-              codeInputHighlightStyle={styles.underlineStyleHighLighted}
-              onCodeFilled={(code) => {
-                activateAccount(code);
-              }}
-            />
-            <TouchableOpacity onPress={() => setOtpModal(false)}>
-              <Text marginT-50 body>
-                Resend
+              <Text marginH-20 subheading primaryColor>
+                Enter OTP
               </Text>
-            </TouchableOpacity>
+              <OTPInputView
+                style={{
+                  width: "80%",
+                  height: actuatedNormalize(50),
+                }}
+                pinCount={6}
+                //code={activationCode} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
+                // onCodeChanged={(code) => {setActivationCode({ code });}}
+                autoFocusOnLoad
+                codeInputFieldStyle={[
+                  styles.underlineStyleBase,
+                  { color: "#181818" },
+                ]}
+                codeInputHighlightStyle={styles.underlineStyleHighLighted}
+                onCodeFilled={(code) => {
+                  activateAccount(code);
+                }}
+              />
+              <TouchableOpacity onPress={() => setOtpModal(false)}>
+                <Text marginT-50 body>
+                  Resend
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+          <Toast
+            visible={toastVisible}
+            position={"top"}
+            autoDismiss={5000}
+            message={serverMessage}
+            swipeable={true}
+            onDismiss={() => setToastVisible(false)}
+            backgroundColor={toastColor}
+            messageStyle={{
+              color: "white",
+            }}
+          ></Toast>
+        </Modal>
         <Toast
           visible={toastVisible}
           position={"top"}
@@ -349,19 +364,7 @@ export default function SignUpScreen(props) {
             color: "white",
           }}
         ></Toast>
-      </Modal>
-      <Toast
-        visible={toastVisible}
-        position={"top"}
-        autoDismiss={5000}
-        message={serverMessage}
-        swipeable={true}
-        onDismiss={() => setToastVisible(false)}
-        backgroundColor={toastColor}
-        messageStyle={{
-          color: "white",
-        }}
-      ></Toast>
+      </KeyboardAvoidingView>
     </View>
   );
 }
