@@ -55,6 +55,7 @@ export default function AddManifest(props) {
     if (!fullName || !phoneNumber) {
       setServerMessage("name and phone number are required");
       setToastVisible(true);
+      setToastColor("red");
       return;
     }
 
@@ -311,6 +312,18 @@ export default function AddManifest(props) {
           }}
         ></Toast>
       </Modal>
+      <Toast
+        visible={toastVisible}
+        position={"top"}
+        autoDismiss={5000}
+        message={serverMessage}
+        swipeable={true}
+        onDismiss={() => setToastVisible(false)}
+        backgroundColor={toastColor}
+        messageStyle={{
+          color: "white",
+        }}
+      ></Toast>
     </View>
   );
 }

@@ -140,7 +140,7 @@ export default function TripHistory(props) {
               name="dot-circle"
             />
           </View>
-          <View style={styles.line} />
+          <View style={styles.line} background-primaryColor />
           <View style={styles.destination} center background-primaryColor>
             <FontAwesome5
               color="#fff"
@@ -185,46 +185,60 @@ export default function TripHistory(props) {
               <Text successColor>{item.status}</Text>
             </View>
           </View>
-          {item.status == "Onboarding" ? (
-            <View row marginT-10>
-              <View flex style={styles.btnOutline} center marginH-25>
-                <TouchableOpacity onPress={() => startTrip()}>
-                  <Text>Start Trip</Text>
-                </TouchableOpacity>
-              </View>
+          <>
+            {loading ? (
+              <>
+                <View flex style={styles.btnOutline} center marginH-25>
+                  <TouchableOpacity>
+                    <Text smallF>Processing...</Text>
+                  </TouchableOpacity>
+                </View>
+              </>
+            ) : (
+              <>
+                {item.status == "Onboarding" ? (
+                  <View row marginT-10>
+                    <View flex style={styles.btnOutline} center marginH-25>
+                      <TouchableOpacity onPress={() => startTrip()}>
+                        <Text smallF>Start Trip</Text>
+                      </TouchableOpacity>
+                    </View>
 
-              <View flex style={styles.btnOutline} center marginH-25>
-                <TouchableOpacity
-                  onPress={() => {
-                    props.props.navigation.push("AddPassengerManifest", {
-                      item: item,
-                    });
-                  }}
-                >
-                  <Text>Add Manifest</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          ) : null}
-          {item.status == "On-Transit" ? (
-            <View row marginT-10>
-              <View flex style={styles.btnOutline} center marginH-25>
-                <TouchableOpacity onPress={() => cancelTrip()}>
-                  <Text>Cancel Trip</Text>
-                </TouchableOpacity>
-              </View>
+                    <View flex style={styles.btnOutline} center marginH-25>
+                      <TouchableOpacity
+                        onPress={() => {
+                          props.props.navigation.push("AddPassengerManifest", {
+                            item: item,
+                          });
+                        }}
+                      >
+                        <Text smallF>Add Manifest</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                ) : null}
+                {item.status == "On-Transit" ? (
+                  <View row marginT-10>
+                    <View flex style={styles.btnOutline} center marginH-25>
+                      <TouchableOpacity onPress={() => cancelTrip()}>
+                        <Text smallF>Cancel Trip</Text>
+                      </TouchableOpacity>
+                    </View>
 
-              <View flex style={styles.btnOutline} center marginH-25>
-                <TouchableOpacity
-                  onPress={() => {
-                    endTrip();
-                  }}
-                >
-                  <Text>End Trip</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          ) : null}
+                    <View flex style={styles.btnOutline} center marginH-25>
+                      <TouchableOpacity
+                        onPress={() => {
+                          endTrip();
+                        }}
+                      >
+                        <Text smallF>End Trip</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                ) : null}
+              </>
+            )}
+          </>
         </View>
       </View>
       <Modal animationType="slide" transparent={true} visible={isVisible}>
@@ -277,7 +291,7 @@ export default function TripHistory(props) {
 
 const styles = {
   card: {
-    height: actuatedNormalize(220),
+    minHeight: actuatedNormalize(250),
     width: width / 1.1,
     backgroundColor: "#F6F6F6",
     borderRadius: actuatedNormalize(10),
@@ -298,7 +312,6 @@ const styles = {
   line: {
     height: actuatedNormalize(100),
     width: actuatedNormalize(3),
-    backgroundColor: Colors.primaryColor,
   },
   verticalLine: {
     width: width - actuatedNormalize(170),
