@@ -17,8 +17,10 @@ export default function BoatCard() {
           height: "100%",
         }}
       >
-        <View center background-whiteColor>
-          <Text subheader>No Record</Text>
+        <View flex center>
+          <Text subheader errorColor>
+            No Record
+          </Text>
         </View>
       </ImageBackground>
     </View>

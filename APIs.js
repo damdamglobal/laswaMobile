@@ -10,9 +10,11 @@ export const SignUp = `${Domain}/auth/SignUp`;
 export const ActivateUser = `${Domain}/auth/ActivateUser`;
 export const ResetPassword = `${Domain}/auth/ResetPassword`;
 export const ConfirmResetPassword = `${Domain}/auth/ConfirmResetPassword`;
+export const SearchUser = `${Domain}/auth/SearchUser`;
 
 export const GetUserBoat = `${Domain}/Boat/GetUserBoat`;
 export const AddBoat = `${Domain}/Boat/AddBoat`;
+export const AssignUserToBoat = `${Domain}/Boat/AssignUserToBoat`;
 
 export const GetAuthUserTrips = `${Domain}/Trip/GetAuthUserTrips`;
 export const GetBoatTrips = `${Domain}/Trip/GetBoatTrips`;

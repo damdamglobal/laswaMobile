@@ -22,6 +22,7 @@ Colors.loadColors({
   sosColor: "#FF473E",
   errorColor: "#FF001E",
   successColor: "#00AF12",
+  gray: "gray",
 });
 
 Typography.loadTypographies({

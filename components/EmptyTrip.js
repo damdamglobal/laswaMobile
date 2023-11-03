@@ -22,14 +22,14 @@ export default function TripHistory() {
     <View style={styles.card} center marginB-20>
       <View row>
         <View marginL-20 centerH>
-          <View style={styles.origin} center background-primaryColor>
+          <View style={styles.origin} center background-gray>
             <FontAwesome5
               color="#fff"
               size={actuatedNormalize(10)}
               name="dot-circle"
             />
           </View>
-          <View style={styles.line} />
+          <View style={styles.line} background-primaryColor />
           <View style={styles.destination} center background-primaryColor>
             <FontAwesome5
               color="#fff"
@@ -49,7 +49,7 @@ export default function TripHistory() {
 const styles = {
   card: {
     height: actuatedNormalize(220),
-    width: width - actuatedNormalize(20),
+    width: "100%",
     backgroundColor: "#F6F6F6",
     borderRadius: actuatedNormalize(10),
     ...elevate(2),
@@ -58,18 +58,15 @@ const styles = {
     height: actuatedNormalize(20),
     width: actuatedNormalize(20),
     borderRadius: actuatedNormalize(10),
-    backgroundColor: Colors.primaryColor,
   },
   destination: {
     height: actuatedNormalize(20),
     width: actuatedNormalize(20),
     borderRadius: actuatedNormalize(10),
-    backgroundColor: Colors.primaryColor,
   },
   line: {
     height: actuatedNormalize(100),
     width: actuatedNormalize(3),
-    backgroundColor: Colors.primaryColor,
   },
   verticalLine: {
     width: width - actuatedNormalize(170),

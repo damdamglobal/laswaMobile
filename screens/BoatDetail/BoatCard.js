@@ -14,6 +14,7 @@ export default function BoatCard(props) {
         source={{
           uri: props.item.imgUrl,
         }}
+        resizeMode="stretch"
         style={{
           width: "100%",
           height: "100%",

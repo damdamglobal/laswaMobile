@@ -22,7 +22,7 @@ export default function BoatCard(props) {
         navigation.navigation.push("BoatDetail", { item: item });
       }}
     >
-      <View center style={styles.card} marginH-5>
+      <View center style={styles.card}>
         <ImageBackground
           source={{
             uri: item.imgUrl,
@@ -47,7 +47,7 @@ export default function BoatCard(props) {
 
 const styles = {
   card: {
-    marginTop: actuatedNormalize(30),
+    margin: actuatedNormalize(10),
     height: height / 1.7,
     width: width - actuatedNormalize(70),
     borderRadius: actuatedNormalize(30),

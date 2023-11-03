@@ -34,7 +34,6 @@ export default function AddFleet(props) {
   useEffect(() => {
     async function fetchToken() {
       let value = await AsyncStorage.getItem("user");
-      console.log(value);
       setUser(JSON.parse(value));
     }
     fetchToken();
@@ -93,14 +92,14 @@ export default function AddFleet(props) {
         </View>
         <View row centerV marginT-20>
           <View center style={styles.icon}>
-            <AntDesign
+            <MaterialIcons
               color="#181818"
               size={actuatedNormalize(15)}
-              name="delete"
+              name="security"
             />
           </View>
           <Text marginH-20 subhead>
-            Delete Account
+            Change Password
           </Text>
         </View>
         <TouchableOpacity

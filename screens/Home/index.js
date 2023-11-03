@@ -11,7 +11,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const { width, height } = Dimensions.get("window");
 import { BoatScreenContext } from "../../context/index";
 
-export default function Home(props) {
+export default function HomeFun(props) {
   const [token, setToken] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [serverMessage, setServerMessage] = React.useState("");
@@ -71,29 +71,30 @@ export default function Home(props) {
         </View>
       </View>
       <View>
-        <View row centerV marginT-40>
+        <View row centerV marginV-40>
           <View flex left>
             <Text subheading>My Fleet </Text>
           </View>
           <View flex right>
-            <Text smallF>View all </Text>
+            {/*<Text smallF>View all </Text>*/}
           </View>
         </View>
-
-        <FlatList
-          onRefresh={() => getUserBoat(token, "reload")}
-          refreshing={loading}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          horizontal={true}
-          // snapToInterval={width - actuatedNormalize(100)}
-          data={boat}
-          renderItem={({ item }) => <BoatCard props={props} item={item} />}
-          ListEmptyComponent={() => <EmptyCard props={props} />}
-          keyExtractor={(item, index) => index.toString()}
-          onEndReached={() => getUserBoat(token)}
-          onEndReachedThreshold={0.5}
-        />
+        <View>
+          <FlatList
+            onRefresh={() => getUserBoat(token, "reload")}
+            refreshing={loading}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            horizontal={true}
+            // snapToInterval={width - actuatedNormalize(100)}
+            data={boat}
+            renderItem={({ item }) => <BoatCard props={props} item={item} />}
+            ListEmptyComponent={() => <EmptyCard props={props} />}
+            keyExtractor={(item, index) => index.toString()}
+            onEndReached={() => getUserBoat(token)}
+            onEndReachedThreshold={0.5}
+          />
+        </View>
       </View>
     </View>
   );
