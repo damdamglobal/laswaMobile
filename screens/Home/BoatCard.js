@@ -12,7 +12,9 @@ const { width, height } = Dimensions.get("window");
 
 export default function BoatCard(props) {
   const [navigation, setNavigation] = useState(props.props);
-  const [item, setItem] = useState(props.item);
+  // const [item, setItem] = useState(props.item);
+
+  let item = props.item;
 
   useEffect(() => {}, []);
 

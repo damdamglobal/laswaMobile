@@ -285,17 +285,19 @@ export default function BoatCardComponent(props) {
         {loading ? (
           <ActivityIndicator size="small" color="#181818" />
         ) : (
-          <>
+          <View>
             {trips.length ? (
-              <>
+              <View style={{ marginBottom: actuatedNormalize(150) }}>
                 {trips.map((item) => (
-                  <TripHistory key={item._id} item={item} />
+                  <View key={item._id}>
+                    <TripHistory key={item._id} item={item} />
+                  </View>
                 ))}
-              </>
+              </View>
             ) : (
               <EmptyCard />
             )}
-          </>
+          </View>
         )}
 
         {/**

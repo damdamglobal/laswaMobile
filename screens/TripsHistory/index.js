@@ -56,6 +56,16 @@ export default function TripHistories(props) {
       });
   };
 
+  const TripCard = (item, index) => {
+    return (
+      <TripHistory
+        props={props}
+        item={item}
+        getAuthUserTrips={getAuthUserTrips}
+      />
+    );
+  };
+
   const keyExtractor = (item, index) => item._id + index;
 
   return (
@@ -76,13 +86,7 @@ export default function TripHistories(props) {
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
         data={trips}
-        renderItem={({ item, index }) => (
-          <TripHistory
-            props={props}
-            item={item}
-            getAuthUserTrips={getAuthUserTrips}
-          />
-        )}
+        renderItem={({ item, index }) => TripCard(item, index)}
         ListEmptyComponent={() => <EmptyCard />}
         keyExtractor={keyExtractor}
       />

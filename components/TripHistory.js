@@ -25,7 +25,7 @@ const { width, height } = Dimensions.get("window");
 
 export default function TripHistory(props) {
   const [isVisible, setIsVisible] = useState(false);
-  const [item, setItem] = useState(props.item);
+  //const [item, setItem] = useState(props.item);
   const [loading, setLoading] = React.useState(false);
   const [toastVisible, setToastVisible] = useState(false);
   const [toastColor, setToastColor] = useState("red");
@@ -34,6 +34,8 @@ export default function TripHistory(props) {
   const [keyword, setKeyword] = React.useState("");
   const [passengers, setPassengers] = React.useState([]);
   const [sortedPassengers, setSortedPassengers] = React.useState([]);
+
+  let item = props.item;
 
   useEffect(() => {
     async function fetchStoresData() {

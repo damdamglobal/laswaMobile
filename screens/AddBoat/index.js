@@ -79,7 +79,7 @@ export default function AddFleet(props) {
   };
 
   const addBoat = () => {
-    if (regNumber == "" || model == "") {
+    if (regNumber == "" || model == "" || img == "") {
       setServerMessage("Full all the required field");
       setToastVisible(true);
       return;
@@ -116,7 +116,6 @@ export default function AddFleet(props) {
         getUserBoat(token);
       })
       .catch((err) => {
-        console.log(err.response, "OPO");
         setServerMessage(err.response.data.message);
         setToastColor("red");
         setToastVisible(true);

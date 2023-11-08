@@ -151,7 +151,7 @@ export default function StartTripModal(props) {
                 </Text>
               </View>
               <View flex centerV row>
-                <View style={styles.verticalLine} />
+                <View style={styles.verticalLine1} />
                 <View center marginL-20 right style={styles.passageList}>
                   <FontAwesome5
                     color="#181818"
@@ -228,15 +228,8 @@ export default function StartTripModal(props) {
                       />
                     </View>
                   </View>
-                  <View flex centerV row>
+                  <View flex centerV>
                     <View style={styles.verticalLine} />
-                    <View center marginL-20 right style={styles.passageList}>
-                      <FontAwesome5
-                        color="#181818"
-                        size={actuatedNormalize(20)}
-                        name="clipboard-list"
-                      />
-                    </View>
                   </View>
                   <View flex bottom style={styles.selectField}>
                     <Text>Destination Terminal</Text>
@@ -349,7 +342,12 @@ const styles = {
     backgroundColor: "#0A519B", //Colors.primaryColor,
   },
   verticalLine: {
-    width: width - actuatedNormalize(140),
+    width: width - actuatedNormalize(90),
+    height: actuatedNormalize(2),
+    backgroundColor: "#9EA2A7",
+  },
+  verticalLine1: {
+    width: width - actuatedNormalize(190),
     height: actuatedNormalize(2),
     backgroundColor: "#9EA2A7",
   },
@@ -390,10 +388,10 @@ const styles = {
     borderRadius: actuatedNormalize(10),
   },
   selectField: {
-    width: width / 1.5,
+    width: width - actuatedNormalize(90),
     backgroundColor: "white",
     borderRadius: actuatedNormalize(5),
-    ...elevate(4),
+    ...elevate(1),
   },
 };
 
