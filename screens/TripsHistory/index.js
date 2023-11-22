@@ -73,7 +73,9 @@ export default function TripHistories(props) {
       <View row centerV>
         <View flex></View>
         <View flex-2 center>
-          <Text subheading>Trips History</Text>
+          <Text subheading numberOfLines={1}>
+            Trips History
+          </Text>
         </View>
         <View right flex>
           <SOS />

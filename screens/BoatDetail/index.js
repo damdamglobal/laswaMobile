@@ -290,7 +290,7 @@ export default function BoatCardComponent(props) {
               <View style={{ marginBottom: actuatedNormalize(150) }}>
                 {trips.map((item) => (
                   <View key={item._id}>
-                    <TripHistory key={item._id} item={item} />
+                    <TripHistory key={item._id} item={item} props={props} />
                   </View>
                 ))}
               </View>

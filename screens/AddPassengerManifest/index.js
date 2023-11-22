@@ -193,7 +193,7 @@ export default function AddManifest(props) {
                       setIsVisible(true);
                     }}
                   >
-                    <Badge label={passengerCount.length} size={16} />
+                    <Badge label={`${passengerCount.length}`} size={16} />
                     <FontAwesome5
                       color="#181818"
                       size={actuatedNormalize(20)}

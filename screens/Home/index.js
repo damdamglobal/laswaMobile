@@ -61,7 +61,7 @@ export default function HomeFun(props) {
   };
 
   return (
-    <View flex padding-20 background-whiteColor>
+    <View padding-20 background-whiteColor>
       <View row>
         <View flex left>
           <UserAvatar />

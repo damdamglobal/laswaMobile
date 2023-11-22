@@ -48,37 +48,29 @@ export default function TripHistory(props) {
     fetchStoresData();
   }, []);
 
-  if (keyword.length > 0) {
-    setTimeout(function () {
-      //code goes here
+  const searchFun = async (keyword) => {
+    function searchObjectsByKeyword(array, keyword) {
+      keyword = keyword.toLowerCase();
 
-      function filterObjectsByString(arr, search) {
-        if (!search || typeof search !== "string") {
-          return [];
-        }
+      const matchingObjects = array.filter((obj) => {
+        if (obj.fullName) {
+          const objectName = obj.fullName.toLowerCase();
 
-        return arr.filter((obj) => {
-          for (const key in obj) {
-            if (Object.prototype.hasOwnProperty.call(obj, key)) {
-              const value = obj[key];
-              if (typeof value === "string" && value.includes(search)) {
-                return true;
-              }
+          for (const letter of keyword) {
+            if (objectName.includes(letter)) {
+              return true;
             }
           }
-          return false;
-        });
-      }
+        }
+        return false;
+      });
 
-      const filteredData = filterObjectsByString(passengers, keyword);
+      return matchingObjects;
+    }
 
-      if (filteredData.length) {
-        setSortedPassengers(filteredData);
-        //setPassengers(filteredData);
-      }
-    }, 2000);
-  }
-
+    const result = searchObjectsByKeyword(passengers, keyword);
+    setSortedPassengers(result);
+  };
   const CalendarDate = (payload) => {
     var calendar = require("dayjs/plugin/calendar");
     dayjs.extend(calendar);
@@ -253,7 +245,9 @@ export default function TripHistory(props) {
                           });
                         }}
                       >
-                        <Text smallF>Add Manifest</Text>
+                        <Text smallF numberOfLines={1}>
+                          Add Manifest
+                        </Text>
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -301,10 +295,12 @@ export default function TripHistory(props) {
                 placeholder="Search passengers by name"
                 onChangeText={(text) => {
                   setKeyword(text);
+                  searchFun(text);
                   if (text == "") {
                     setSortedPassengers([]);
                   }
                 }}
+                value={keyword}
               />
               <View
                 style={{
@@ -328,17 +324,34 @@ export default function TripHistory(props) {
               </View>
             </View>
             <View flex>
-              <FlatList
-                //  onRefresh={() => getProduct(token, "reload")}
-                //  refreshing={loading}
-                showsHorizontalScrollIndicator={false}
-                showsVerticalScrollIndicator={false}
-                // snapToInterval={width - actuatedNormalize(100)}
-                data={sortedPassengers.length ? sortedPassengers : passengers}
-                renderItem={({ item }) => <PassengerDetail item={item} />}
-                ListEmptyComponent={() => <EmptyCard />}
-                keyExtractor={(item, index) => index.toString()}
-              />
+              {sortedPassengers.length > 0 ? (
+                <>
+                  <Text whiteColor>.</Text>
+                  <FlatList
+                    //  onRefresh={() => getProduct(token, "reload")}
+                    //  refreshing={loading}
+                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
+                    // snapToInterval={width - actuatedNormalize(100)}
+                    data={sortedPassengers}
+                    renderItem={({ item }) => <PassengerDetail item={item} />}
+                    ListEmptyComponent={() => <EmptyCard />}
+                    keyExtractor={(item, index) => index.toString()}
+                  />
+                </>
+              ) : (
+                <FlatList
+                  //  onRefresh={() => getProduct(token, "reload")}
+                  //  refreshing={loading}
+                  showsHorizontalScrollIndicator={false}
+                  showsVerticalScrollIndicator={false}
+                  // snapToInterval={width - actuatedNormalize(100)}
+                  data={passengers}
+                  renderItem={({ item }) => <PassengerDetail item={item} />}
+                  ListEmptyComponent={() => <EmptyCard />}
+                  keyExtractor={(item, index) => index.toString()}
+                />
+              )}
             </View>
           </View>
         </View>

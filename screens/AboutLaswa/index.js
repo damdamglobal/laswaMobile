@@ -24,15 +24,17 @@ export default function AboutLaswa(props) {
           </TouchableOpacity>
         </View>
         <View flex center>
-          <Text>About Laswa</Text>
+          <Text subheading numberOfLines={1}>
+            About Laswa
+          </Text>
         </View>
         <View right flex>
           <SOS />
         </View>
       </View>
       <View center>
-        <View style={styles.card} center>
-          <Text>
+        <View style={styles.card}>
+          <Text style={{ fontFamily: "AvenirLTStd" }}>
             The Lagos State Government (LASG) in 2008 enacted the Lagos State
             Waterways Authority Act, which established the Lagos Waterways
             Authority (LASWA). LASWA is charged with the responsibility of

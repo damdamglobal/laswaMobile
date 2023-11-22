@@ -8,8 +8,9 @@ const { width, height } = Dimensions.get("window");
 import dayjs from "dayjs";
 
 export default function PassengerDetail(props) {
-  const [item, setItem] = useState(props.item);
   const [cardHeight, setCardHeight] = useState(false);
+
+  const item = props.item;
 
   useEffect(() => {
     async function fetchStoresData() {}

@@ -54,7 +54,7 @@ export default function BoatCard(props) {
 
 const styles = {
   card: {
-    margin: actuatedNormalize(10),
+    marginHorizontal: actuatedNormalize(10),
     height: height / 1.7,
     width: width - actuatedNormalize(70),
     borderRadius: actuatedNormalize(30),

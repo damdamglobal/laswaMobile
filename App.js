@@ -1,4 +1,5 @@
 import "react-native-gesture-handler";
+import { useCallback } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -15,6 +16,9 @@ import {
   TripsScreenProvider,
 } from "./context/index";
 
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+
 Colors.loadColors({
   primaryColor: "#0A519B",
   whiteColor: "#fff",
@@ -27,7 +31,11 @@ Colors.loadColors({
 
 Typography.loadTypographies({
   heading: { fontSize: actuatedNormalize(36), fontWeight: "600" },
-  subheading: { fontSize: actuatedNormalize(20), fontWeight: "500" },
+  subheading: {
+    fontSize: actuatedNormalize(20),
+    fontWeight: "500",
+    fontFamily: "Aven",
+  },
   subheader: { fontSize: actuatedNormalize(15), fontWeight: "bold" },
   subhead: { fontSize: actuatedNormalize(13), fontWeight: "bold" },
   smallF: { fontSize: actuatedNormalize(10), fontWeight: "400" },
@@ -35,9 +43,26 @@ Typography.loadTypographies({
   underLine: { textDecorationLine: "underline" },
 });
 
+SplashScreen.preventAutoHideAsync();
+
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    Aven: require("./assets/fonts/Aven.otf"),
+    AvenirLTStd: require("./assets/fonts/AvenirLTStd-Book.otf"),
+  });
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider onLayout={onLayoutRootView}>
       <NavigationContainer>
         <SafeAreaView style={styles.container}>
           <StatusBar style="auto" />
