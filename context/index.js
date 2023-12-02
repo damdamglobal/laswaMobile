@@ -29,7 +29,7 @@ export const TripsScreenProvider = (props) => {
 };
 
 export const OnboardingScreenProvider = (props) => {
-  const [onboard, setOnboard] = useState(false);
+  const [onboard, setOnboard] = useState(true);
 
   return (
     <OnboardingScreenContext.Provider value={[onboard, setOnboard]}>

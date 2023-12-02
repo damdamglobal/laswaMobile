@@ -18,17 +18,27 @@ export default function UserAvatar() {
     }
     fetchToken();
   }, []);
+
+  function getGreeting() {
+    const currentTime = new Date();
+    const currentHour = currentTime.getHours();
+
+    let greeting;
+
+    if (currentHour >= 5 && currentHour < 12) {
+      greeting = "Good morning";
+    } else if (currentHour >= 12 && currentHour < 18) {
+      greeting = "Good afternoon";
+    } else {
+      greeting = "Good evening";
+    }
+
+    return greeting;
+  }
   return (
     <View row centerV>
-      <View center style={styles.sos}>
-        <FontAwesome5
-          color="#181818"
-          size={actuatedNormalize(30)}
-          name="user-alt"
-        />
-      </View>
       <View marginH-10>
-        <Text smallF>Hello</Text>
+        <Text smallF>{getGreeting()}</Text>
         <Text subheading>
           {user.firstName} {user.lastName}{" "}
         </Text>

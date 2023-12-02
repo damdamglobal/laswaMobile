@@ -11,13 +11,17 @@ import {
 import { Text, View, Incubator } from "react-native-ui-lib";
 import { actuatedNormalize } from "../../components/FontResponsive";
 import SOS from "../../components/Sos";
-import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
+import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { AddBoat, GetUserBoat } from "../../APIs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
 import { BoatScreenContext } from "../../context/index";
+import Step1 from "./Step1";
+import Step2 from "./Step2";
+import Step3 from "./Step3";
+import Step4 from "./Step4";
 
 const { Toast } = Incubator;
 
@@ -32,6 +36,7 @@ export default function AddFleet(props) {
   const [toastColor, setToastColor] = useState("red");
   const [token, setToken] = React.useState("");
   const [img, setImage] = useState("");
+  const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [boat, setBoats] = useContext(BoatScreenContext);
 
@@ -131,7 +136,15 @@ export default function AddFleet(props) {
   return (
     <View flex paddingH-20 background-whiteColor centerH>
       <View row centerV>
-        <View flex></View>
+        <View flex>
+          <TouchableOpacity onPress={() => props.navigation.pop()}>
+            <AntDesign
+              color="#181818"
+              size={actuatedNormalize(20)}
+              name="left"
+            />
+          </TouchableOpacity>
+        </View>
         <View flex center>
           <Text subheading>Add Fleet</Text>
         </View>
@@ -149,74 +162,10 @@ export default function AddFleet(props) {
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
-          <Text center subhead marginT-20>
-            step 1
-          </Text>
-          <TouchableOpacity onPress={() => pickImage()}>
-            <View center style={styles.img}>
-              {img ? (
-                <View flex>
-                  <Image
-                    source={{
-                      uri: img,
-                    }}
-                    style={{
-                      height: height / 4,
-                      width: width / 1.5,
-                    }}
-                  />
-                </View>
-              ) : (
-                <MaterialIcons
-                  color="#fff"
-                  size={actuatedNormalize(60)}
-                  name="add-a-photo"
-                />
-              )}
-            </View>
-          </TouchableOpacity>
-          <View marginT-20>
-            <TextInput
-              onChangeText={(text) => setRegNumber(text)}
-              style={styles.TextInput}
-              placeholder="Enter Reg. Number"
-              value={regNumber}
-            />
-          </View>
-          <View marginT-20>
-            <TextInput
-              onChangeText={(text) => setModel(text)}
-              style={styles.TextInput}
-              placeholder="Enter Model"
-              value={model}
-            />
-          </View>
-          <View marginT-20>
-            <TextInput
-              onChangeText={(text) => setCapacity(text)}
-              style={styles.TextInput}
-              placeholder="Enter Capacity"
-              value={capacity}
-            />
-          </View>
-
-          {loading ? (
-            <TouchableOpacity>
-              <View style={styles.btn} center marginT-40>
-                <ActivityIndicator size="small" color="#fff" />
-              </View>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              onPress={() => {
-                addBoat();
-              }}
-            >
-              <View style={styles.btn} center marginT-40>
-                <Text whiteColor>Submit</Text>
-              </View>
-            </TouchableOpacity>
-          )}
+          {step == 1 ? <Step1 setStep={setStep} /> : null}
+          {step == 2 ? <Step2 setStep={setStep} /> : null}
+          {step == 3 ? <Step3 setStep={setStep} /> : null}
+          {step == 4 ? <Step4 setStep={setStep} /> : null}
         </ScrollView>
       </KeyboardAvoidingView>
       <Toast
@@ -249,7 +198,6 @@ const styles = {
     width: width - actuatedNormalize(50),
     padding: actuatedNormalize(20),
     borderRadius: actuatedNormalize(10),
-    backgroundColor: "#181818",
   },
   img: {
     height: height / 4,

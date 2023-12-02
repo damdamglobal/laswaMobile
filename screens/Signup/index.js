@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   TouchableOpacity,
   ScrollView,
@@ -8,6 +8,7 @@ import {
   Image,
   KeyboardAvoidingView,
   ActivityIndicator,
+  StyleSheet,
 } from "react-native";
 import PhoneCode from "react-native-phone-input";
 import Code from "../../components/PhoneCode";
@@ -19,19 +20,27 @@ import { SignUp, ActivateUser } from "../../APIs";
 const { Toast } = Incubator;
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AuthContext, SplashscreenContext } from "../../context/index";
+import {
+  AuthContext,
+  SplashscreenContext,
+  OnboardingScreenContext,
+} from "../../context/index";
 import { elevate } from "react-native-elevate";
+import RNPickerSelect from "react-native-picker-select";
 
 const { width, height } = Dimensions.get("window");
 
 export default function SignUpScreen(props) {
   const [auth, setAuth] = useContext(AuthContext);
   const [splashScreen, setSplashScreen] = useContext(SplashscreenContext);
+  const [onboard, setOnboard] = React.useContext(OnboardingScreenContext);
+
   const [phoneNumber, setPhoneNumber] = useState("+234");
   const [otpModal, setOtpModal] = useState(false);
   const [activationCode, setActivationCode] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [loading, setLoading] = useState(false);
@@ -39,6 +48,18 @@ export default function SignUpScreen(props) {
   const [serverMessage, setServerMessage] = useState("");
   const [toastVisible, setToastVisible] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
+  const [residentialAddress, setResidentialAddress] = useState(true);
+  const [areaOfOperation, setAreaOfOperation] = useState("");
+  const [profileType, setProfileType] = useState("Company");
+
+  useEffect(() => {
+    async function fetchStoresData() {
+      if (props.route.params.profileType) {
+        setProfileType(props.route.params.profileType);
+      }
+    }
+    fetchStoresData();
+  }, []);
 
   const GetCode = (payload) => {
     let Obj = Code.Data;
@@ -73,12 +94,33 @@ export default function SignUpScreen(props) {
       setServerMessage("Password is required");
       return;
     }
+    if (password != confirmPassword) {
+      setToastColor("red");
+      setToastVisible(true);
+      setServerMessage("Password don't match");
+      return;
+    }
     if (phoneNumber == "") {
       setToastColor("red");
       setToastVisible(true);
       setServerMessage("phoneNumber is required");
       return;
     }
+
+    if (residentialAddress == "") {
+      setToastColor("red");
+      setToastVisible(true);
+      setServerMessage("Residential Address is required");
+      return;
+    }
+
+    if (areaOfOperation == "") {
+      setToastColor("red");
+      setToastVisible(true);
+      setServerMessage("Area Of Operation is required");
+      return;
+    }
+
     setLoading(true);
     axios
       .post(`${SignUp}`, {
@@ -88,6 +130,9 @@ export default function SignUpScreen(props) {
         firstName: firstName,
         lastName: lastName,
         phoneNumber: phoneNumber,
+        residentialAddress: residentialAddress,
+        areaOfOperation: areaOfOperation,
+        profileType: profileType,
       })
       .then((res) => {
         setToastColor("green");
@@ -135,6 +180,15 @@ export default function SignUpScreen(props) {
       });
   };
 
+  const isValidEmail = () => {
+    if (email == "") {
+      return true;
+    }
+    // Regular expression pattern for basic email validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+  };
+
   const saveLoginDetails = async (res, loginDetails) => {
     try {
       let user = await AsyncStorage.setItem(
@@ -151,10 +205,30 @@ export default function SignUpScreen(props) {
       );
       setSplashScreen(false);
       setAuth(false);
+      setOnboard(false);
     } catch (err) {
       console.log(err);
       setServerMessage("something went wrong");
     }
+  };
+
+  const dropDownIcon = () => {
+    return (
+      <View
+        style={{
+          backgroundColor: "transparent",
+          borderTopWidth: 10,
+          borderTopColor: "#181818",
+          borderRightWidth: 10,
+          borderRightColor: "transparent",
+          borderLeftWidth: 10,
+          borderLeftColor: "transparent",
+          width: 0,
+          height: 0,
+          marginTop: 10,
+        }}
+      />
+    );
   };
 
   return (
@@ -186,7 +260,9 @@ export default function SignUpScreen(props) {
             </Text>
             <View center>
               <View marginT-20>
-                <Text smallF>First Name</Text>
+                <Text smallF gray FontAven>
+                  First Name
+                </Text>
                 <TextInput
                   onChangeText={(text) => setFirstName(text)}
                   style={styles.TextInput}
@@ -194,15 +270,19 @@ export default function SignUpScreen(props) {
                 />
               </View>
               <View marginT-20>
-                <Text smallF>Last Name</Text>
+                <Text smallF gray FontAven>
+                  Last Name
+                </Text>
                 <TextInput
                   onChangeText={(text) => setLastName(text)}
                   style={styles.TextInput}
                   placeholder="Enter Last Name"
                 />
               </View>
-              <View marginT-20>
-                <Text smallF>Email</Text>
+              <View marginT-20 style={{ position: "relative" }}>
+                <Text smallF gray FontAven>
+                  Email
+                </Text>
                 <TextInput
                   onChangeText={(text) => setEmail(text)}
                   style={styles.TextInput}
@@ -210,9 +290,32 @@ export default function SignUpScreen(props) {
                   textContentType="emailAddress"
                   autoCapitalize="none"
                 />
+                <TouchableOpacity
+                  style={{
+                    position: "absolute",
+                    top: actuatedNormalize(30),
+                    right: actuatedNormalize(10),
+                  }}
+                >
+                  <Entypo
+                    color="#999999"
+                    size={actuatedNormalize(20)}
+                    name="mail"
+                  />
+                </TouchableOpacity>
               </View>
+
+              {!isValidEmail() ? (
+                <View marginT-2 right>
+                  <Text smallF errorColor FontAven>
+                    Invalid email
+                  </Text>
+                </View>
+              ) : null}
               <View style={styles.blockPhone} marginT-20>
-                <Text smallF>Phone Number</Text>
+                <Text smallF gray FontAven>
+                  Phone Number
+                </Text>
                 <PhoneCode
                   flagStyle={{ margin: 5 }}
                   allowZeroAfterCountryCode={false}
@@ -225,8 +328,84 @@ export default function SignUpScreen(props) {
                   }}
                 />
               </View>
+              <View marginT-20>
+                <Text smallF gray FontAven>
+                  Residential address
+                </Text>
+                <TextInput
+                  multiline={true}
+                  numberOfLines={4}
+                  onChangeText={(text) => setResidentialAddress(text)}
+                  style={styles.textArea}
+                  placeholder="Enter Residential address"
+                />
+              </View>
+              <View marginT-20 style={styles.AreaOfOperation}>
+                <Text smallF gray FontAven>
+                  Area Of Operation
+                </Text>
+              </View>
+              <View flex bottom style={styles.selectField}>
+                <RNPickerSelect
+                  onValueChange={(text) => setAreaOfOperation(text)}
+                  items={[
+                    { label: "Jetty Operations", value: "Jetty Operations" },
+                  ]}
+                  style={{
+                    ...pickerSelectStyles,
+                    iconContainer: {
+                      top: 20,
+                      right: 10,
+                    },
+                    placeholder: {
+                      color: "gray",
+                      fontSize: 16,
+                    },
+                  }}
+                  placeholder={{
+                    label: "Select Area of operation",
+                    value: null,
+                    color: "gray",
+                  }}
+                  Icon={dropDownIcon}
+                />
+              </View>
+              <View marginT-20 style={styles.AreaOfOperation}>
+                <Text smallF gray FontAven>
+                  Profile Type
+                </Text>
+              </View>
+              <View flex bottom style={styles.selectField}>
+                <RNPickerSelect
+                  onValueChange={(text) => setProfileType(text)}
+                  items={[
+                    { label: "Individual", value: "Individual" },
+                    { label: "Company", value: "Company" },
+                  ]}
+                  value={profileType}
+                  style={{
+                    ...pickerSelectStyles,
+                    iconContainer: {
+                      top: 20,
+                      right: 10,
+                    },
+                    placeholder: {
+                      color: "gray",
+                      fontSize: 16,
+                    },
+                  }}
+                  placeholder={{
+                    label: "Select Profile Type",
+                    value: null,
+                    color: "gray",
+                  }}
+                  Icon={dropDownIcon}
+                />
+              </View>
               <View marginT-20 style={{ position: "relative" }}>
-                <Text smallF>Password</Text>
+                <Text smallF gray FontAven>
+                  Password
+                </Text>
                 <TextInput
                   onChangeText={(text) => setPassword(text)}
                   style={styles.TextInput}
@@ -242,13 +421,62 @@ export default function SignUpScreen(props) {
                   }}
                   onPress={() => setShowPassword(!showPassword)}
                 >
-                  <Entypo
-                    color="#181818"
-                    size={actuatedNormalize(20)}
-                    name="eye-with-line"
-                  />
+                  {!showPassword ? (
+                    <Entypo
+                      color="#999999"
+                      size={actuatedNormalize(20)}
+                      name="eye"
+                    />
+                  ) : (
+                    <Entypo
+                      color="#999999"
+                      size={actuatedNormalize(20)}
+                      name="eye-with-line"
+                    />
+                  )}
                 </TouchableOpacity>
               </View>
+              <View marginT-20 style={{ position: "relative" }}>
+                <Text smallF gray FontAven>
+                  Confirm Password
+                </Text>
+                <TextInput
+                  onChangeText={(text) => setConfirmPassword(text)}
+                  style={styles.TextInput}
+                  placeholder="Enter Confirm Password"
+                  secureTextEntry={showPassword}
+                  autoCapitalize="none"
+                />
+                <TouchableOpacity
+                  style={{
+                    position: "absolute",
+                    top: actuatedNormalize(30),
+                    right: actuatedNormalize(10),
+                  }}
+                  onPress={() => setShowPassword(!showPassword)}
+                >
+                  {!showPassword ? (
+                    <Entypo
+                      color="#999999"
+                      size={actuatedNormalize(20)}
+                      name="eye"
+                    />
+                  ) : (
+                    <Entypo
+                      color="#999999"
+                      size={actuatedNormalize(20)}
+                      name="eye-with-line"
+                    />
+                  )}
+                </TouchableOpacity>
+              </View>
+              {confirmPassword && confirmPassword != password ? (
+                <View marginT-2 right>
+                  <Text smallF errorColor FontAven>
+                    Password don't match
+                  </Text>
+                </View>
+              ) : null}
 
               {loading ? (
                 <TouchableOpacity>
@@ -273,7 +501,9 @@ export default function SignUpScreen(props) {
                     center
                     marginT-40
                   >
-                    <Text whiteColor>Submit</Text>
+                    <Text whiteColor FontAven>
+                      Next
+                    </Text>
                   </View>
                 </TouchableOpacity>
               )}
@@ -281,7 +511,7 @@ export default function SignUpScreen(props) {
 
             <View center row marginT-50>
               <View style={styles.line} />
-              <Text>OR</Text>
+              <Text FontAven>OR</Text>
               <View style={styles.line} />
             </View>
             <TouchableOpacity
@@ -312,8 +542,12 @@ export default function SignUpScreen(props) {
                   />
                 </View>
               </View>
-              <Text marginH-20 subheading primaryColor>
+              <Text marginT-20 subheading primaryColor>
                 Enter OTP
+              </Text>
+
+              <Text smallF primaryColor marginB-10>
+                sent to {email}
               </Text>
               <OTPInputView
                 style={{
@@ -334,7 +568,7 @@ export default function SignUpScreen(props) {
                 }}
               />
               <TouchableOpacity onPress={() => setOtpModal(false)}>
-                <Text marginT-50 body>
+                <Text marginT-50 body underLine FontAven>
                   Resend
                 </Text>
               </TouchableOpacity>
@@ -380,6 +614,20 @@ const styles = {
     borderRadius: actuatedNormalize(5),
     padding: actuatedNormalize(10),
   },
+  textArea: {
+    height: 80,
+    marginTop: actuatedNormalize(5),
+    width: width - actuatedNormalize(50),
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: actuatedNormalize(5),
+    padding: actuatedNormalize(10),
+    justifyContent: "flex-start",
+    textAlignVertical: "top",
+  },
+  AreaOfOperation: {
+    width: width - actuatedNormalize(50),
+  },
   btn: {
     width: width - actuatedNormalize(50),
     padding: actuatedNormalize(20),
@@ -422,4 +670,34 @@ const styles = {
     overflow: "hidden",
     ...elevate(2),
   },
+  selectField: {
+    height: 50,
+    marginTop: actuatedNormalize(5),
+    width: width - actuatedNormalize(50),
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: actuatedNormalize(5),
+    padding: actuatedNormalize(10),
+  },
 };
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    height: 50,
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+    color: "#181818",
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+  inputAndroid: {
+    height: 50,
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 10,
+    color: "#181818",
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+});

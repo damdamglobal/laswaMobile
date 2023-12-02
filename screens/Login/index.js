@@ -126,11 +126,13 @@ export default function LoginScreen(props) {
           </Text>
           <View center>
             <View marginT-20>
-              <Text smallF>Email</Text>
+              <Text smallF gray FontAven>
+                Email
+              </Text>
               <TextInput
                 onChangeText={(text) => setEmail(text)}
                 style={styles.TextInput}
-                placeholder="Enter Email"
+                placeholder="Enter Email Or UserName"
                 autoCapitalize="none"
                 textContentType="emailAddress"
                 value={email}
@@ -138,7 +140,9 @@ export default function LoginScreen(props) {
             </View>
 
             <View marginT-20 style={{ position: "relative" }}>
-              <Text smallF>Password</Text>
+              <Text smallF gray FontAven>
+                Password
+              </Text>
               <TextInput
                 onChangeText={(text) => setPassword(text)}
                 style={styles.TextInput}
@@ -155,11 +159,19 @@ export default function LoginScreen(props) {
                 }}
                 onPress={() => setShowPassword(!showPassword)}
               >
-                <Entypo
-                  color="#181818"
-                  size={actuatedNormalize(20)}
-                  name="eye-with-line"
-                />
+                {!showPassword ? (
+                  <Entypo
+                    color="#999999"
+                    size={actuatedNormalize(20)}
+                    name="eye"
+                  />
+                ) : (
+                  <Entypo
+                    color="#999999"
+                    size={actuatedNormalize(20)}
+                    name="eye-with-line"
+                  />
+                )}
               </TouchableOpacity>
             </View>
 
@@ -186,7 +198,9 @@ export default function LoginScreen(props) {
                   center
                   marginT-40
                 >
-                  <Text whiteColor>Submit</Text>
+                  <Text whiteColor FontAven>
+                    Submit
+                  </Text>
                 </View>
               </TouchableOpacity>
             )}
@@ -198,14 +212,14 @@ export default function LoginScreen(props) {
                 props.navigation.push("ForgotPassword");
               }}
             >
-              <Text marginT-20 underline>
+              <Text marginT-20 underline FontAven>
                 Forgot Password
               </Text>
             </TouchableOpacity>
           </View>
           <View center row marginT-50>
             <View style={styles.line} />
-            <Text>OR</Text>
+            <Text FontAven>OR</Text>
             <View style={styles.line} />
           </View>
           <TouchableOpacity

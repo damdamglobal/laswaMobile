@@ -146,7 +146,9 @@ export default function ForgotPassword(props) {
           </Text>
           <View center>
             <View marginT-20>
-              <Text smallF>Email</Text>
+              <Text smallF gray FontAven>
+                Email
+              </Text>
               <TextInput
                 onChangeText={(text) => setEmail(text)}
                 style={styles.TextInput}
@@ -179,7 +181,9 @@ export default function ForgotPassword(props) {
                   center
                   marginT-40
                 >
-                  <Text whiteColor>Submit</Text>
+                  <Text whiteColor FontAven>
+                    Submit
+                  </Text>
                 </View>
               </TouchableOpacity>
             )}
@@ -187,7 +191,7 @@ export default function ForgotPassword(props) {
 
           <View center row marginT-50>
             <View style={styles.line} />
-            <Text>OR</Text>
+            <Text FontAven>OR</Text>
             <View style={styles.line} />
           </View>
           <TouchableOpacity
@@ -237,7 +241,9 @@ export default function ForgotPassword(props) {
             />
 
             <View marginT-20 style={{ position: "relative" }}>
-              <Text smallF>New Password</Text>
+              <Text smallF gray FontAven>
+                New Password
+              </Text>
               <TextInput
                 onChangeText={(text) => setPassword(text)}
                 style={styles.TextInput}
@@ -254,7 +260,7 @@ export default function ForgotPassword(props) {
                 onPress={() => setShowPassword(!showPassword)}
               >
                 <Entypo
-                  color="#181818"
+                  color="#999999"
                   size={actuatedNormalize(20)}
                   name="eye-with-line"
                 />
@@ -288,7 +294,7 @@ export default function ForgotPassword(props) {
               </TouchableOpacity>
             )}
             <TouchableOpacity onPress={() => setOtpModal(false)}>
-              <Text marginT-50 body>
+              <Text marginT-50 body FontAven underLine>
                 Resend
               </Text>
             </TouchableOpacity>

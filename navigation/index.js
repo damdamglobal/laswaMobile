@@ -12,6 +12,10 @@ import Signup from "../screens/Signup/index.js";
 import ForgotPassword from "../screens/ForgotPassword/index.js";
 import Onboarding from "../screens/Onboarding/index.js";
 import SplashScreen from "../screens/SplashScreen/index.js";
+import GetStarted from "../screens/GetStarted/index.js";
+import AddFleet from "../screens/AddBoat/index";
+import BoatDetail from "../screens/BoatDetail";
+
 import {
   AuthContext,
   SplashscreenContext,
@@ -33,6 +37,8 @@ const RootStack = () => {
     <Stack.Navigator screenOptions={options}>
       <Stack.Screen name="dashboard" component={DashboardScreen} />
       <Stack.Screen name="StartTrip" component={StartTrip} />
+      <Stack.Screen name="AddFleet" component={AddFleet} />
+      <Stack.Screen name="BoatDetail" component={BoatDetail} />
       <Stack.Screen
         name="AddPassengerManifest"
         component={AddPassengerManifest}
@@ -51,14 +57,26 @@ const AuthStack = () => {
   );
 };
 
+const OnboardingStack = () => {
+  return (
+    <Stack.Navigator screenOptions={options}>
+      <Stack.Screen name="Onboarding" component={Onboarding} />
+      <Stack.Screen name="GetStarted" component={GetStarted} />
+      <Stack.Screen name="Signup" component={Signup} />
+    </Stack.Navigator>
+  );
+};
+
 function SplashScreenNavigation() {
   const [auth, setAuth] = React.useContext(AuthContext);
   const [splashscreen, setSplashscreen] = React.useContext(SplashscreenContext);
   const [onboard, setOnboard] = React.useContext(OnboardingScreenContext);
   const [mainScreen, setMainScreen] = React.useContext(MainScreenContext);
 
+  console.log(onboard, auth, splashscreen);
+
   if (onboard) {
-    return <Onboarding />;
+    return <OnboardingStack />;
   } else if (auth) {
     return <AuthStack />;
   } else if (splashscreen) {

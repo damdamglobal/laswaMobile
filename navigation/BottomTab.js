@@ -9,11 +9,17 @@ import Icon, { Icons } from "../components/Icons";
 import { Colors } from "react-native-ui-lib";
 
 import HomeScreen from "../screens/Home/index";
-import AddFleet from "../screens/AddBoat/index";
+import MyVessel from "../screens/MyVessel/index";
 import Profile from "../screens/Profile/index";
 import TripHistory from "../screens/TripsHistory/index";
 import BoatDetail from "../screens/BoatDetail";
 import AboutLaswa from "../screens/AboutLaswa/index";
+import BusinessProfile from "../screens/BusinessProfile/index";
+import BusinessDoc from "../screens/BusinessDoc/index";
+import BusinessInfo from "../screens/BusinessInfo/index";
+import AddOperator from "../screens/AddOperator/index";
+import Operator from "../screens/Operator/index";
+
 import * as Animatable from "react-native-animatable";
 
 const Tab = createBottomTabNavigator();
@@ -31,6 +37,8 @@ const HomeStack = () => {
     <Stack.Navigator screenOptions={options}>
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="BoatDetail" component={BoatDetail} />
+      <Stack.Screen name="AddOperator" component={AddOperator} />
+      <Stack.Screen name="Operator" component={Operator} />
     </Stack.Navigator>
   );
 };
@@ -60,11 +68,11 @@ const TabArr = [
     component: TripHistory,
   },
   {
-    route: "AddFleet",
-    label: "Add Boat",
+    route: "MyVessel",
+    label: "My Vessel",
     type: Icons.Ionicons,
     icon: "boat",
-    component: AddFleet,
+    component: MyVessel,
   },
   {
     route: "UserProfile",
@@ -135,7 +143,18 @@ const TabButton = (props) => {
   );
 };
 
-export default function BottomTab() {
+const BottomTabStack = () => {
+  return (
+    <Stack.Navigator screenOptions={options}>
+      <Stack.Screen name="BottomTab" component={BottomTab} />
+      <Stack.Screen name="BusinessProfile" component={BusinessProfile} />
+      <Stack.Screen name="BusinessDoc" component={BusinessDoc} />
+      <Stack.Screen name="BusinessInfo" component={BusinessInfo} />
+    </Stack.Navigator>
+  );
+};
+
+const BottomTab = () => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -167,7 +186,9 @@ export default function BottomTab() {
       })}
     </Tab.Navigator>
   );
-}
+};
+
+export default BottomTabStack;
 
 const styles = StyleSheet.create({
   container: {

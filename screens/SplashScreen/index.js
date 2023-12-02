@@ -39,6 +39,7 @@ export default function SplashScreen(props) {
 
   useEffect(() => {
     async function fetchStoresData() {
+      //AsyncStorage.clear();
       const interval = setInterval(() => {
         setValue((value) => value + 10);
       }, 1000);
@@ -51,7 +52,7 @@ export default function SplashScreen(props) {
       } else {
         setAuth(true);
         setMainScreen(false);
-        setSplashscreen(false);
+        setSplashScreen(false);
       }
     }
 
