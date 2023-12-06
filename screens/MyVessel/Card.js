@@ -33,13 +33,13 @@ export default function BoatCard(props) {
 
   return (
     <View>
-      <View style={styles.card}>
-        <TouchableOpacity onPress={() => setIsVisible(true)}>
-          <View flex>
+      <TouchableOpacity onPress={() => setIsVisible(true)}>
+        <View style={styles.card}>
+          <View>
             <View style={styles.imgCard} center>
-              {item.imgUrl ? (
+              {item.imgUrl[0] ? (
                 <Image
-                  source={{ uri: item.imgUrl }}
+                  source={{ uri: item.imgUrl[0].url }}
                   style={{
                     width: "100%",
                     height: "100%",
@@ -52,39 +52,55 @@ export default function BoatCard(props) {
                   name="directions-boat"
                 />
               )}
-              <View style={styles.active} background-primaryColor padding-5>
-                <Text smallF whiteColor>
-                  Active
-                </Text>
-              </View>
-            </View>
-            <View flex padding-20 row centerV>
-              <View flex>
-                <Text subheader>
-                  {item.firstName} {item.lastName}
-                </Text>
-                <View row centerV marginT-5>
-                  <MaterialIcons
-                    color="#181818"
-                    size={actuatedNormalize(20)}
-                    name="directions-boat"
-                  />
-                  <Text FontAven marginL-10>
-                    50
+              {item.verify ? (
+                <View
+                  style={styles.active}
+                  background-primaryColor
+                  padding-5
+                  paddingH-20
+                >
+                  <Text smallF whiteColor>
+                    Active
                   </Text>
                 </View>
-              </View>
-              <View flex right row>
-                <Text FontAven>50</Text>
-                <Text> </Text>
-                <Text FontAven gray>
-                  Passengers
+              ) : (
+                <View
+                  style={styles.active}
+                  background-sosColor
+                  padding-5
+                  paddingH-20
+                >
+                  <Text smallF whiteColor>
+                    Pending
+                  </Text>
+                </View>
+              )}
+            </View>
+          </View>
+          <View flex padding-20 row centerV>
+            <View flex>
+              <Text subheader>{item.boatName}</Text>
+              <View row centerV marginT-5>
+                <MaterialIcons
+                  color="#181818"
+                  size={actuatedNormalize(20)}
+                  name="directions-boat"
+                />
+                <Text FontAven marginL-10>
+                  {item.passengerCapacity}
                 </Text>
               </View>
             </View>
+            <View flex right row>
+              <Text FontAven> {item.passengerCapacity}</Text>
+              <Text> </Text>
+              <Text FontAven gray>
+                Passengers
+              </Text>
+            </View>
           </View>
-        </TouchableOpacity>
-      </View>
+        </View>
+      </TouchableOpacity>
       <Dialog
         visible={isVisible}
         onDismiss={() => setIsVisible(false)}
@@ -107,61 +123,87 @@ export default function BoatCard(props) {
               </TouchableOpacity>
             </View>
           </View>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigation.push("BoatDetail", { item: item })
-            }
-          >
-            <View row centerV marginT-20>
-              <View style={styles.iconBox} center>
-                <MaterialIcons
-                  color="#181818"
-                  size={actuatedNormalize(10)}
-                  name="remove-red-eye"
-                />
+          {item.verify ? (
+            <>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigation.push("BoatDetail", { item: item });
+                  setIsVisible(false);
+                }}
+              >
+                <View row centerV marginT-20>
+                  <View style={styles.iconBox} center>
+                    <MaterialIcons
+                      color="#181818"
+                      size={actuatedNormalize(10)}
+                      name="remove-red-eye"
+                    />
+                  </View>
+                  <View marginH-10>
+                    <Text>View Info</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigation.push("StartTrip", { item: item });
+                  setIsVisible(false);
+                }}
+              >
+                <View row centerV marginT-5>
+                  <View style={styles.iconBox} center>
+                    <MaterialCommunityIcons
+                      color="#181818"
+                      size={actuatedNormalize(10)}
+                      name="arrow-expand-right"
+                    />
+                  </View>
+                  <View marginH-10>
+                    <Text>Start Trip</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  setToastVisible(true);
+                  setServerMessage("service not available");
+                }}
+              >
+                <View row centerV marginT-5>
+                  <View style={styles.iconBox} center>
+                    <MaterialIcons
+                      color="#181818"
+                      size={actuatedNormalize(10)}
+                      name="my-location"
+                    />
+                  </View>
+                  <View marginH-10>
+                    <Text>Get Location</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </>
+          ) : (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigation.push("BoatDoc", { item: item });
+                setIsVisible(false);
+              }}
+            >
+              <View row centerV marginT-20>
+                <View style={styles.iconBox} center>
+                  <Entypo
+                    color="#181818"
+                    size={actuatedNormalize(10)}
+                    name="upload-to-cloud"
+                  />
+                </View>
+                <View marginH-10>
+                  <Text>Upload Documents</Text>
+                </View>
               </View>
-              <View marginH-10>
-                <Text>View Info</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigation.push("StartTrip", { item: item })
-            }
-          >
-            <View row centerV marginT-5>
-              <View style={styles.iconBox} center>
-                <MaterialCommunityIcons
-                  color="#181818"
-                  size={actuatedNormalize(10)}
-                  name="arrow-expand-right"
-                />
-              </View>
-              <View marginH-10>
-                <Text>Start Trip</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              setToastVisible(true);
-              setServerMessage("service not available");
-            }}
-          >
-            <View row centerV marginT-5>
-              <View style={styles.iconBox} center>
-                <MaterialIcons
-                  color="#181818"
-                  size={actuatedNormalize(10)}
-                  name="my-location"
-                />
-              </View>
-              <View marginH-10>
-                <Text>Get Location</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
+          )}
         </View>
       </Dialog>
       <Toast

@@ -8,7 +8,7 @@ import {
   ProgressBar,
   Colors,
 } from "react-native-ui-lib";
-import { ImageBackground, Dimensions } from "react-native";
+import { Image, Dimensions } from "react-native";
 import { actuatedNormalize } from "../../components/FontResponsive";
 import {
   AuthContext,
@@ -20,6 +20,7 @@ import * as Notifications from "expo-notifications";
 import axios from "axios";
 import Constants from "expo-constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { elevate } from "react-native-elevate";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -32,7 +33,7 @@ Notifications.setNotificationHandler({
 const { width, height } = Dimensions.get("window");
 
 export default function SplashScreen(props) {
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(20);
   const [auth, setAuth] = useContext(AuthContext);
   const [splashscreen, setSplashScreen] = useContext(SplashscreenContext);
   const [mainScreen, setMainScreen] = useContext(MainScreenContext);
@@ -154,23 +155,36 @@ export default function SplashScreen(props) {
   };
 
   return (
-    <View flex center>
-      <ImageBackground
-        resizeMode="contain"
-        source={require("../../assets/splashq.png")}
-        style={{
-          width: width / 2,
-          height: height / 2,
-          justifyContent: "center",
-          padding: actuatedNormalize(50),
-        }}
-      >
+    <View flex>
+      <View flex centerH bottom>
+        <View style={styles.sos}>
+          <Image
+            source={require("../../assets/splashq.png")}
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+          />
+        </View>
+      </View>
+      <View flex paddingH-50>
         <ProgressBar
           style={{ marginTop: actuatedNormalize(70) }}
           progress={value}
           progressColor="black" //{Colors.secondaryColor}
         />
-      </ImageBackground>
+      </View>
     </View>
   );
 }
+
+const styles = {
+  sos: {
+    height: width / 4,
+    width: width / 4,
+    borderRadius: actuatedNormalize(100),
+    backgroundColor: Colors.whiteColor,
+    overflow: "hidden",
+    ...elevate(2),
+  },
+};

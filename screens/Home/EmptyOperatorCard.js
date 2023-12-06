@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Dimensions, ImageBackground, TouchableOpacity } from "react-native";
+import { Dimensions, Image, TouchableOpacity } from "react-native";
 import { Text, View, Colors } from "react-native-ui-lib";
 import { actuatedNormalize } from "../../components/FontResponsive";
 import { elevate } from "react-native-elevate";
@@ -11,8 +11,17 @@ export default function BoatCard(props) {
 
   return (
     <View style={styles.card}>
-      <Text subhead>Active Operators</Text>
       <View flex centerH bottom paddingB-20>
+        <View center style={styles.sos}>
+          <Image
+            source={require("../../assets/404illustration.png")}
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+            resizeMode="contain"
+          />
+        </View>
         <Text smallF>You do not have any active Operators</Text>
         <TouchableOpacity
           onPress={() => {
@@ -43,5 +52,13 @@ const styles = {
     padding: actuatedNormalize(20),
     borderRadius: actuatedNormalize(10),
     ...elevate(4),
+  },
+  sos: {
+    height: width / 4,
+    width: width / 4,
+    borderRadius: actuatedNormalize(0),
+    backgroundColor: Colors.whiteColor,
+    overflow: "hidden",
+    ...elevate(2),
   },
 };

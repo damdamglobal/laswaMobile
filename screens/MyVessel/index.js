@@ -60,7 +60,7 @@ export default function OperatorScreen(props) {
         }
       )
       .then((res) => {
-        setAllOperators(res.data.operators);
+        setAllOperators(res.data.Boat);
       })
       .catch((err) => {
         setServerMessage(err.response.data.message);
@@ -82,7 +82,7 @@ export default function OperatorScreen(props) {
         }
       )
       .then((res) => {
-        setUnAllOperators(res.data.operators);
+        setUnAllOperators(res.data.Boat);
       })
       .catch((err) => {
         setServerMessage(err.response.data.message);
@@ -104,7 +104,7 @@ export default function OperatorScreen(props) {
         }
       )
       .then((res) => {
-        setSusAllOperators(res.data.operators);
+        setSusAllOperators(res.data.Boat);
       })
       .catch((err) => {
         setServerMessage(err.response.data.message);
@@ -198,13 +198,7 @@ export default function OperatorScreen(props) {
         <UnapprovedVessel operators={UnOperators} props={props} />
       ) : null}
       <View style={styles.btnCard} center flex>
-        {loading ? (
-          <TouchableOpacity>
-            <View style={styles.btn} background-primaryColor center marginT-40>
-              <ActivityIndicator size="small" color="#fff" />
-            </View>
-          </TouchableOpacity>
-        ) : (
+        {susOperators.length && tab == 2 ? (
           <TouchableOpacity
             onPress={() => {
               props.navigation.push("AddFleet");
@@ -216,7 +210,33 @@ export default function OperatorScreen(props) {
               </Text>
             </View>
           </TouchableOpacity>
-        )}
+        ) : null}
+        {UnOperators.length && tab == 3 ? (
+          <TouchableOpacity
+            onPress={() => {
+              props.navigation.push("AddFleet");
+            }}
+          >
+            <View style={styles.btn} background-primaryColor center marginT-40>
+              <Text whiteColor FontAven>
+                Add Vessel
+              </Text>
+            </View>
+          </TouchableOpacity>
+        ) : null}
+        {allOperators.length && tab == 1 ? (
+          <TouchableOpacity
+            onPress={() => {
+              props.navigation.push("AddFleet");
+            }}
+          >
+            <View style={styles.btn} background-primaryColor center marginT-40>
+              <Text whiteColor FontAven>
+                Add Vessel
+              </Text>
+            </View>
+          </TouchableOpacity>
+        ) : null}
       </View>
       <Toast
         visible={toastVisible}

@@ -12,7 +12,7 @@ export default function BoatCard(props) {
     <View center style={styles.card} marginH-5>
       <Image
         source={{
-          uri: props.item.imgUrl,
+          uri: props.item.imgUrl[1].url,
         }}
         resizeMode="stretch"
         style={{

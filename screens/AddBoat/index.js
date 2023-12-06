@@ -15,13 +15,8 @@ import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { AddBoat, GetUserBoat } from "../../APIs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import * as ImagePicker from "expo-image-picker";
-import * as ImageManipulator from "expo-image-manipulator";
 import { BoatScreenContext } from "../../context/index";
 import Step1 from "./Step1";
-import Step2 from "./Step2";
-import Step3 from "./Step3";
-import Step4 from "./Step4";
 
 const { Toast } = Incubator;
 
@@ -49,22 +44,6 @@ export default function AddFleet(props) {
     fetchStoresData();
   }, []);
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.image,
-      allowsEditing: false,
-      quality: 0.8,
-    });
-    if (!result.cancelled) {
-      const manipResult = await ImageManipulator.manipulateAsync(
-        result.uri,
-        [{ resize: { width: 1000 } }],
-        { compress: 0.5, format: ImageManipulator.SaveFormat.JPEG }
-      );
-      setImage(manipResult.uri);
-    }
-  };
-
   const getUserBoat = async (payload) => {
     setLoading(true);
     axios
@@ -77,56 +56,6 @@ export default function AddFleet(props) {
       })
       .catch((err) => {
         setServerMessage(err.response.data.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
-  const addBoat = () => {
-    if (regNumber == "" || model == "" || img == "") {
-      setServerMessage("Full all the required field");
-      setToastVisible(true);
-      return;
-    }
-    let localUri = img;
-    let filename = localUri.split("/").pop();
-    let match = /\.(\w+)$/.exec(filename);
-    let type = match ? `image/${match[1]}` : `image`;
-
-    const formData = new FormData();
-
-    formData.append("image", {
-      uri: localUri,
-      name: filename,
-      type: type,
-    });
-    formData.append("regNumber", regNumber);
-    formData.append("model", model);
-    formData.append("capacity", capacity);
-
-    setLoading(true);
-    axios
-      .post(`${AddBoat}`, formData, {
-        headers: { Authorization: "Bearer " + token },
-      })
-      .then((res) => {
-        setServerMessage(res.data.message);
-        setToastColor("green");
-        setToastVisible(true);
-        setImage("");
-        setRegNumber("");
-        setModel("");
-        setCapacity("");
-        getUserBoat(token);
-      })
-      .catch((err) => {
-        setServerMessage(err.response.data.message);
-        setToastColor("red");
-        setToastVisible(true);
-        setRegNumber("");
-        setModel("");
-        setImage("");
       })
       .finally(() => {
         setLoading(false);
@@ -146,7 +75,7 @@ export default function AddFleet(props) {
           </TouchableOpacity>
         </View>
         <View flex center>
-          <Text subheading>Add Fleet</Text>
+          <Text subheading>Add Vessel</Text>
         </View>
         <View right flex>
           <SOS />
@@ -162,10 +91,16 @@ export default function AddFleet(props) {
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
-          {step == 1 ? <Step1 setStep={setStep} /> : null}
-          {step == 2 ? <Step2 setStep={setStep} /> : null}
-          {step == 3 ? <Step3 setStep={setStep} /> : null}
-          {step == 4 ? <Step4 setStep={setStep} /> : null}
+          {step == 1 || step == 2 ? (
+            <Step1
+              step={step}
+              setStep={setStep}
+              props={props}
+              setServerMessage={setServerMessage}
+              setToastVisible={setToastVisible}
+              setToastColor={setToastColor}
+            />
+          ) : null}
         </ScrollView>
       </KeyboardAvoidingView>
       <Toast

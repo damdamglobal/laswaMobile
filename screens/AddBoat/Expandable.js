@@ -47,7 +47,7 @@ const ExpandableSectionScreen = (props) => {
         sectionHeader={getHeaderElement()}
         onPress={() => setExpanded(!expanded)}
       >
-        <View background-primaryColor padding-5 style={styles.card}>
+        <View padding-5 style={styles.card}>
           {props.children}
         </View>
       </ExpandableSection>
@@ -59,6 +59,6 @@ export default ExpandableSectionScreen;
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#EFEFEF",
+    backgroundColor: "#fff",
   },
 });

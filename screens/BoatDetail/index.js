@@ -11,7 +11,7 @@ import {
 import { Text, View, Colors, Incubator } from "react-native-ui-lib";
 import { actuatedNormalize } from "../../components/FontResponsive";
 import { elevate } from "react-native-elevate";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import BoatCard from "./BoatCard";
 import SOS from "../../components/Sos";
 import TripHistory from "../../components/TripHistory";
@@ -203,7 +203,12 @@ export default function BoatCardComponent(props) {
   };
 
   return (
-    <View flex paddingH-20 background-whiteColor>
+    <View
+      flex
+      paddingH-20
+      background-whiteColor
+      style={{ position: "relative" }}
+    >
       <View row centerV>
         <View flex>
           <TouchableOpacity onPress={() => props.navigation.pop()}>
@@ -227,45 +232,49 @@ export default function BoatCardComponent(props) {
       >
         <BoatCard item={item} />
         <View flex marginV-20>
+          <View>
+            <Text subheading capital>
+              {item.boatName}
+            </Text>
+
+            <Text smallF marginT-5>
+              Registration Number: {item.registrationNumber}
+            </Text>
+            <Text smallF marginT-5>
+              Boat Size: {item.passengerCapacity}
+            </Text>
+            <Text smallF marginT-5>
+              Boat Status: {item.status}
+            </Text>
+          </View>
           <View row>
-            <View flex center>
+            <View row centerV>
+              <MaterialIcons
+                color="#181818"
+                size={actuatedNormalize(20)}
+                name="directions-boat"
+              />
+              <Text marginH-5>{item.passengerCapacity}</Text>
+            </View>
+            <View flex right>
               <TouchableOpacity
                 onPress={
                   () => setIsVisible(true)
                   // props.navigation.navigate("StartTrip", { item: item })
                 }
               >
-                <View style={styles.btn} center>
-                  <Text underLine>Assign Captain</Text>
+                <View row style={styles.btn3} center background-primaryColor>
+                  <Text FontAven whiteColor marginH-5>
+                    Operators
+                  </Text>
+                  <AntDesign
+                    color="#fff"
+                    size={actuatedNormalize(15)}
+                    name="down"
+                  />
                 </View>
               </TouchableOpacity>
             </View>
-            <View flex center>
-              <TouchableOpacity
-                onPress={() =>
-                  props.navigation.navigate("StartTrip", { item: item })
-                }
-              >
-                <View style={styles.btn} background-primaryColor center>
-                  <Text whiteColor>Start Trip</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View>
-            <Text subheading>Fleet info</Text>
-            <Text smallF marginT-5>
-              Registration Number: {item.regNumber}
-            </Text>
-            <Text smallF marginT-5>
-              Number of Seat: {item.Seat}
-            </Text>
-            <Text smallF marginT-5>
-              Boat Size: {item.capacity}
-            </Text>
-            <Text smallF marginT-5>
-              Boat Status: {item.status}
-            </Text>
           </View>
           <View row marginT-20>
             <View flex left>
@@ -290,7 +299,7 @@ export default function BoatCardComponent(props) {
               <View style={{ marginBottom: actuatedNormalize(150) }}>
                 {trips.map((item) => (
                   <View key={item._id}>
-                    <TripHistory key={item._id} item={item} props={props} />
+                    <TripHistory item={item} props={props} />
                   </View>
                 ))}
               </View>
@@ -299,21 +308,16 @@ export default function BoatCardComponent(props) {
             )}
           </View>
         )}
-
-        {/**
-        * <FlatList
-          onRefresh={() => getBoatTrips(token, "reload")}
-          refreshing={loading}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          // snapToInterval={width - actuatedNormalize(100)}
-          data={trips}
-          renderItem={({ item }) => <TripHistory item={item} />}
-          ListEmptyComponent={() => <EmptyCard />}
-          keyExtractor={(item, index) => index.toString()}
-        />
-        */}
       </ScrollView>
+      <View center style={styles.startTripBtn}>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate("StartTrip", { item: item })}
+        >
+          <View style={styles.btn2} background-primaryColor center>
+            <Text whiteColor>Start Trip</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
       <Modal animationType="slide" transparent={true} visible={isVisible}>
         <View style={styles.modal}>
           <View flex style={styles.modalCard}>
@@ -412,7 +416,7 @@ export default function BoatCardComponent(props) {
               ) : (
                 <View marginT-20>
                   <Text underLine subheader>
-                    Available Captains
+                    Available Operations
                   </Text>
                   {captains.map((item) => (
                     <View style={styles.captainCard}>
@@ -504,6 +508,16 @@ const styles = {
     padding: actuatedNormalize(20),
     borderRadius: actuatedNormalize(10),
   },
+  btn2: {
+    width: width - actuatedNormalize(50),
+    padding: actuatedNormalize(20),
+    borderRadius: actuatedNormalize(10),
+  },
+  btn3: {
+    width: width / 2.5,
+    padding: actuatedNormalize(10),
+    borderRadius: actuatedNormalize(5),
+  },
   btnD: {
     padding: actuatedNormalize(20),
     borderRadius: actuatedNormalize(10),
@@ -533,5 +547,11 @@ const styles = {
     padding: actuatedNormalize(10),
     marginTop: actuatedNormalize(10),
     ...elevate(3),
+  },
+  startTripBtn: {
+    position: "absolute",
+    bottom: actuatedNormalize(10),
+    zIndex: 2,
+    left: actuatedNormalize(25),
   },
 };

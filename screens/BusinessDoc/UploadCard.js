@@ -196,7 +196,7 @@ export default function UploadCard(props) {
 const styles = {
   card: {
     marginTop: actuatedNormalize(20),
-    height: height / 5,
+    minHeight: height / 4.5,
     width: width - actuatedNormalize(50),
     borderRadius: actuatedNormalize(10),
     overflow: "hidden",

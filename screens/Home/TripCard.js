@@ -11,16 +11,6 @@ export default function BoatCard(props) {
 
   return (
     <View style={styles.card}>
-      <View row>
-        <View flex>
-          <Text subhead>Active Vessels</Text>
-        </View>
-        <View center right style={styles.NUMCard} background-primaryColor>
-          <Text subhead whiteColor numberOfLines={1}>
-            1
-          </Text>
-        </View>
-      </View>
       <View flex centerH bottom paddingB-20>
         <View center style={styles.sos}>
           <Image

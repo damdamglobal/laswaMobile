@@ -97,7 +97,8 @@ export default function TripHistory(props) {
         props.getAuthUserTrips(token, "reload");
       })
       .catch((err) => {
-        setServerMessage(err.response.data.message);
+        console.log(err);
+        //setServerMessage(err.response.data.message);
         setToastVisible(true);
       })
       .finally(() => {
@@ -375,7 +376,7 @@ export default function TripHistory(props) {
 const styles = {
   card: {
     minHeight: actuatedNormalize(250),
-    width: width / 1.1,
+    width: width / 1.2,
     backgroundColor: "#F6F6F6",
     borderRadius: actuatedNormalize(10),
     ...elevate(2),
@@ -397,7 +398,7 @@ const styles = {
     width: actuatedNormalize(3),
   },
   verticalLine: {
-    width: width - actuatedNormalize(170),
+    width: width - actuatedNormalize(200),
     height: actuatedNormalize(2),
     backgroundColor: "#9EA2A7",
   },

@@ -10,22 +10,21 @@ export default function YesNoCard(props) {
   return (
     <View style={styles.card} padding-10>
       <Text>{props.label}</Text>
-
       <View flex row marginT-10 bottom>
         <View marginH-10>
           <Checkbox
-            label={props.title1 ? props.title1 : "No"}
-            value={false}
-            onValueChange={() => console.log("value changed")}
+            label={props.title2 ? props.title2 : "No"}
+            value={!props.typeValue}
+            onValueChange={(text) => props.setTypeHandle(!text)}
             iconColor="white"
             color={Colors.primaryColor}
           />
         </View>
         <View marginH-10>
           <Checkbox
-            label={props.title2 ? props.title2 : "Yes"}
-            value={true}
-            onValueChange={() => console.log("value changed")}
+            label={props.title1 ? props.title1 : "Yes"}
+            value={props.typeValue}
+            onValueChange={(text) => props.setTypeHandle(text)}
             iconColor="white"
             color={Colors.primaryColor}
           />

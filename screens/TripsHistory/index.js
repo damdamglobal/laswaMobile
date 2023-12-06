@@ -32,19 +32,13 @@ export default function TripHistories(props) {
   }, []);
 
   const getAuthUserTrips = async (payload, reload) => {
-    let page;
-    if (reload) {
-      page = 1;
-    } else {
-      page = currentPage + 1;
-    }
     setLoading(true);
     axios
-      .get(`${GetAuthUserTrips}?page=${page}`, {
+      .get(`${GetAuthUserTrips}`, {
         headers: { Authorization: "Bearer " + payload },
       })
       .then((res) => {
-        setCurrentPage(page);
+        // setCurrentPage(page);
         setTotalPage(res.data.count);
         setTrips(res.data.Trips);
       })
@@ -69,7 +63,7 @@ export default function TripHistories(props) {
   const keyExtractor = (item, index) => item._id + index;
 
   return (
-    <View flex paddingH-20 background-whiteColor>
+    <View flex paddingH-20 background-whiteColor center>
       <View row centerV>
         <View flex></View>
         <View flex-2 center>

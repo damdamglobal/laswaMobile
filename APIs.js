@@ -2,8 +2,8 @@
 export const DomainImage = "https://laswa.damdamtechnology.com";
 //export const DomainSocket = "https://laswa.damdamtechnology.com/socket.io";
 
-export const Domain = "http://127.0.0.1:3000/api/v1";
-export const DomainSocket = "http://127.0.0.1:3000";
+export const Domain = "http://192.168.100.40:3000/api/v1";
+export const DomainSocket = "http://192.168.100.40:3000";
 
 export const Login = `${Domain}/auth/Login`;
 export const SignUp = `${Domain}/auth/SignUp`;
@@ -22,6 +22,7 @@ export const AssignUserToBoat = `${Domain}/Boat/AssignUserToBoat`;
 export const RemoveCaptain = `${Domain}/Boat/RemoveCaptain`;
 export const AddOperator = `${Domain}/Boat/AddOperator`;
 export const GetUserOperators = `${Domain}/Boat/GetUserOperators`;
+export const UploadBoatDoc = `${Domain}/Boat/UploadBoatDoc`;
 
 export const GetAuthUserTrips = `${Domain}/Trip/GetAuthUserTrips`;
 export const GetBoatTrips = `${Domain}/Trip/GetBoatTrips`;

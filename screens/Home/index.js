@@ -13,7 +13,7 @@ import ActiveVessel from "./ActiveVessel";
 import TodayTrip from "./TodayTrip";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const { width, height } = Dimensions.get("window");
-import { BoatScreenContext } from "../../context/index";
+import { BoatScreenContext, TripsScreenContext } from "../../context/index";
 
 export default function HomeFun(props) {
   const [token, setToken] = React.useState("");
@@ -26,6 +26,7 @@ export default function HomeFun(props) {
   const [totalOperatorPage, setTotalOperatorPage] = useState(0);
   const [totalBoatPage, setTotalBoatPage] = useState(0);
   const [totalTripPage, setTotalTripPage] = useState(0);
+  const [trips, setTrips] = useContext(TripsScreenContext);
 
   useEffect(() => {
     async function fetchStoresData() {
@@ -50,9 +51,15 @@ export default function HomeFun(props) {
   const getUserBoat = async (payload) => {
     setLoading(true);
     axios
-      .get(`${GetUserBoat}`, {
-        headers: { Authorization: "Bearer " + payload },
-      })
+      .put(
+        `${GetUserBoat}`,
+        {
+          status: "all",
+        },
+        {
+          headers: { Authorization: "Bearer " + payload },
+        }
+      )
       .then((res) => {
         setTotalBoatPage(res.data.count);
         setBoats(res.data.Boat);
@@ -100,6 +107,7 @@ export default function HomeFun(props) {
       })
       .catch((err) => {
         setServerMessage(err.response.data.message);
+        console.log(err.response);
       })
       .finally(() => {
         setLoading(false);
@@ -130,7 +138,11 @@ export default function HomeFun(props) {
           />
           <ActiveOperators props={props} operators={operators} />
           <ActiveVessel props={props} boat={boat} />
-          <TodayTrip props={props} />
+          <TodayTrip
+            props={props}
+            totalTripPage={totalTripPage}
+            trips={trips}
+          />
         </View>
       </ScrollView>
     </View>

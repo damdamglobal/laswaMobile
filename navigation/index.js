@@ -15,6 +15,9 @@ import SplashScreen from "../screens/SplashScreen/index.js";
 import GetStarted from "../screens/GetStarted/index.js";
 import AddFleet from "../screens/AddBoat/index";
 import BoatDetail from "../screens/BoatDetail";
+import BoatDoc from "../screens/BoatDoc";
+import AddOperator from "../screens/AddOperator/index";
+import Operator from "../screens/Operator/index";
 
 import {
   AuthContext,
@@ -39,6 +42,9 @@ const RootStack = () => {
       <Stack.Screen name="StartTrip" component={StartTrip} />
       <Stack.Screen name="AddFleet" component={AddFleet} />
       <Stack.Screen name="BoatDetail" component={BoatDetail} />
+      <Stack.Screen name="AddOperator" component={AddOperator} />
+      <Stack.Screen name="BoatDoc" component={BoatDoc} />
+      <Stack.Screen name="Operator" component={Operator} />
       <Stack.Screen
         name="AddPassengerManifest"
         component={AddPassengerManifest}

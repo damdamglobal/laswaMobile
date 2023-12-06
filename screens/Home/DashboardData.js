@@ -52,7 +52,7 @@ export default function BoatCard(props) {
       <View flex row bottom>
         <View flex center>
           <Text whiteColor headingT>
-            {totalOperatorPage}
+            {totalBoatPage}
           </Text>
           <Text smallF whiteColor FontAven>
             Boats
@@ -60,7 +60,7 @@ export default function BoatCard(props) {
         </View>
         <View flex center>
           <Text whiteColor headingT>
-            {totalBoatPage}
+            {totalOperatorPage}
           </Text>
           <Text smallF whiteColor FontAven>
             Operators

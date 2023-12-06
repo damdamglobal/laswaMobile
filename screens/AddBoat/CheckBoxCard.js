@@ -9,12 +9,12 @@ export default function YesNoCard(props) {
     <View>
       <View flex row marginT-10>
         <View flex>
-          <Text>Tiltle</Text>
+          <Text>{props.type}</Text>
         </View>
         <View flex right marginH-10>
           <Checkbox
-            value={true}
-            onValueChange={() => console.log("value changed")}
+            value={props.type == props.typeValue ? true : false}
+            onValueChange={(item) => props.setVesselTypeHandle(props.type)}
             iconColor="white"
             color={Colors.primaryColor}
           />

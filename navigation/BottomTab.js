@@ -17,8 +17,6 @@ import AboutLaswa from "../screens/AboutLaswa/index";
 import BusinessProfile from "../screens/BusinessProfile/index";
 import BusinessDoc from "../screens/BusinessDoc/index";
 import BusinessInfo from "../screens/BusinessInfo/index";
-import AddOperator from "../screens/AddOperator/index";
-import Operator from "../screens/Operator/index";
 
 import * as Animatable from "react-native-animatable";
 
@@ -36,9 +34,6 @@ const HomeStack = () => {
   return (
     <Stack.Navigator screenOptions={options}>
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
-      <Stack.Screen name="BoatDetail" component={BoatDetail} />
-      <Stack.Screen name="AddOperator" component={AddOperator} />
-      <Stack.Screen name="Operator" component={Operator} />
     </Stack.Navigator>
   );
 };

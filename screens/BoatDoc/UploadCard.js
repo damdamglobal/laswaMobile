@@ -12,7 +12,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
 import axios from "axios";
-import { BusinessUploadDoc } from "../../APIs";
+import { UploadBoatDoc } from "../../APIs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const { Toast } = Incubator;
 
@@ -30,34 +30,13 @@ export default function UploadCard(props) {
     async function fetchStoresData() {
       let loginToken = await AsyncStorage.getItem("token");
       setToken(JSON.parse(loginToken));
-      let BusinessProfile = props.businessProfile;
-
-      if (BusinessProfile) {
-        if (props.docType == "CAC") {
-          if (BusinessProfile.CAC) {
-            setImage(BusinessProfile.CAC.url);
+      let img = props.img;
+      if (img.length) {
+        img.forEach((element) => {
+          if (element.index == props.index) {
+            setImage(element.url);
           }
-        }
-        if (props.docType == "businessOwner") {
-          if (BusinessProfile.businessOwner) {
-            setImage(BusinessProfile.businessOwner.url);
-          }
-        }
-        if (props.docType == "OperationalLicense") {
-          if (BusinessProfile.OperationalLicense) {
-            setImage(BusinessProfile.OperationalLicense.url);
-          }
-        }
-        if (props.docType == "CACForm2") {
-          if (BusinessProfile.CACForm2) {
-            setImage(BusinessProfile.CACForm2.url);
-          }
-        }
-        if (props.docType == "CACForm7") {
-          if (BusinessProfile.CACForm7) {
-            setImage(BusinessProfile.CACForm7.url);
-          }
-        }
+        });
       }
     }
 
@@ -77,11 +56,11 @@ export default function UploadCard(props) {
         { compress: 0.5, format: ImageManipulator.SaveFormat.JPEG }
       );
       setImage(manipResult.uri);
-      businessUploadDoc(manipResult.uri);
+      uploadBoatDoc(manipResult.uri);
     }
   };
 
-  const businessUploadDoc = (payload) => {
+  const uploadBoatDoc = (payload) => {
     let localUri = payload;
     let filename = localUri.split("/").pop();
     let match = /\.(\w+)$/.exec(filename);
@@ -94,22 +73,24 @@ export default function UploadCard(props) {
       name: filename,
       type: type,
     });
-    formData.append("docType", props.docType);
+    formData.append("docType", props.docTypeValue);
+    formData.append("boatId", props.item._id);
+    formData.append("index", props.index);
 
     setLoading(true);
     axios
-      .put(`${BusinessUploadDoc}`, formData, {
+      .put(`${UploadBoatDoc}`, formData, {
         headers: { Authorization: "Bearer " + token },
       })
       .then((res) => {
-        setServerMessage(res.data.message);
-        setToastColor("green");
-        setToastVisible(true);
+        props.setServerMessage(res.data.message);
+        props.setToastColor("green");
+        props.setToastVisible(true);
       })
       .catch((err) => {
-        setServerMessage(err.response.data.message);
-        setToastColor("red");
-        setToastVisible(true);
+        props.setServerMessage(err.response.data.message);
+        props.setToastColor("red");
+        props.setToastVisible(true);
       })
       .finally(() => {
         setLoading(false);
@@ -177,18 +158,6 @@ export default function UploadCard(props) {
           </View>
         </View>
       </View>
-      <Toast
-        visible={toastVisible}
-        position={"top"}
-        autoDismiss={5000}
-        message={serverMessage}
-        swipeable={true}
-        onDismiss={() => setToastVisible(false)}
-        backgroundColor={toastColor}
-        messageStyle={{
-          color: "white",
-        }}
-      ></Toast>
     </View>
   );
 }

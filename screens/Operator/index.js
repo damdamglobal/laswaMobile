@@ -206,17 +206,62 @@ export default function OperatorScreen(props) {
             </View>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity
-            onPress={() => {
-              props.navigation.push("AddOperator");
-            }}
-          >
-            <View style={styles.btn} background-primaryColor center marginT-40>
-              <Text whiteColor FontAven>
-                Add Operator
-              </Text>
-            </View>
-          </TouchableOpacity>
+          <>
+            {allOperators.length && tab == 1 ? (
+              <TouchableOpacity
+                onPress={() => {
+                  props.navigation.push("AddOperator");
+                }}
+              >
+                <View
+                  style={styles.btn}
+                  background-primaryColor
+                  center
+                  marginT-40
+                >
+                  <Text whiteColor FontAven>
+                    Add Operator
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            ) : null}
+            {susOperators.length && tab == 2 ? (
+              <TouchableOpacity
+                onPress={() => {
+                  props.navigation.push("AddOperator");
+                }}
+              >
+                <View
+                  style={styles.btn}
+                  background-primaryColor
+                  center
+                  marginT-40
+                >
+                  <Text whiteColor FontAven>
+                    Add Operator
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            ) : null}
+            {UnOperators.length && tab == 3 ? (
+              <TouchableOpacity
+                onPress={() => {
+                  props.navigation.push("AddOperator");
+                }}
+              >
+                <View
+                  style={styles.btn}
+                  background-primaryColor
+                  center
+                  marginT-40
+                >
+                  <Text whiteColor FontAven>
+                    Add Operator
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            ) : null}
+          </>
         )}
       </View>
     </View>
@@ -235,7 +280,7 @@ const styles = {
   },
   btnCard: {
     position: "absolute",
-    bottom: actuatedNormalize(70),
+    bottom: actuatedNormalize(20),
     width: width,
   },
   btn: {
