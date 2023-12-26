@@ -32,7 +32,6 @@ export default function TripHistory(props) {
   const [serverMessage, setServerMessage] = useState("");
   const [token, setToken] = React.useState("");
   const [keyword, setKeyword] = React.useState("");
-  const [passengers, setPassengers] = React.useState([]);
   const [sortedPassengers, setSortedPassengers] = React.useState([]);
 
   let item = props.item;
@@ -41,9 +40,6 @@ export default function TripHistory(props) {
     async function fetchStoresData() {
       let loginToken = await AsyncStorage.getItem("token");
       setToken(JSON.parse(loginToken));
-      if (props.item) {
-        setPassengers(props.item.passengers);
-      }
     }
     fetchStoresData();
   }, []);
@@ -68,7 +64,7 @@ export default function TripHistory(props) {
       return matchingObjects;
     }
 
-    const result = searchObjectsByKeyword(passengers, keyword);
+    const result = searchObjectsByKeyword(props.item.passengers, keyword);
     setSortedPassengers(result);
   };
   const CalendarDate = (payload) => {
@@ -97,8 +93,7 @@ export default function TripHistory(props) {
         props.getAuthUserTrips(token, "reload");
       })
       .catch((err) => {
-        console.log(err);
-        //setServerMessage(err.response.data.message);
+        setServerMessage(err.response.data.message);
         setToastVisible(true);
       })
       .finally(() => {
@@ -327,7 +322,7 @@ export default function TripHistory(props) {
             <View flex>
               {sortedPassengers.length > 0 ? (
                 <>
-                  <Text whiteColor>.</Text>
+                  <Text>.ooo</Text>
                   <FlatList
                     //  onRefresh={() => getProduct(token, "reload")}
                     //  refreshing={loading}
@@ -341,17 +336,19 @@ export default function TripHistory(props) {
                   />
                 </>
               ) : (
-                <FlatList
-                  //  onRefresh={() => getProduct(token, "reload")}
-                  //  refreshing={loading}
-                  showsHorizontalScrollIndicator={false}
-                  showsVerticalScrollIndicator={false}
-                  // snapToInterval={width - actuatedNormalize(100)}
-                  data={passengers}
-                  renderItem={({ item }) => <PassengerDetail item={item} />}
-                  ListEmptyComponent={() => <EmptyCard />}
-                  keyExtractor={(item, index) => index.toString()}
-                />
+                <>
+                  <FlatList
+                    //  onRefresh={() => getProduct(token, "reload")}
+                    //  refreshing={loading}
+                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
+                    // snapToInterval={width - actuatedNormalize(100)}
+                    data={props.item.passengers}
+                    renderItem={({ item }) => <PassengerDetail item={item} />}
+                    ListEmptyComponent={() => <EmptyCard />}
+                    keyExtractor={(item, index) => index.toString()}
+                  />
+                </>
               )}
             </View>
           </View>

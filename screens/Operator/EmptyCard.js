@@ -22,15 +22,6 @@ export default function BoatCard(props) {
           />
         </View>
         <Text smallF>You do not have any active Operator</Text>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigation.navigate("AddOperator");
-          }}
-        >
-          <View style={styles.btn} background-primaryColor center marginT-40>
-            <Text whiteColor>Add Operator</Text>
-          </View>
-        </TouchableOpacity>
       </View>
     </View>
   );

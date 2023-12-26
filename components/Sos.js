@@ -14,7 +14,7 @@ export default function SOS() {
     <View center style={styles.sos} background-sosColor>
       <TouchableOpacity
         onPress={() =>
-          Linking.openURL("whatsapp://send?text=hello&phone=+2348138527039")
+          Linking.openURL("whatsapp://send?text=hello&phone=+15551022251")
         }
       >
         <Text whiteColor>SOS</Text>

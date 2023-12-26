@@ -22,6 +22,7 @@ const { width, height } = Dimensions.get("window");
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GetUserOperators } from "../../APIs";
 import axios from "axios";
+import { GeneralDatContext } from "../../context/index";
 
 export default function OperatorScreen(props) {
   const [tab, setTab] = useState(1);
@@ -31,6 +32,8 @@ export default function OperatorScreen(props) {
   const [allOperators, setAllOperators] = useState([]);
   const [susOperators, setSusAllOperators] = useState([]);
   const [UnOperators, setUnAllOperators] = useState([]);
+
+  const { operators, setOperators } = useContext(GeneralDatContext);
 
   useEffect(() => {
     async function fetchStoresData() {
@@ -43,6 +46,12 @@ export default function OperatorScreen(props) {
 
     fetchStoresData();
   }, []);
+
+  const getAllOperator = () => {
+    getUserOperators(token);
+    getUnOperators(token);
+    getSusOperators(token);
+  };
 
   const getUserOperators = async (payload) => {
     setLoading(true);
@@ -57,7 +66,8 @@ export default function OperatorScreen(props) {
         }
       )
       .then((res) => {
-        setAllOperators(res.data.operators);
+        // setAllOperators(res.data.operators);
+        setOperators(res.data.operators);
       })
       .catch((err) => {
         setServerMessage(err.response.data.message);
@@ -101,6 +111,7 @@ export default function OperatorScreen(props) {
         }
       )
       .then((res) => {
+        console.log(res.data);
         setSusAllOperators(res.data.operators);
       })
       .catch((err) => {
@@ -190,12 +201,26 @@ export default function OperatorScreen(props) {
           </View>
         </TouchableOpacity>
       </View>
-      {tab == 1 ? <AllOperator operators={allOperators} props={props} /> : null}
+      {tab == 1 ? (
+        <AllOperator
+          getAllOperator={getAllOperator}
+          operators={operators}
+          props={props}
+        />
+      ) : null}
       {tab == 2 ? (
-        <SuspendedOperator operators={susOperators} props={props} />
+        <SuspendedOperator
+          getAllOperator={getAllOperator}
+          operators={susOperators}
+          props={props}
+        />
       ) : null}
       {tab == 3 ? (
-        <UnapprovedOperator operators={UnOperators} props={props} />
+        <UnapprovedOperator
+          getAllOperator={getAllOperator}
+          operators={UnOperators}
+          props={props}
+        />
       ) : null}
 
       <View style={styles.btnCard} center flex>
@@ -207,43 +232,7 @@ export default function OperatorScreen(props) {
           </TouchableOpacity>
         ) : (
           <>
-            {allOperators.length && tab == 1 ? (
-              <TouchableOpacity
-                onPress={() => {
-                  props.navigation.push("AddOperator");
-                }}
-              >
-                <View
-                  style={styles.btn}
-                  background-primaryColor
-                  center
-                  marginT-40
-                >
-                  <Text whiteColor FontAven>
-                    Add Operator
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            ) : null}
-            {susOperators.length && tab == 2 ? (
-              <TouchableOpacity
-                onPress={() => {
-                  props.navigation.push("AddOperator");
-                }}
-              >
-                <View
-                  style={styles.btn}
-                  background-primaryColor
-                  center
-                  marginT-40
-                >
-                  <Text whiteColor FontAven>
-                    Add Operator
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            ) : null}
-            {UnOperators.length && tab == 3 ? (
+            {tab == 1 ? (
               <TouchableOpacity
                 onPress={() => {
                   props.navigation.push("AddOperator");

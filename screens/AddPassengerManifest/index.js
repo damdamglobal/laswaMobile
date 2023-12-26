@@ -11,7 +11,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { View, Text, Colors, Badge, Incubator } from "react-native-ui-lib";
-import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
+import { AntDesign, FontAwesome5, EvilIcons } from "@expo/vector-icons";
 import { actuatedNormalize } from "../../components/FontResponsive";
 import SOS from "../../components/Sos";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -20,11 +20,12 @@ import {
   AddPassengerToTrip,
   ConfirmManifest,
   GetAuthUserTrips,
+  SearchPassenger,
 } from "../../APIs";
 import PassengerDetail from "../../components/PassengerDetail";
 import EmptyCard from "../../components/EmptyCard";
 import { elevate } from "react-native-elevate";
-import { TripsScreenContext } from "../../context/index";
+import { GeneralDatContext } from "../../context/index";
 
 const { Toast } = Incubator;
 
@@ -46,7 +47,8 @@ export default function AddManifest(props) {
   const [nextKin, setNextKin] = React.useState("");
   const [nextKinPhoneNumber, setNextKinPhoneNumber] = React.useState("");
   const [address, setAddress] = React.useState("");
-  const [trips, setTrips] = useContext(TripsScreenContext);
+
+  const { trip, setTrip } = useContext(GeneralDatContext);
 
   useEffect(() => {
     async function fetchStoresData() {
@@ -65,7 +67,7 @@ export default function AddManifest(props) {
         headers: { Authorization: "Bearer " + payload },
       })
       .then((res) => {
-        setTrips(res.data.Trips);
+        setTrip(res.data.Trips);
       })
       .catch((err) => {
         setServerMessage(err.response.data.message);
@@ -149,6 +151,40 @@ export default function AddManifest(props) {
         getAuthUserTrips(token);
       });
   };
+  const searchPassenger = async () => {
+    setServerMessage("");
+    setLoading(true);
+    axios
+      .put(
+        `${SearchPassenger}`,
+        {
+          phoneNumber: phoneNumber,
+        },
+        {
+          headers: { Authorization: "Bearer " + token },
+        }
+      )
+      .then((res) => {
+        setServerMessage(res.data.message);
+        setToastVisible(true);
+        setToastColor("green");
+        let { fullName, phoneNumber, nextKin, nextKinPhoneNumber, address } =
+          res.data.Passenger;
+        setNextKinPhoneNumber(nextKinPhoneNumber);
+        setPhoneNumber(phoneNumber);
+        setFullName(fullName);
+        setNextKin(nextKin);
+        setAddress(address);
+      })
+      .catch((err) => {
+        setServerMessage(err.response.data.message);
+        setToastVisible(true);
+        setToastColor("red");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   return (
     <View flex paddingH-20 background-whiteColor>
@@ -203,6 +239,36 @@ export default function AddManifest(props) {
                 ) : null}
               </View>
             </View>
+            <View marginT-10 style={{ position: "relative" }}>
+              <Text smallF>Phone Number</Text>
+              <TextInput
+                value={phoneNumber}
+                onChangeText={(text) => setPhoneNumber(text)}
+                style={styles.TextInput}
+                placeholder="Enter Phone Number"
+                keyboardType="phone-pad"
+              />
+              <TouchableOpacity
+                style={{
+                  position: "absolute",
+                  top: actuatedNormalize(20),
+                  right: actuatedNormalize(20),
+                  backgroundColor: "#0A519B",
+                  padding: actuatedNormalize(5),
+                }}
+                onPress={() => searchPassenger()}
+              >
+                {loading ? (
+                  <ActivityIndicator size="small" color="#fff" />
+                ) : (
+                  <EvilIcons
+                    color="#fff"
+                    size={actuatedNormalize(20)}
+                    name="search"
+                  />
+                )}
+              </TouchableOpacity>
+            </View>
             <View marginT-20>
               <Text smallF>Full Name</Text>
               <TextInput
@@ -219,16 +285,6 @@ export default function AddManifest(props) {
                 style={styles.TextInput}
                 placeholder="Enter Home Address"
                 value={address}
-              />
-            </View>
-            <View marginT-10>
-              <Text smallF>Phone Number</Text>
-              <TextInput
-                value={phoneNumber}
-                onChangeText={(text) => setPhoneNumber(text)}
-                style={styles.TextInput}
-                placeholder="Enter Phone Number"
-                keyboardType="phone-pad"
               />
             </View>
             <View row marginT-30>
@@ -339,7 +395,7 @@ export default function AddManifest(props) {
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => {
-                      confirmManifest();
+                      props.navigation.navigate("TripHistory");
                     }}
                   >
                     <View
@@ -348,7 +404,7 @@ export default function AddManifest(props) {
                       center
                       marginT-10
                     >
-                      <Text whiteColor>Confirm Manifest</Text>
+                      <Text whiteColor>Done</Text>
                     </View>
                   </TouchableOpacity>
                 </>

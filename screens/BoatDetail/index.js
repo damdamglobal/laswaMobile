@@ -20,10 +20,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import {
   GetBoatTrips,
-  SearchUser,
+  SearchOperator,
   AssignUserToBoat,
   RemoveCaptain,
 } from "../../APIs";
+import Operators from "./AssignBoatToUser";
 
 const { TextField, Toast } = Incubator;
 
@@ -39,8 +40,8 @@ export default function BoatCardComponent(props) {
   const [totalPage, setTotalPage] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
   const [email, setEmail] = useState("");
-  const [findUser, setFindUser] = useState(null);
-  const [captains, setCaptains] = useState(props.route.params.item.captains);
+  const [findUser, setFindUser] = useState({});
+  const [captains, setCaptains] = useState(props.route.params.item.operators);
   const [toastVisible, setToastVisible] = useState(false);
   const [toastColor, setToastColor] = useState("red");
   const [isOwner, setIsOwner] = useState(false);
@@ -62,7 +63,7 @@ export default function BoatCardComponent(props) {
     fetchStoresData();
   }, []);
 
-  const assignUserFun = async () => {
+  const assignUserFun = async (id) => {
     setServerMessage("");
     if (!findUser) {
       setServerMessage("Captain is required");
@@ -74,7 +75,7 @@ export default function BoatCardComponent(props) {
       .put(
         `${AssignUserToBoat}`,
         {
-          userId: findUser._id,
+          userId: id,
           boatId: item._id,
         },
         {
@@ -82,13 +83,13 @@ export default function BoatCardComponent(props) {
         }
       )
       .then((res) => {
-        setFindUser(null);
+        setFindUser([]);
         setEmail("");
         setServerMessage(res.data.message);
         setToastVisible(true);
         setToastColor("green");
         setItem(res.data.Boat);
-        setCaptains(res.data.Boat.captains);
+        setCaptains(res.data.Boat.operators);
       })
       .catch((err) => {
         console.log(err.response.data);
@@ -103,28 +104,24 @@ export default function BoatCardComponent(props) {
 
   const searchUser = async () => {
     setServerMessage("");
-    if (!email) {
-      setServerMessage("Captain Email is required");
-      setToastVisible(true);
-      return;
-    }
-    setFindUser(null);
+
     setLoading(true);
     axios
       .put(
-        `${SearchUser}`,
+        `${SearchOperator}`,
         {
-          userName: email,
+          keyword: email,
         },
         {
           headers: { Authorization: "Bearer " + token },
         }
       )
       .then((res) => {
-        setFindUser(res.data.user);
+        setFindUser(res.data.users);
         setServerMessage(res.data.message);
         setToastVisible(true);
         setToastColor("green");
+        console.log(res.data.users);
       })
       .catch((err) => {
         setServerMessage(err.response.data.message);
@@ -151,7 +148,7 @@ export default function BoatCardComponent(props) {
       )
       .then((res) => {
         setItem(res.data.Boat);
-        setCaptains(res.data.Boat.captains);
+        setCaptains(res.data.Boat.operators);
         setServerMessage(res.data.message);
         setToastVisible(true);
         setToastColor("green");
@@ -319,154 +316,19 @@ export default function BoatCardComponent(props) {
         </TouchableOpacity>
       </View>
       <Modal animationType="slide" transparent={true} visible={isVisible}>
-        <View style={styles.modal}>
-          <View flex style={styles.modalCard}>
-            <TouchableOpacity
-              onPress={() => {
-                setIsVisible(false);
-                setFindUser(null);
-                setEmail("");
-              }}
-            >
-              <Text center marginT-20>
-                <AntDesign
-                  color="#181818"
-                  size={actuatedNormalize(30)}
-                  name="down"
-                />
-              </Text>
-            </TouchableOpacity>
-            <View marginT-20 style={styles.card2} center>
-              <View marginT-20>
-                <Text smallF>Captain Email</Text>
-                <TextInput
-                  onChangeText={(text) => setEmail(text)}
-                  style={styles.TextInput}
-                  placeholder="Enter Captain Email"
-                  autoCapitalize="none"
-                  textContentType="emailAddress"
-                  value={email}
-                />
-              </View>
-              <View right marginT-20>
-                {loading ? (
-                  <TouchableOpacity onPress={() => searchUser()}>
-                    <View style={styles.btn} background-primaryColor center>
-                      <ActivityIndicator size="small" color="#fff" />
-                    </View>
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity onPress={() => searchUser()}>
-                    <View style={styles.btn} background-primaryColor center>
-                      <Text whiteColor>Search</Text>
-                    </View>
-                  </TouchableOpacity>
-                )}
-              </View>
-              {findUser ? (
-                <View style={styles.userCard} centerV>
-                  <View row>
-                    <View flex>
-                      <Text>First Name :</Text>
-                      <Text>Last Name :</Text>
-                      <Text>Email :</Text>
-                      <Text>Phone :</Text>
-                    </View>
-                    <View flex right>
-                      <Text>{findUser.firstName}</Text>
-                      <Text>{findUser.lastName}</Text>
-                      <Text>{findUser.email}</Text>
-                      <Text>{findUser.phoneNumber}</Text>
-                    </View>
-                  </View>
-                  {loading ? (
-                    <TouchableOpacity>
-                      <View style={styles.btn} background-primaryColor center>
-                        <ActivityIndicator size="small" color="#fff" />
-                      </View>
-                    </TouchableOpacity>
-                  ) : (
-                    <View row marginT-20>
-                      <View flex center>
-                        <TouchableOpacity
-                          onPress={() => {
-                            setFindUser(null);
-                            setEmail("");
-                          }}
-                        >
-                          <View style={styles.btn} center>
-                            <Text underLine>Close</Text>
-                          </View>
-                        </TouchableOpacity>
-                      </View>
-                      <View flex center>
-                        <TouchableOpacity onPress={() => assignUserFun()}>
-                          <View
-                            style={styles.btn}
-                            background-primaryColor
-                            center
-                          >
-                            <Text whiteColor>Assign</Text>
-                          </View>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  )}
-                </View>
-              ) : (
-                <View marginT-20>
-                  <Text underLine subheader>
-                    Available Operations
-                  </Text>
-                  {captains.map((item) => (
-                    <View style={styles.captainCard}>
-                      <View row>
-                        <View flex>
-                          <Text>First Name :</Text>
-                          <Text>Last Name :</Text>
-                          <Text>Email :</Text>
-                          <Text>Phone :</Text>
-                        </View>
-                        <View flex right>
-                          <Text>{item.firstName}</Text>
-                          <Text>{item.lastName}</Text>
-                          <Text>{item.email}</Text>
-                          <Text>{item.phoneNumber}</Text>
-                        </View>
-                      </View>
-                      {isOwner ? (
-                        <>
-                          {loading ? (
-                            <TouchableOpacity onPress={() => searchUser()}>
-                              <View style={styles.btnD} center row>
-                                <ActivityIndicator size="small" color="#fff" />
-                              </View>
-                            </TouchableOpacity>
-                          ) : (
-                            <TouchableOpacity
-                              onPress={() => removeCaptain(item._id)}
-                            >
-                              <View style={styles.btnD} center row>
-                                <Text marginH-10 whiteColor>
-                                  Remove
-                                </Text>
-                                <AntDesign
-                                  color="#fff"
-                                  size={actuatedNormalize(15)}
-                                  name="delete"
-                                />
-                              </View>
-                            </TouchableOpacity>
-                          )}
-                        </>
-                      ) : null}
-                    </View>
-                  ))}
-                </View>
-              )}
-            </View>
-          </View>
-        </View>
+        <Operators
+          email={email}
+          loading={loading}
+          findUser={findUser}
+          captains={captains}
+          isOwner={isOwner}
+          setIsVisible={setIsVisible}
+          setFindUser={setFindUser}
+          setEmail={setEmail}
+          removeCaptain={removeCaptain}
+          searchUser={searchUser}
+          assignUserFun={assignUserFun}
+        />
         <Toast
           visible={toastVisible}
           position={"top"}

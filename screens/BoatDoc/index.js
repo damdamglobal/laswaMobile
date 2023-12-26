@@ -18,6 +18,7 @@ import SOS from "../../components/Sos";
 import { AntDesign } from "@expo/vector-icons";
 import { actuatedNormalize } from "../../components/FontResponsive";
 const { Toast } = Incubator;
+const { width, height } = Dimensions.get("window");
 
 const VesselDetail = (props) => {
   const [step, setStep] = React.useState(2);
@@ -34,18 +35,27 @@ const VesselDetail = (props) => {
   }, []);
 
   let item = props.route.params.item;
+  let noShow = props.route.params.noShow;
 
   return (
-    <View flex center background-whiteColor paddingH-20>
+    <View
+      flex
+      center
+      background-whiteColor
+      paddingH-20
+      style={{ position: "relative" }}
+    >
       <View row centerV>
         <View flex>
-          <TouchableOpacity onPress={() => props.navigation.pop()}>
-            <AntDesign
-              color="#181818"
-              size={actuatedNormalize(20)}
-              name="left"
-            />
-          </TouchableOpacity>
+          {!noShow ? (
+            <TouchableOpacity onPress={() => props.navigation.pop()}>
+              <AntDesign
+                color="#181818"
+                size={actuatedNormalize(20)}
+                name="left"
+              />
+            </TouchableOpacity>
+          ) : null}
         </View>
         <View flex-2 center>
           <Text subheading numberOfLines={1}>
@@ -56,6 +66,47 @@ const VesselDetail = (props) => {
           <SOS />
         </View>
       </View>
+
+      <View center row style={styles.tab} background-whiteColorF marginT-20>
+        <TouchableOpacity onPress={() => setStep(1)}>
+          <View
+            style={[
+              styles.tabBtn,
+              { backgroundColor: step == 1 ? "#0A519B" : "#fff" },
+            ]}
+            marginH-10
+            center
+          >
+            <Text
+              subheader
+              FontAven
+              numberOfLines={1}
+              style={{ color: step == 1 ? "#fff" : "#181818" }}
+            >
+              Vessel Image
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setStep(2)}>
+          <View
+            style={[
+              styles.tabBtn,
+              { backgroundColor: step == 2 ? "#0A519B" : "#fff" },
+            ]}
+            marginH-10
+            center
+          >
+            <Text
+              subheader
+              FontAven
+              numberOfLines={1}
+              style={{ color: step == 2 ? "#fff" : "#181818" }}
+            >
+              Vessel Doc
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
       <ScrollView
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
@@ -63,9 +114,7 @@ const VesselDetail = (props) => {
       >
         {step == 1 ? (
           <UploadVesselImages
-            step={step}
             item={item}
-            setStep={setStep}
             props={props}
             setServerMessage={setServerMessage}
             setToastVisible={setToastVisible}
@@ -74,9 +123,7 @@ const VesselDetail = (props) => {
         ) : null}
         {step == 2 ? (
           <UploadVesselDoc
-            step={step}
             item={item}
-            setStep={setStep}
             props={props}
             setServerMessage={setServerMessage}
             setToastVisible={setToastVisible}
@@ -96,8 +143,45 @@ const VesselDetail = (props) => {
           color: "white",
         }}
       ></Toast>
+      <TouchableOpacity
+        onPress={() => {
+          if (!noShow) {
+            props.navigation.pop();
+          } else {
+            props.navigation.navigate("HomeScreen");
+          }
+        }}
+        style={{
+          position: "absolute",
+          bottom: actuatedNormalize(10),
+          left: actuatedNormalize(25),
+        }}
+      >
+        <View style={styles.btn} background-primaryColor center marginT-40>
+          <Text whiteColor FontAven>
+            Done
+          </Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
 
 export default VesselDetail;
+
+const styles = {
+  btn: {
+    width: width - actuatedNormalize(50),
+    padding: actuatedNormalize(20),
+    borderRadius: actuatedNormalize(10),
+  },
+  tab: {
+    height: actuatedNormalize(70),
+    borderRadius: actuatedNormalize(10),
+  },
+  tabBtn: {
+    height: actuatedNormalize(50),
+    width: width / 2.5,
+    borderRadius: actuatedNormalize(10),
+  },
+};

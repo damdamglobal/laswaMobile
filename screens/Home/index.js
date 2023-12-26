@@ -13,7 +13,8 @@ import ActiveVessel from "./ActiveVessel";
 import TodayTrip from "./TodayTrip";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const { width, height } = Dimensions.get("window");
-import { BoatScreenContext, TripsScreenContext } from "../../context/index";
+
+import { GeneralDatContext } from "../../context/index";
 
 export default function HomeFun(props) {
   const [token, setToken] = React.useState("");
@@ -21,12 +22,13 @@ export default function HomeFun(props) {
   const [serverMessage, setServerMessage] = React.useState("");
   const [currentPage, setCurrentPage] = useState(null);
   const [totalPage, setTotalPage] = useState(null);
-  const [boat, setBoats] = useContext(BoatScreenContext);
-  const [operators, setOperators] = useState([]);
+  const [User, setUser] = useState({});
   const [totalOperatorPage, setTotalOperatorPage] = useState(0);
   const [totalBoatPage, setTotalBoatPage] = useState(0);
   const [totalTripPage, setTotalTripPage] = useState(0);
-  const [trips, setTrips] = useContext(TripsScreenContext);
+
+  const { trip, setTrip, boat, setBoat, operators, setOperators } =
+    useContext(GeneralDatContext);
 
   useEffect(() => {
     async function fetchStoresData() {
@@ -37,6 +39,7 @@ export default function HomeFun(props) {
       getAuthUserTrips(JSON.parse(loginToken));
 
       let value = await AsyncStorage.getItem("user");
+      setUser(JSON.parse(value));
       let businessProfile = JSON.parse(value);
       if (!businessProfile.BusinessProfile) {
         props.navigation.replace("BusinessProfile");
@@ -62,7 +65,7 @@ export default function HomeFun(props) {
       )
       .then((res) => {
         setTotalBoatPage(res.data.count);
-        setBoats(res.data.Boat);
+        setBoat(res.data.Boat);
       })
       .catch((err) => {
         setServerMessage(err.response.data.message);
@@ -103,7 +106,7 @@ export default function HomeFun(props) {
       })
       .then((res) => {
         setTotalTripPage(res.data.count);
-        setTrips(res.data.Trips);
+        setTrip(res.data.Trips);
       })
       .catch((err) => {
         setServerMessage(err.response.data.message);
@@ -113,6 +116,10 @@ export default function HomeFun(props) {
         setLoading(false);
       });
   };
+
+  function getFirstFiveItems(arr) {
+    return arr.slice(0, 3);
+  }
 
   return (
     <View padding-20 background-whiteColor flex>
@@ -137,11 +144,11 @@ export default function HomeFun(props) {
             totalTripPage={totalTripPage}
           />
           <ActiveOperators props={props} operators={operators} />
-          <ActiveVessel props={props} boat={boat} />
+          <ActiveVessel props={props} boat={boat} User={User} />
           <TodayTrip
             props={props}
             totalTripPage={totalTripPage}
-            trips={trips}
+            trips={getFirstFiveItems(trip)}
           />
         </View>
       </ScrollView>

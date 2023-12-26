@@ -10,11 +10,22 @@ import { View, Text, Colors, Badge } from "react-native-ui-lib";
 import { elevate } from "react-native-elevate";
 import { OnboardingScreenContext } from "../../context/index";
 import { LinearGradient } from "expo-linear-gradient";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("window");
 
 export default function Onboarding(props) {
   const [onboard, setOnboard] = useContext(OnboardingScreenContext);
+
+  useEffect(() => {
+    return () => {
+      setOnboardF();
+    };
+  }, []);
+
+  const setOnboardF = async () => {
+    let user = await AsyncStorage.setItem("onboard", JSON.stringify("false"));
+  };
 
   const getStarted = (payload) => {
     if (payload) {
@@ -50,11 +61,13 @@ export default function Onboarding(props) {
             </Text>
             <TouchableOpacity
               onPress={() => {
-                getStarted("GetStarted");
+                getStarted();
               }}
             >
-              <View style={styles.btn} background-whiteColor center marginT-40>
-                <Text FontAven>Get Started</Text>
+              <View style={styles.btnOutline} center marginT-40>
+                <Text whiteColor FontAven>
+                  Vessel Owner Login
+                </Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity
@@ -62,10 +75,19 @@ export default function Onboarding(props) {
                 getStarted();
               }}
             >
-              <View style={styles.btnOutline} center marginT-20>
+              <View style={styles.btnOutline} center marginT-10>
                 <Text whiteColor FontAven>
-                  Login
+                  Operator Login
                 </Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                getStarted("GetStarted");
+              }}
+            >
+              <View style={styles.btn} background-whiteColor center marginT-10>
+                <Text FontAven>Get Started</Text>
               </View>
             </TouchableOpacity>
           </View>

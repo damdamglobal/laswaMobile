@@ -20,24 +20,14 @@ import { SignUp, ActivateUser } from "../../APIs";
 const { Toast } = Incubator;
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  AuthContext,
-  SplashscreenContext,
-  OnboardingScreenContext,
-} from "../../context/index";
 import { elevate } from "react-native-elevate";
 import RNPickerSelect from "react-native-picker-select";
 
 const { width, height } = Dimensions.get("window");
 
 export default function SignUpScreen(props) {
-  const [auth, setAuth] = useContext(AuthContext);
-  const [splashScreen, setSplashScreen] = useContext(SplashscreenContext);
-  const [onboard, setOnboard] = React.useContext(OnboardingScreenContext);
-
   const [phoneNumber, setPhoneNumber] = useState("+234");
   const [otpModal, setOtpModal] = useState(false);
-  const [activationCode, setActivationCode] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -54,8 +44,10 @@ export default function SignUpScreen(props) {
 
   useEffect(() => {
     async function fetchStoresData() {
-      if (props.route.params.profileType) {
-        setProfileType(props.route.params.profileType);
+      if (props.route.params) {
+        if (props.route.params.profileType) {
+          setProfileType(props.route.params.profileType);
+        }
       }
     }
     fetchStoresData();
@@ -114,13 +106,6 @@ export default function SignUpScreen(props) {
       return;
     }
 
-    if (areaOfOperation == "") {
-      setToastColor("red");
-      setToastVisible(true);
-      setServerMessage("Area Of Operation is required");
-      return;
-    }
-
     setLoading(true);
     axios
       .post(`${SignUp}`, {
@@ -139,38 +124,12 @@ export default function SignUpScreen(props) {
         setOtpModal(true);
         setToastVisible(true);
         setServerMessage(res.data.message);
-      })
-      .catch((err) => {
-        setToastColor("red");
-        setToastVisible(true);
-        setServerMessage(err.response.data.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
-  const activateAccount = (code) => {
-    setOtpModal(false);
-    setLoading(true);
-    axios
-      .post(`${ActivateUser}`, {
-        activationCode: code,
-        email: email,
-      })
-      .then((res) => {
-        setToastColor("green");
-        setServerMessage("sign up success");
-        setToastVisible(true);
-        let loginDetails = {
+        props.navigation.push("OTPScreen", {
+          screenType: "Signup",
           email: email,
-          password: password,
-        };
-        saveLoginDetails(res, loginDetails);
-        console.log(res.data);
+        });
       })
       .catch((err) => {
-        console.log(err);
         setToastColor("red");
         setToastVisible(true);
         setServerMessage(err.response.data.message);
@@ -187,48 +146,6 @@ export default function SignUpScreen(props) {
     // Regular expression pattern for basic email validation
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailPattern.test(email);
-  };
-
-  const saveLoginDetails = async (res, loginDetails) => {
-    try {
-      let user = await AsyncStorage.setItem(
-        "user",
-        JSON.stringify(res.data.profile)
-      );
-      let loginDetail = await AsyncStorage.setItem(
-        "loginDetails",
-        JSON.stringify(loginDetails)
-      );
-      let token = await AsyncStorage.setItem(
-        "token",
-        JSON.stringify(res.data.token)
-      );
-      setSplashScreen(false);
-      setAuth(false);
-      setOnboard(false);
-    } catch (err) {
-      console.log(err);
-      setServerMessage("something went wrong");
-    }
-  };
-
-  const dropDownIcon = () => {
-    return (
-      <View
-        style={{
-          backgroundColor: "transparent",
-          borderTopWidth: 10,
-          borderTopColor: "#181818",
-          borderRightWidth: 10,
-          borderRightColor: "transparent",
-          borderLeftWidth: 10,
-          borderLeftColor: "transparent",
-          width: 0,
-          height: 0,
-          marginTop: 10,
-        }}
-      />
-    );
   };
 
   return (
@@ -255,11 +172,16 @@ export default function SignUpScreen(props) {
                 />
               </View>
             </View>
-            <Text marginH-20 subheading primaryColor>
-              Get Started
-            </Text>
+            <View row bottom>
+              <Text marginL-20 subheading primaryColor>
+                Get Started
+              </Text>
+              <Text FontAven smallF primaryColor marginB-3>
+                As {profileType}
+              </Text>
+            </View>
             <View center>
-              <View marginT-20>
+              <View marginT-10>
                 <Text smallF gray FontAven>
                   First Name
                 </Text>
@@ -340,68 +262,7 @@ export default function SignUpScreen(props) {
                   placeholder="Enter Residential address"
                 />
               </View>
-              <View marginT-20 style={styles.AreaOfOperation}>
-                <Text smallF gray FontAven>
-                  Area Of Operation
-                </Text>
-              </View>
-              <View flex bottom style={styles.selectField}>
-                <RNPickerSelect
-                  onValueChange={(text) => setAreaOfOperation(text)}
-                  items={[
-                    { label: "Jetty Operations", value: "Jetty Operations" },
-                  ]}
-                  style={{
-                    ...pickerSelectStyles,
-                    iconContainer: {
-                      top: 20,
-                      right: 10,
-                    },
-                    placeholder: {
-                      color: "gray",
-                      fontSize: 16,
-                    },
-                  }}
-                  placeholder={{
-                    label: "Select Area of operation",
-                    value: null,
-                    color: "gray",
-                  }}
-                  Icon={dropDownIcon}
-                />
-              </View>
-              <View marginT-20 style={styles.AreaOfOperation}>
-                <Text smallF gray FontAven>
-                  Profile Type
-                </Text>
-              </View>
-              <View flex bottom style={styles.selectField}>
-                <RNPickerSelect
-                  onValueChange={(text) => setProfileType(text)}
-                  items={[
-                    { label: "Individual", value: "Individual" },
-                    { label: "Company", value: "Company" },
-                  ]}
-                  value={profileType}
-                  style={{
-                    ...pickerSelectStyles,
-                    iconContainer: {
-                      top: 20,
-                      right: 10,
-                    },
-                    placeholder: {
-                      color: "gray",
-                      fontSize: 16,
-                    },
-                  }}
-                  placeholder={{
-                    label: "Select Profile Type",
-                    value: null,
-                    color: "gray",
-                  }}
-                  Icon={dropDownIcon}
-                />
-              </View>
+
               <View marginT-20 style={{ position: "relative" }}>
                 <Text smallF gray FontAven>
                   Password
@@ -516,7 +377,7 @@ export default function SignUpScreen(props) {
             </View>
             <TouchableOpacity
               onPress={() => {
-                props.navigation.pop();
+                props.navigation.push("Login");
               }}
             >
               <Text marginT-20 center underline subheader>
@@ -525,68 +386,6 @@ export default function SignUpScreen(props) {
             </TouchableOpacity>
           </View>
         </ScrollView>
-        <Modal animationType="slide" transparent={true} visible={otpModal}>
-          <View style={styles.modal}>
-            <View
-              centerH
-              style={[styles.subModal, { backgroundColor: "#fff" }]}
-            >
-              <View center>
-                <View center style={styles.sos}>
-                  <Image
-                    source={require("../../assets/splashq.png")}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                    }}
-                  />
-                </View>
-              </View>
-              <Text marginT-20 subheading primaryColor>
-                Enter OTP
-              </Text>
-
-              <Text smallF primaryColor marginB-10>
-                sent to {email}
-              </Text>
-              <OTPInputView
-                style={{
-                  width: "80%",
-                  height: actuatedNormalize(50),
-                }}
-                pinCount={6}
-                //code={activationCode} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
-                // onCodeChanged={(code) => {setActivationCode({ code });}}
-                autoFocusOnLoad
-                codeInputFieldStyle={[
-                  styles.underlineStyleBase,
-                  { color: "#181818" },
-                ]}
-                codeInputHighlightStyle={styles.underlineStyleHighLighted}
-                onCodeFilled={(code) => {
-                  activateAccount(code);
-                }}
-              />
-              <TouchableOpacity onPress={() => setOtpModal(false)}>
-                <Text marginT-50 body underLine FontAven>
-                  Resend
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <Toast
-            visible={toastVisible}
-            position={"top"}
-            autoDismiss={5000}
-            message={serverMessage}
-            swipeable={true}
-            onDismiss={() => setToastVisible(false)}
-            backgroundColor={toastColor}
-            messageStyle={{
-              color: "white",
-            }}
-          ></Toast>
-        </Modal>
         <Toast
           visible={toastVisible}
           position={"top"}
@@ -680,24 +479,3 @@ const styles = {
     padding: actuatedNormalize(10),
   },
 };
-
-const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    height: 50,
-    fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderRadius: 10,
-    color: "#181818",
-    paddingRight: 30, // to ensure the text is never behind the icon
-  },
-  inputAndroid: {
-    height: 50,
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderRadius: 10,
-    color: "#181818",
-    paddingRight: 30, // to ensure the text is never behind the icon
-  },
-});

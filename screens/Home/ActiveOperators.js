@@ -14,20 +14,22 @@ export default function OperatorCardFun(props) {
 
   return (
     <View marginV-20>
-      <View row>
-        <View flex>
-          <Text subhead>Active Operators</Text>
+      {operators.length > 0 ? (
+        <View row>
+          <View flex>
+            <Text subhead>Active Operators</Text>
+          </View>
+          <View center right>
+            <TouchableOpacity
+              onPress={() => navigation.props.navigation.push("Operator")}
+            >
+              <Text smallF underLine>
+                View All
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <View center right>
-          <TouchableOpacity
-            onPress={() => navigation.props.navigation.push("Operator")}
-          >
-            <Text smallF underLine>
-              View All
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      ) : null}
       <FlatList
         //onRefresh={() => getUserBoat(token, "reload")}
         // refreshing={loading}

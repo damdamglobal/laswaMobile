@@ -11,7 +11,7 @@ const { width, height } = Dimensions.get("window");
 export default function OperatorCardFun(props) {
   const [navigation, setNavigation] = useState(props.props);
 
-  let operators = props.operators;
+  let Vessel = props.Vessel;
 
   return (
     <FlatList
@@ -21,9 +21,11 @@ export default function OperatorCardFun(props) {
       showsVerticalScrollIndicator={false}
       //horizontal={true}
       // snapToInterval={width - actuatedNormalize(100)}
-      data={operators}
-      renderItem={({ item }) => <Card props={navigation} item={item} />}
-      ListEmptyComponent={() => <EmptyCard props={navigation} />}
+      data={Vessel}
+      renderItem={({ item }) => <Card props={navigation} />}
+      ListEmptyComponent={() => (
+        <EmptyCard props={navigation} ShowAddBTN={true} />
+      )}
       keyExtractor={(item, index) => index.toString()}
       // onEndReached={() => getUserBoat(token)}
       // onEndReachedThreshold={0.5}

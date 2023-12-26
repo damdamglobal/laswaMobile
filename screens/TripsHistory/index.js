@@ -11,15 +11,15 @@ const { width, height } = Dimensions.get("window");
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { GetAuthUserTrips } from "../../APIs";
-import { TripsScreenContext } from "../../context/index";
+import { GeneralDatContext } from "../../context/index";
 
 export default function TripHistories(props) {
   const [token, setToken] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [serverMessage, setServerMessage] = React.useState("");
-  const [trips, setTrips] = useContext(TripsScreenContext);
-  const [currentPage, setCurrentPage] = useState(null);
   const [totalPage, setTotalPage] = useState(null);
+
+  const { trip, setTrip } = useContext(GeneralDatContext);
 
   useEffect(() => {
     async function fetchStoresData() {
@@ -40,7 +40,7 @@ export default function TripHistories(props) {
       .then((res) => {
         // setCurrentPage(page);
         setTotalPage(res.data.count);
-        setTrips(res.data.Trips);
+        setTrip(res.data.Trips);
       })
       .catch((err) => {
         setServerMessage(err.response.data.message);
@@ -48,16 +48,6 @@ export default function TripHistories(props) {
       .finally(() => {
         setLoading(false);
       });
-  };
-
-  const TripCard = (item, index) => {
-    return (
-      <TripHistory
-        props={props}
-        item={item}
-        getAuthUserTrips={getAuthUserTrips}
-      />
-    );
   };
 
   const keyExtractor = (item, index) => item._id + index;
@@ -81,8 +71,14 @@ export default function TripHistories(props) {
         refreshing={loading}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-        data={trips}
-        renderItem={({ item, index }) => TripCard(item, index)}
+        data={trip}
+        renderItem={({ item, index }) => (
+          <TripHistory
+            props={props}
+            item={item}
+            getAuthUserTrips={getAuthUserTrips}
+          />
+        )}
         ListEmptyComponent={() => <EmptyCard />}
         keyExtractor={keyExtractor}
       />

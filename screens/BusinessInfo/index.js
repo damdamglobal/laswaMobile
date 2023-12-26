@@ -14,22 +14,25 @@ import {
 import { Entypo } from "@expo/vector-icons";
 import { actuatedNormalize } from "../../components/FontResponsive";
 import { View, Text, Incubator, Badge, Colors } from "react-native-ui-lib";
-import { BusinessProfileUpdate, GetBusinessProfile } from "../../APIs";
+import {
+  BusinessProfileUpdate,
+  GetBusinessProfile,
+  DomainSocket,
+} from "../../APIs";
 const { Toast } = Incubator;
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 import axios from "axios";
 import { Country, State, City } from "country-state-city";
-
 import { elevate } from "react-native-elevate";
 import RNPickerSelect from "react-native-picker-select";
+import { SplashscreenContext, MainScreenContext } from "../../context/index";
 
 const { width, height } = Dimensions.get("window");
 
 export default function BusinessProfileScreen(props) {
   const [areaOfOperation, setAreaOfOperation] = useState("");
   const [addressState, setAddressState] = useState("");
-  const [listState, setListState] = useState("");
+  const [listState, setListState] = useState([]);
   const [localGovt, setLocalGovt] = useState("");
   const [NIN, setNIN] = useState("");
   const [companyName, setCompanyName] = useState("");
@@ -41,6 +44,8 @@ export default function BusinessProfileScreen(props) {
   const [loading, setLoading] = useState(false);
   const [token, setToken] = React.useState("");
   const [businessProfile, setBusinessProfile] = useState(null);
+  const [splashscreen, setSplashScreen] = useContext(SplashscreenContext);
+  const [mainScreen, setMainScreen] = useContext(MainScreenContext);
 
   useEffect(() => {
     async function fetchStoresData() {
@@ -98,6 +103,10 @@ export default function BusinessProfileScreen(props) {
           setLocalGovt(BusinessProfile.localGovt);
           setPostalCode(BusinessProfile.postalCode);
           setNIN(BusinessProfile.NIN);
+          if (res.data.BusinessProfile.verify) {
+            setMainScreen(false);
+            setSplashScreen(true);
+          }
         }
       })
       .catch((err) => {
@@ -301,7 +310,7 @@ export default function BusinessProfileScreen(props) {
                   color: "gray",
                 }}
                 Icon={dropDownIcon}
-                value={addressState}
+                //value={addressState}
               />
             </View>
 
@@ -312,7 +321,7 @@ export default function BusinessProfileScreen(props) {
               <TextInput
                 onChangeText={(text) => setLocalGovt(text)}
                 style={styles.TextInput}
-                placeholder="Enter LocalGovt Code"
+                placeholder="Enter LocalGovt"
                 value={localGovt}
               />
             </View>

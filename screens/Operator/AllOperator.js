@@ -22,7 +22,13 @@ export default function OperatorCardFun(props) {
       //horizontal={true}
       // snapToInterval={width - actuatedNormalize(100)}
       data={operators}
-      renderItem={({ item }) => <Card props={navigation} item={item} />}
+      renderItem={({ item }) => (
+        <Card
+          getAllOperator={props.getAllOperator}
+          props={navigation}
+          item={item}
+        />
+      )}
       ListEmptyComponent={() => <EmptyCard props={navigation} />}
       keyExtractor={(item, index) => index.toString()}
       // onEndReached={() => getUserBoat(token)}

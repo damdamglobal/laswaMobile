@@ -1,69 +1,40 @@
 import React, { useState, useEffect } from "react";
 
-export const AuthContext = React.createContext();
-export const SplashscreenContext = React.createContext();
-export const MainScreenContext = React.createContext();
-export const BusinessProfileContext = React.createContext();
-export const OnboardingScreenContext = React.createContext();
-export const BoatScreenContext = React.createContext();
-export const TripsScreenContext = React.createContext();
+import { AuthContextFile, AuthProviderFile } from "./AuthContext";
+import { GeneralDatContextFile, GeneralDataProviderFile } from "./GeneralData";
 
-export const BoatScreenProvider = (props) => {
-  const [boat, setBoat] = useState([]);
+import {
+  ActivitiesHandleContextFile,
+  ActivitiesHandleProviderFile,
+} from "./ActivitiesHandleContext";
 
-  return (
-    <BoatScreenContext.Provider value={[boat, setBoat]}>
-      {props.children}
-    </BoatScreenContext.Provider>
-  );
-};
+import {
+  OnboardingScreenContextFile,
+  OnboardingScreenProviderFile,
+} from "./OnboardingScreenContext";
+import {
+  SplashscreenContextFile,
+  SplashscreenProviderFile,
+} from "./SplashscreenContext";
+import {
+  MainScreenContextFile,
+  MainScreenProviderFile,
+} from "./MainScreenContext";
 
-export const TripsScreenProvider = (props) => {
-  const [trip, setTrip] = useState([]);
+export const AuthContext = AuthContextFile;
+export const AuthProvider = AuthProviderFile;
 
-  return (
-    <TripsScreenContext.Provider value={[trip, setTrip]}>
-      {props.children}
-    </TripsScreenContext.Provider>
-  );
-};
+export const GeneralDatContext = GeneralDatContextFile;
+export const GeneralDataProvider = GeneralDataProviderFile;
 
-export const OnboardingScreenProvider = (props) => {
-  const [onboard, setOnboard] = useState(true);
+export const ActivitiesHandleContext = ActivitiesHandleContextFile;
+export const ActivitiesHandleProvider = ActivitiesHandleProviderFile;
 
-  return (
-    <OnboardingScreenContext.Provider value={[onboard, setOnboard]}>
-      {props.children}
-    </OnboardingScreenContext.Provider>
-  );
-};
+export const OnboardingScreenContext = OnboardingScreenContextFile;
+export const OnboardingScreenProvider = OnboardingScreenProviderFile;
 
-export const MainScreenProvider = (props) => {
-  const [mainScreen, setMainScreen] = useState(false);
+export const SplashscreenContext = SplashscreenContextFile;
+export const SplashscreenProvider = SplashscreenProviderFile;
 
-  return (
-    <MainScreenContext.Provider value={[mainScreen, setMainScreen]}>
-      {props.children}
-    </MainScreenContext.Provider>
-  );
-};
-
-export const AuthProvider = (props) => {
-  const [auth, setAuth] = useState(false);
-
-  return (
-    <AuthContext.Provider value={[auth, setAuth]}>
-      {props.children}
-    </AuthContext.Provider>
-  );
-};
-
-export const SplashscreenProvider = (props) => {
-  const [Splashscreen, setSplashscreen] = useState(true);
-
-  return (
-    <SplashscreenContext.Provider value={[Splashscreen, setSplashscreen]}>
-      {props.children}
-    </SplashscreenContext.Provider>
-  );
-};
+export const MainScreenContext = MainScreenContextFile;
+export const MainScreenProvider = MainScreenProviderFile;

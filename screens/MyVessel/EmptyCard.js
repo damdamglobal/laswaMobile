@@ -8,6 +8,7 @@ const { width, height } = Dimensions.get("window");
 
 export default function BoatCard(props) {
   const [navigation, setNavigation] = useState(props.props);
+  console.log(props.ShowAddBTN);
 
   return (
     <View style={styles.card}>
@@ -22,15 +23,13 @@ export default function BoatCard(props) {
           />
         </View>
         <Text smallF>You do not have any active Vessel</Text>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigation.navigate("AddFleet");
-          }}
-        >
-          <View style={styles.btn} background-primaryColor center marginT-40>
-            <Text whiteColor>Add Vessel</Text>
-          </View>
-        </TouchableOpacity>
+        {props.ShowAddBTN ? (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigation.navigate("AddFleet");
+            }}
+          ></TouchableOpacity>
+        ) : null}
       </View>
     </View>
   );

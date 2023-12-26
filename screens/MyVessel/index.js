@@ -23,6 +23,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GetUserBoat } from "../../APIs";
 import axios from "axios";
 const { TextField, Toast } = Incubator;
+import { GeneralDatContext } from "../../context/index";
 
 export default function OperatorScreen(props) {
   const [tab, setTab] = useState(1);
@@ -34,6 +35,8 @@ export default function OperatorScreen(props) {
   const [allOperators, setAllOperators] = useState([]);
   const [susOperators, setSusAllOperators] = useState([]);
   const [UnOperators, setUnAllOperators] = useState([]);
+
+  const { boat, setBoat } = useContext(GeneralDatContext);
 
   useEffect(() => {
     async function fetchStoresData() {
@@ -60,7 +63,7 @@ export default function OperatorScreen(props) {
         }
       )
       .then((res) => {
-        setAllOperators(res.data.Boat);
+        setBoat(res.data.Boat);
       })
       .catch((err) => {
         setServerMessage(err.response.data.message);
@@ -190,41 +193,17 @@ export default function OperatorScreen(props) {
           </View>
         </TouchableOpacity>
       </View>
-      {tab == 1 ? <AllVessel operators={allOperators} props={props} /> : null}
-      {tab == 2 ? (
-        <SuspendedVessel operators={susOperators} props={props} />
-      ) : null}
-      {tab == 3 ? (
-        <UnapprovedVessel operators={UnOperators} props={props} />
-      ) : null}
+      <View flex paddingB-150>
+        {tab == 1 ? <AllVessel Vessel={boat} props={props} /> : null}
+        {tab == 2 ? (
+          <SuspendedVessel Vessel={susOperators} props={props} />
+        ) : null}
+        {tab == 3 ? (
+          <UnapprovedVessel Vessel={UnOperators} props={props} />
+        ) : null}
+      </View>
       <View style={styles.btnCard} center flex>
-        {susOperators.length && tab == 2 ? (
-          <TouchableOpacity
-            onPress={() => {
-              props.navigation.push("AddFleet");
-            }}
-          >
-            <View style={styles.btn} background-primaryColor center marginT-40>
-              <Text whiteColor FontAven>
-                Add Vessel
-              </Text>
-            </View>
-          </TouchableOpacity>
-        ) : null}
-        {UnOperators.length && tab == 3 ? (
-          <TouchableOpacity
-            onPress={() => {
-              props.navigation.push("AddFleet");
-            }}
-          >
-            <View style={styles.btn} background-primaryColor center marginT-40>
-              <Text whiteColor FontAven>
-                Add Vessel
-              </Text>
-            </View>
-          </TouchableOpacity>
-        ) : null}
-        {allOperators.length && tab == 1 ? (
+        {tab == 1 ? (
           <TouchableOpacity
             onPress={() => {
               props.navigation.push("AddFleet");

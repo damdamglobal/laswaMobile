@@ -14,18 +14,17 @@ export default function BoatCard(props) {
       <View flex centerH bottom paddingB-20>
         <View center style={styles.sos}>
           <Image
-            source={require("../../assets/404illustration.png")}
+            source={require("../../assets/Group.png")}
             style={{
               width: "100%",
               height: "100%",
             }}
-            resizeMode="contain"
           />
         </View>
-        <Text smallF>You do not have any active Operators</Text>
+        <Text smallF>You do not have any operators</Text>
         <TouchableOpacity
           onPress={() => {
-            navigation.props.navigation.navigate("AddOperator");
+            navigation.props.navigation.push("AddOperator");
           }}
         >
           <View style={styles.btn} background-primaryColor center marginT-40>
@@ -38,9 +37,14 @@ export default function BoatCard(props) {
 }
 
 const styles = {
+  NUMCard: {
+    height: actuatedNormalize(25),
+    width: actuatedNormalize(25),
+    borderRadius: actuatedNormalize(5),
+  },
   card: {
     marginTop: actuatedNormalize(30),
-    height: height / 4,
+    height: height / 3,
     width: width - actuatedNormalize(50),
     overflow: "hidden",
     padding: actuatedNormalize(20),
@@ -56,7 +60,7 @@ const styles = {
   sos: {
     height: width / 4,
     width: width / 4,
-    borderRadius: actuatedNormalize(0),
+    borderRadius: actuatedNormalize(100),
     backgroundColor: Colors.whiteColor,
     overflow: "hidden",
     ...elevate(2),

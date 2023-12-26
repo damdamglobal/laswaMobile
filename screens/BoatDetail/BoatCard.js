@@ -6,20 +6,22 @@ import { elevate } from "react-native-elevate";
 const { width, height } = Dimensions.get("window");
 
 export default function BoatCard(props) {
-  useEffect(() => {}, []);
-
   return (
     <View center style={styles.card} marginH-5>
-      <Image
-        source={{
-          uri: props.item.imgUrl[1].url,
-        }}
-        resizeMode="stretch"
-        style={{
-          width: "100%",
-          height: "100%",
-        }}
-      />
+      <>
+        {props.item.imgUrl[1] ? (
+          <Image
+            source={{
+              uri: props.item.imgUrl[1].url,
+            }}
+            resizeMode="stretch"
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+          />
+        ) : null}
+      </>
     </View>
   );
 }

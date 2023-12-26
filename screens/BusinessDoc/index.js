@@ -10,13 +10,13 @@ import {
   ActivityIndicator,
   StyleSheet,
 } from "react-native";
-
 import { View, Text, Incubator, Badge, Colors } from "react-native-ui-lib";
-import { GetBusinessProfile } from "../../APIs";
+import { GetBusinessProfile, DomainSocket } from "../../APIs";
 const { Toast } = Incubator;
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import UploadCard from "./UploadCard";
+import { SplashscreenContext, MainScreenContext } from "../../context/index";
 
 const { width, height } = Dimensions.get("window");
 
@@ -27,6 +27,8 @@ export default function BusinessDocScreen(props) {
   const [serverMessage, setServerMessage] = useState("");
   const [toastVisible, setToastVisible] = useState(false);
   const [toastColor, setToastColor] = useState("red");
+  const [splashscreen, setSplashScreen] = useContext(SplashscreenContext);
+  const [mainScreen, setMainScreen] = useContext(MainScreenContext);
 
   useEffect(() => {
     async function fetchStoresData() {
@@ -46,6 +48,12 @@ export default function BusinessDocScreen(props) {
       })
       .then((res) => {
         setBusinessProfile(res.data.BusinessProfile);
+        if (res.data.BusinessProfile) {
+          if (res.data.BusinessProfile.verify) {
+            setMainScreen(false);
+            setSplashScreen(true);
+          }
+        }
       })
       .catch((err) => {
         setServerMessage(err.response.data.message);

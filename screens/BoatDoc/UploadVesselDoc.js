@@ -7,22 +7,7 @@ import UploadCard from "./UploadCard";
 
 const Step3 = (props) => {
   return (
-    <>
-      <Text center marginT-5>
-        Extra Documents
-      </Text>
-      <TouchableOpacity
-        onPress={() => {
-          props.setStep(1);
-        }}
-      >
-        <View style={styles.btn} center>
-          <Text underLine FontAven>
-            Vessel Images
-          </Text>
-        </View>
-      </TouchableOpacity>
-
+    <View paddingB-100>
       <UploadCard
         docTypeValue="doc"
         docType="Evidence of Insurance of the Vessels"
@@ -53,7 +38,7 @@ const Step3 = (props) => {
         setToastVisible={props.setToastVisible}
         setToastColor={props.setToastColor}
       />
-    </>
+    </View>
   );
 };
 

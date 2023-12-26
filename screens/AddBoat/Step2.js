@@ -74,7 +74,10 @@ const Step2 = (props) => {
         props.setServerMessage(res.data.message);
         props.setToastColor("green");
         props.setToastVisible(true);
-        navigation.navigation.navigate("BoatDoc");
+        navigation.navigation.navigate("BoatDoc", {
+          item: res.data.Boat,
+          noShow: true,
+        });
       })
       .catch((err) => {
         setServerMessage(err.response.data.message);

@@ -283,7 +283,7 @@ export default function AddOperatorScreen(props) {
               <TextInput
                 onChangeText={(text) => setUserName(text)}
                 style={styles.TextInput}
-                placeholder="Enter First UserName"
+                placeholder="Enter UserName"
               />
               <View
                 style={{
@@ -431,13 +431,15 @@ export default function AddOperatorScreen(props) {
               <TextInput
                 onChangeText={(text) => setLocalGovt(text)}
                 style={styles.TextInput}
-                placeholder="Enter LocalGovt Code"
+                placeholder="Enter LocalGovt"
               />
             </View>
 
             <View style={styles.card} background-whiteColorF>
               <View flex paddingT-20>
-                <Text subheader>Upload a valid ID Card*</Text>
+                <Text subheader numberOfLines={1}>
+                  Upload a valid ID Card NIN/Driver's License*
+                </Text>
                 <View row marginT-30>
                   <View flex-2>
                     <Text smallF FontAven>

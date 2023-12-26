@@ -39,7 +39,7 @@ export default function UserAvatar() {
     <View row centerV>
       <View marginH-10>
         <Text smallF>{getGreeting()}</Text>
-        <Text subheading>
+        <Text subheading marginT-5>
           {user.firstName} {user.lastName}{" "}
         </Text>
       </View>

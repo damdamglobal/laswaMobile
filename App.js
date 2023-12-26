@@ -1,10 +1,10 @@
 import "react-native-gesture-handler";
-import { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
-import { Colors, Typography, Spacings, Assets } from "react-native-ui-lib";
+import { Colors, Typography, Incubator, Assets } from "react-native-ui-lib";
 import Navigation from "./navigation/index";
 import { actuatedNormalize } from "./components/FontResponsive";
 import {
@@ -12,9 +12,10 @@ import {
   SplashscreenProvider,
   OnboardingScreenProvider,
   MainScreenProvider,
-  BoatScreenProvider,
-  TripsScreenProvider,
+  ActivitiesHandleProvider,
+  GeneralDataProvider,
 } from "./context/index";
+const { TextField, Toast } = Incubator;
 
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -84,11 +85,11 @@ export default function App() {
               <OnboardingScreenProvider>
                 <AuthProvider>
                   <SplashscreenProvider>
-                    <BoatScreenProvider>
-                      <TripsScreenProvider>
+                    <GeneralDataProvider>
+                      <ActivitiesHandleProvider>
                         <Navigation />
-                      </TripsScreenProvider>
-                    </BoatScreenProvider>
+                      </ActivitiesHandleProvider>
+                    </GeneralDataProvider>
                   </SplashscreenProvider>
                 </AuthProvider>
               </OnboardingScreenProvider>

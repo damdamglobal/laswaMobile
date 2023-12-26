@@ -22,14 +22,11 @@ const { width, height } = Dimensions.get("window");
 
 export default function ForgotPassword(props) {
   const [otpModal, setOtpModal] = useState(false);
-  const [activationCode, setActivationCode] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [toastVisible, setToastVisible] = useState("");
   const [toastColor, setToastColor] = useState("red");
   const [serverMessage, setServerMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(true);
 
   const resetPassword = () => {
     if (email == "") {
@@ -45,61 +42,15 @@ export default function ForgotPassword(props) {
       })
       .then((res) => {
         setToastColor("green");
-        setOtpModal(true);
+        //setOtpModal(true);
         setToastVisible(true);
         setServerMessage(res.data.message);
-      })
-      .catch((err) => {
-        setToastColor("red");
-        setToastVisible(true);
-        setServerMessage(err.response.data.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
-  const confirmResetPassword = () => {
-    if (email == "") {
-      setToastColor("red");
-      setToastVisible(true);
-      setServerMessage("email is required");
-      return;
-    }
-    if (password == "") {
-      setToastColor("red");
-      setToastVisible(true);
-      setServerMessage("password is required");
-      return;
-    }
-    if (activationCode.code == "") {
-      setToastColor("red");
-      setToastVisible(true);
-      setServerMessage("activationCode is required");
-      return;
-    }
-    console.log(activationCode);
-
-    setLoading(true);
-    axios
-      .put(`${ConfirmResetPassword}`, {
-        email: email,
-        activationCode: activationCode.code,
-        newPassword: password,
-      })
-      .then((res) => {
-        setToastColor("green");
-        setServerMessage("Password Reset Successful");
-        setToastVisible(true);
-        setOtpModal(false);
-        let loginDetails = {
+        props.navigation.push("OTPScreen", {
+          screenType: "ForgotPassword",
           email: email,
-          password: password,
-        };
-        saveLoginDetails(loginDetails);
+        });
       })
       .catch((err) => {
-        console.log(err.response.data);
         setToastColor("red");
         setToastVisible(true);
         setServerMessage(err.response.data.message);
@@ -107,20 +58,6 @@ export default function ForgotPassword(props) {
       .finally(() => {
         setLoading(false);
       });
-  };
-
-  const saveLoginDetails = async (loginDetails) => {
-    try {
-      let loginDetail = await AsyncStorage.setItem(
-        "loginDetails",
-        JSON.stringify(loginDetails)
-      );
-      props.navigation.pop();
-    } catch (err) {
-      setToastColor("red");
-      setServerMessage("something went wrong");
-      setToastVisible(true);
-    }
   };
 
   return (
@@ -205,114 +142,6 @@ export default function ForgotPassword(props) {
           </TouchableOpacity>
         </View>
       </ScrollView>
-      <Modal animationType="slide" transparent={true} visible={otpModal}>
-        <View style={styles.modal}>
-          <View centerH style={[styles.subModal, { backgroundColor: "#fff" }]}>
-            <View center>
-              <View center style={styles.sos}>
-                <Image
-                  source={require("../../assets/splashq.png")}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                  }}
-                />
-              </View>
-            </View>
-            <Text marginH-20 subheading primaryColor>
-              Enter OTP
-            </Text>
-            <OTPInputView
-              style={{
-                width: "80%",
-                height: actuatedNormalize(50),
-              }}
-              pinCount={6}
-              //code={activationCode} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
-              onCodeChanged={(code) => {
-                setActivationCode({ code });
-              }}
-              autoFocusOnLoad
-              codeInputFieldStyle={[
-                styles.underlineStyleBase,
-                { color: "#181818" },
-              ]}
-              codeInputHighlightStyle={styles.underlineStyleHighLighted}
-            />
-
-            <View marginT-20 style={{ position: "relative" }}>
-              <Text smallF gray FontAven>
-                New Password
-              </Text>
-              <TextInput
-                onChangeText={(text) => setPassword(text)}
-                style={styles.TextInput}
-                placeholder="Enter New Password"
-                autoCapitalize="none"
-                secureTextEntry={showPassword}
-              />
-              <TouchableOpacity
-                style={{
-                  position: "absolute",
-                  top: actuatedNormalize(30),
-                  right: actuatedNormalize(10),
-                }}
-                onPress={() => setShowPassword(!showPassword)}
-              >
-                <Entypo
-                  color="#999999"
-                  size={actuatedNormalize(20)}
-                  name="eye-with-line"
-                />
-              </TouchableOpacity>
-            </View>
-            {loading ? (
-              <TouchableOpacity>
-                <View
-                  style={styles.btn}
-                  background-primaryColor
-                  center
-                  marginT-40
-                >
-                  <ActivityIndicator size="small" color="#fff" />
-                </View>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                onPress={() => {
-                  confirmResetPassword();
-                }}
-              >
-                <View
-                  style={styles.btn}
-                  background-primaryColor
-                  center
-                  marginT-40
-                >
-                  <Text whiteColor>Submit</Text>
-                </View>
-              </TouchableOpacity>
-            )}
-            <TouchableOpacity onPress={() => setOtpModal(false)}>
-              <Text marginT-50 body FontAven underLine>
-                Resend
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <Toast
-          visible={toastVisible}
-          position={"top"}
-          autoDismiss={5000}
-          message={serverMessage}
-          swipeable={true}
-          onDismiss={() => setToastVisible(false)}
-          backgroundColor={toastColor}
-          messageStyle={{
-            color: "white",
-          }}
-        ></Toast>
-      </Modal>
       <Toast
         visible={toastVisible}
         position={"top"}

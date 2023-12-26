@@ -11,11 +11,8 @@ import {
 import { Text, View, Incubator } from "react-native-ui-lib";
 import { actuatedNormalize } from "../../components/FontResponsive";
 import SOS from "../../components/Sos";
-import { MaterialIcons, AntDesign } from "@expo/vector-icons";
-import { AddBoat, GetUserBoat } from "../../APIs";
+import { AntDesign } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
-import { BoatScreenContext } from "../../context/index";
 import Step1 from "./Step1";
 
 const { Toast } = Incubator;
@@ -33,7 +30,6 @@ export default function AddFleet(props) {
   const [img, setImage] = useState("");
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [boat, setBoats] = useContext(BoatScreenContext);
 
   useEffect(() => {
     async function fetchStoresData() {
@@ -43,24 +39,6 @@ export default function AddFleet(props) {
 
     fetchStoresData();
   }, []);
-
-  const getUserBoat = async (payload) => {
-    setLoading(true);
-    axios
-      .get(`${GetUserBoat}`, {
-        headers: { Authorization: "Bearer " + payload },
-      })
-      .then((res) => {
-        props.navigation.navigate("Home");
-        setBoats(res.data.Boat);
-      })
-      .catch((err) => {
-        setServerMessage(err.response.data.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
 
   return (
     <View flex paddingH-20 background-whiteColor centerH>

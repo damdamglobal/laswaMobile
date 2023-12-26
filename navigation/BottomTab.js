@@ -17,6 +17,7 @@ import AboutLaswa from "../screens/AboutLaswa/index";
 import BusinessProfile from "../screens/BusinessProfile/index";
 import BusinessDoc from "../screens/BusinessDoc/index";
 import BusinessInfo from "../screens/BusinessInfo/index";
+import ChangePassword from "../screens/ChangePassword/index";
 
 import * as Animatable from "react-native-animatable";
 
@@ -43,6 +44,7 @@ const ProfileStack = () => {
     <Stack.Navigator screenOptions={options}>
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="AboutLaswa" component={AboutLaswa} />
+      <Stack.Screen name="ChangePassword" component={ChangePassword} />
     </Stack.Navigator>
   );
 };
@@ -71,7 +73,7 @@ const TabArr = [
   },
   {
     route: "UserProfile",
-    label: "UserProfile",
+    label: "Profile",
     type: Icons.Feather,
     icon: "user",
     component: ProfileStack,

@@ -10,18 +10,21 @@ const { width, height } = Dimensions.get("window");
 export default function VesselCardFun(props) {
   const [navigation, setNavigation] = useState(props.props);
   let boat = props.boat;
+  let User = props.User;
   return (
     <View>
-      <View row>
-        <View flex>
-          <Text subhead>Active Vessels</Text>
+      {boat.length > 0 ? (
+        <View row>
+          <View flex>
+            <Text subhead>Active Vessels</Text>
+          </View>
+          <View center right style={styles.NUMCard} background-primaryColor>
+            <Text subhead whiteColor numberOfLines={1}>
+              {boat.length}
+            </Text>
+          </View>
         </View>
-        <View center right style={styles.NUMCard} background-primaryColor>
-          <Text subhead whiteColor numberOfLines={1}>
-            {boat.length}
-          </Text>
-        </View>
-      </View>
+      ) : null}
       <FlatList
         //onRefresh={() => getUserBoat(token, "reload")}
         // refreshing={loading}
@@ -30,7 +33,9 @@ export default function VesselCardFun(props) {
         horizontal={true}
         // snapToInterval={width - actuatedNormalize(100)}
         data={boat}
-        renderItem={({ item }) => <VesselCard props={navigation} item={item} />}
+        renderItem={({ item }) => (
+          <VesselCard props={navigation} item={item} User={User} />
+        )}
         ListEmptyComponent={() => <EmptyVesselCard props={navigation} />}
         keyExtractor={(item, index) => index.toString()}
         // onEndReached={() => getUserBoat(token)}

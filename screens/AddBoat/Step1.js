@@ -364,7 +364,6 @@ const StepOne = (props) => {
             setTypeHandle={setValidLagosStateOperational}
             typeValue={validLagosStateOperational}
           />
-          <Text>{String(agree)}</Text>
           <YesNoCard
             setTypeHandle={setAgree}
             typeValue={agree}

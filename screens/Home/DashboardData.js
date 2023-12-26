@@ -1,53 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { Dimensions, ImageBackground, TouchableOpacity } from "react-native";
-import { Text, View, Colors } from "react-native-ui-lib";
+import { Text, View, Incubator } from "react-native-ui-lib";
 import { actuatedNormalize } from "../../components/FontResponsive";
 import { elevate } from "react-native-elevate";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { useActionSheet } from "@expo/react-native-action-sheet";
+const { TextField, Toast } = Incubator;
 
 const { width, height } = Dimensions.get("window");
 
 export default function BoatCard(props) {
   const [navigation, setNavigation] = useState(props.props);
-  const { showActionSheetWithOptions } = useActionSheet();
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastColor, setToastColor] = useState("red");
+  const [serverMessage, setServerMessage] = useState("");
 
   let totalOperatorPage = props.totalOperatorPage;
   let totalBoatPage = props.totalBoatPage;
   let totalTripPage = props.totalTripPage;
 
   const onPress = () => {
-    const options = ["This Week", "Last Week", "Select Date", "Cancel"];
-    const destructiveButtonIndex = 3;
-    const cancelButtonIndex = 2;
-
-    showActionSheetWithOptions(
-      {
-        options,
-        cancelButtonIndex,
-        destructiveButtonIndex,
-      },
-      (selectedIndex) => {
-        switch (selectedIndex) {
-          case 1:
-            // Save
-            break;
-
-          case destructiveButtonIndex:
-            // Delete
-            break;
-
-          case cancelButtonIndex:
-          // Canceled
-        }
-      }
-    );
+    setServerMessage("Service not available");
+    setToastVisible(true);
   };
 
   return (
     <View style={styles.card} background-primaryColor>
       <Text smallF whiteColor FontAven>
-        This week’s Data
+        Dashboard Analysis
       </Text>
       <View flex row bottom>
         <View flex center>
@@ -87,6 +67,18 @@ export default function BoatCard(props) {
           </View>
         </TouchableOpacity>
       </View>
+      <Toast
+        visible={toastVisible}
+        position={"top"}
+        autoDismiss={5000}
+        message={serverMessage}
+        swipeable={true}
+        onDismiss={() => setToastVisible(false)}
+        backgroundColor={toastColor}
+        messageStyle={{
+          color: "white",
+        }}
+      ></Toast>
     </View>
   );
 }

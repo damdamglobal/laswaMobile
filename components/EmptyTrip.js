@@ -49,7 +49,7 @@ export default function TripHistory() {
 const styles = {
   card: {
     height: actuatedNormalize(220),
-    width: "100%",
+    width: width / 1.2,
     backgroundColor: "#F6F6F6",
     borderRadius: actuatedNormalize(10),
     ...elevate(2),

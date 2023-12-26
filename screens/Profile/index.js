@@ -7,11 +7,11 @@ import {
   TextInput,
   Image,
 } from "react-native";
-import { Text, View, Colors, Button, Icon } from "react-native-ui-lib";
+import { Text, View, Colors, Button, Incubator } from "react-native-ui-lib";
 import { actuatedNormalize } from "../../components/FontResponsive";
 import { elevate } from "react-native-elevate";
 import {
-  AntDesign,
+  MaterialCommunityIcons,
   MaterialIcons,
   FontAwesome5,
   SimpleLineIcons,
@@ -24,12 +24,16 @@ import {
 } from "../../context/index";
 import SOS from "../../components/Sos";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+const { TextField, Toast } = Incubator;
 
 const { width, height } = Dimensions.get("window");
 
 export default function AddFleet(props) {
   const [auth, setAuth] = useContext(AuthContext);
   const [user, setUser] = React.useState("");
+  const [serverMessage, setServerMessage] = useState("");
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastColor, setToastColor] = useState("red");
 
   useEffect(() => {
     async function fetchToken() {
@@ -38,6 +42,31 @@ export default function AddFleet(props) {
     }
     fetchToken();
   }, []);
+
+  const onPress = () => {
+    setServerMessage("Service not available");
+    setToastVisible(true);
+  };
+
+  const logOut = async () => {
+    let loginDetailObj = {
+      email: "",
+      password: "",
+    };
+
+    let value = await AsyncStorage.getItem("loginDetails");
+    if (value) {
+      let loginDetails = JSON.parse(value);
+      loginDetailObj.email = loginDetails.email;
+    }
+
+    let loginDetail = await AsyncStorage.setItem(
+      "loginDetails",
+      JSON.stringify(loginDetailObj)
+    );
+
+    setAuth(true);
+  };
 
   return (
     <View flex paddingH-20 background-whiteColor>
@@ -66,48 +95,76 @@ export default function AddFleet(props) {
         </Text>
       </View>
       <View style={styles.card}>
-        <View row centerV>
-          <View center style={styles.icon}>
-            <FontAwesome5
-              color="#181818"
-              size={actuatedNormalize(15)}
-              name="user-alt"
-            />
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.push("Operator");
+          }}
+        >
+          <View row centerV>
+            <View center style={styles.icon}>
+              <MaterialCommunityIcons
+                color="#181818"
+                size={actuatedNormalize(15)}
+                name="account-group"
+              />
+            </View>
+            <Text marginH-20 subhead>
+              My Operators
+            </Text>
           </View>
-          <Text marginH-20 subhead>
-            Edit Profile
-          </Text>
-        </View>
-        <View row centerV marginT-20>
-          <View center style={styles.icon}>
-            <SimpleLineIcons
-              color="#181818"
-              size={actuatedNormalize(20)}
-              name="settings"
-            />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={onPress}>
+          <View row centerV marginT-10>
+            <View center style={styles.icon}>
+              <FontAwesome5
+                color="#181818"
+                size={actuatedNormalize(15)}
+                name="user-alt"
+              />
+            </View>
+            <Text marginH-20 subhead>
+              Edit Profile
+            </Text>
           </View>
-          <Text marginH-20 subhead>
-            Settings
-          </Text>
-        </View>
-        <View row centerV marginT-20>
-          <View center style={styles.icon}>
-            <MaterialIcons
-              color="#181818"
-              size={actuatedNormalize(15)}
-              name="security"
-            />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={onPress}>
+          <View row centerV marginT-10>
+            <View center style={styles.icon}>
+              <SimpleLineIcons
+                color="#181818"
+                size={actuatedNormalize(20)}
+                name="settings"
+              />
+            </View>
+            <Text marginH-20 subhead>
+              Settings
+            </Text>
           </View>
-          <Text marginH-20 subhead>
-            Change Password
-          </Text>
-        </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.push("ChangePassword");
+          }}
+        >
+          <View row centerV marginT-10>
+            <View center style={styles.icon}>
+              <MaterialIcons
+                color="#181818"
+                size={actuatedNormalize(15)}
+                name="security"
+              />
+            </View>
+            <Text marginH-20 subhead>
+              Change Password
+            </Text>
+          </View>
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             props.navigation.push("AboutLaswa");
           }}
         >
-          <View row centerV marginT-20>
+          <View row centerV marginT-10>
             <View center style={styles.icon}>
               <Image
                 source={require("../../assets/splashq.png")}
@@ -124,7 +181,7 @@ export default function AddFleet(props) {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            setAuth(true);
+            logOut();
           }}
         >
           <View row centerV marginT-20>
@@ -140,6 +197,18 @@ export default function AddFleet(props) {
             </Text>
           </View>
         </TouchableOpacity>
+        <Toast
+          visible={toastVisible}
+          position={"bottom"}
+          autoDismiss={5000}
+          message={serverMessage}
+          swipeable={true}
+          onDismiss={() => setToastVisible(false)}
+          backgroundColor={toastColor}
+          messageStyle={{
+            color: "white",
+          }}
+        ></Toast>
       </View>
     </View>
   );

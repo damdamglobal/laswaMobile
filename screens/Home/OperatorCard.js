@@ -16,7 +16,9 @@ export default function BoatCard(props) {
       <View center style={styles.card}>
         <ImageBackground
           source={{
-            uri: "https://firebasestorage.googleapis.com/v0/b/haulee-1b003.appspot.com/o/boat.jpeg?alt=media&token=7c5a96e6-db0d-4b05-be5d-e5a9e4c9996d",
+            uri: item.imgUrl
+              ? item.imgUrl
+              : "https://firebasestorage.googleapis.com/v0/b/haulee-1b003.appspot.com/o/boat.jpeg?alt=media&token=7c5a96e6-db0d-4b05-be5d-e5a9e4c9996d",
           }}
           style={{
             width: "100%",

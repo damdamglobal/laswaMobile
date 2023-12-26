@@ -7,21 +7,7 @@ import UploadCard from "./UploadCard";
 
 const Step3 = (props) => {
   return (
-    <>
-      <Text center marginT-5>
-        Images of your Boat
-      </Text>
-      <TouchableOpacity
-        onPress={() => {
-          props.setStep(2);
-        }}
-      >
-        <View style={styles.btn} center>
-          <Text underLine FontAven>
-            Vessel Documents
-          </Text>
-        </View>
-      </TouchableOpacity>
+    <View paddingB-100>
       <UploadCard
         docTypeValue="image"
         docType="Upload Images of the Boat (Orientation; Front)"
@@ -52,7 +38,7 @@ const Step3 = (props) => {
         setToastVisible={props.setToastVisible}
         setToastColor={props.setToastColor}
       />
-    </>
+    </View>
   );
 };
 

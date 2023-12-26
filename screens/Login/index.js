@@ -16,7 +16,7 @@ import { Login } from "../../APIs";
 import {
   AuthContext,
   SplashscreenContext,
-  MainScreenContext,
+  ActivitiesHandleContext,
 } from "../../context/index";
 import { elevate } from "react-native-elevate";
 
@@ -29,11 +29,18 @@ export default function LoginScreen(props) {
   const [mainScreen, setSplashScreen] = useContext(SplashscreenContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [toastVisible, setToastVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [toastColor, setToastColor] = useState("red");
-  const [serverMessage, setServerMessage] = useState("");
   const [showPassword, setShowPassword] = useState(true);
+
+  const {
+    toastVisible,
+    setToastVisible,
+    loading,
+    setLoading,
+    toastColor,
+    setToastColor,
+    serverMessage,
+    setServerMessage,
+  } = useContext(ActivitiesHandleContext);
 
   useEffect(() => {
     async function fetchStoresData() {
@@ -41,7 +48,6 @@ export default function LoginScreen(props) {
       if (value) {
         let loginDetails = JSON.parse(value);
         setEmail(loginDetails.email);
-        setPassword(loginDetails.password);
       }
     }
     fetchStoresData();
@@ -72,6 +78,7 @@ export default function LoginScreen(props) {
       .catch((err) => {
         setServerMessage(err.response.data.message);
         setToastVisible(true);
+        setToastColor("red");
       })
       .finally(() => {
         setLoading(false);

@@ -22,9 +22,6 @@ export default function UploadCard(props) {
   const [img, setImage] = useState("");
   const [loading, setLoading] = useState(false);
   const [token, setToken] = React.useState("");
-  const [serverMessage, setServerMessage] = useState("");
-  const [toastVisible, setToastVisible] = useState(false);
-  const [toastColor, setToastColor] = useState("red");
 
   useEffect(() => {
     async function fetchStoresData() {
