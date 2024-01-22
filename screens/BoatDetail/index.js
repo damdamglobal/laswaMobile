@@ -291,7 +291,7 @@ export default function BoatCardComponent(props) {
         {loading ? (
           <ActivityIndicator size="small" color="#181818" />
         ) : (
-          <View>
+          <View centerH>
             {trips.length ? (
               <View style={{ marginBottom: actuatedNormalize(150) }}>
                 {trips.map((item) => (

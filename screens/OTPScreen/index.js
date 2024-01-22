@@ -140,7 +140,7 @@ export default OTPComponent = (props) => {
         setToastColor("green");
         setServerMessage("Password Reset Successful");
         setToastVisible(true);
-        setOtpModal(false);
+
         let loginDetails = {
           email: email,
           password: password,
@@ -164,7 +164,9 @@ export default OTPComponent = (props) => {
         "loginDetails",
         JSON.stringify(loginDetails)
       );
-      props.navigation.pop();
+      setTimeout(function () {
+        props.navigation.replace("Login");
+      }, 1000);
     } catch (err) {
       setToastColor("red");
       setServerMessage("something went wrong");
@@ -382,13 +384,10 @@ const styles = {
   },
   subModal: {
     flex: 1,
-    marginTop: height / actuatedNormalize(10),
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    justifyContent: "center",
   },
   modal: {
     flex: 1,
-    height: height / actuatedNormalize(10),
     backgroundColor: "rgba(28, 28, 28, 0.5)",
   },
   sos: {

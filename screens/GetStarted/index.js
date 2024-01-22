@@ -33,7 +33,7 @@ export default function LoginScreen(props) {
       </View>
       <TouchableOpacity
         onPress={() => {
-          getStarted("Individual");
+          getStarted("Company");
         }}
       >
         <View row style={styles.btn} background-primaryColor centerV marginT-40>
@@ -46,13 +46,13 @@ export default function LoginScreen(props) {
           </View>
 
           <Text FontAven whiteColor>
-            I am an Individual
+            I have a Boat
           </Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
-          getStarted("Company");
+          props.navigation.push("Login");
         }}
       >
         <View style={styles.btn} row background-primaryColor centerV marginT-20>
@@ -64,7 +64,7 @@ export default function LoginScreen(props) {
             />
           </View>
           <Text FontAven whiteColor>
-            I have a Company
+            I am an Operator
           </Text>
         </View>
       </TouchableOpacity>

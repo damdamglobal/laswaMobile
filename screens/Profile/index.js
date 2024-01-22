@@ -4,7 +4,7 @@ import {
   Dimensions,
   TouchableOpacity,
   ScrollView,
-  TextInput,
+  Modal,
   Image,
 } from "react-native";
 import { Text, View, Colors, Button, Incubator } from "react-native-ui-lib";
@@ -17,11 +17,7 @@ import {
   SimpleLineIcons,
   Entypo,
 } from "@expo/vector-icons";
-import {
-  AuthContext,
-  SplashscreenContext,
-  MainScreenContext,
-} from "../../context/index";
+import { AuthContext } from "../../context/index";
 import SOS from "../../components/Sos";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const { TextField, Toast } = Incubator;
@@ -34,6 +30,7 @@ export default function AddFleet(props) {
   const [serverMessage, setServerMessage] = useState("");
   const [toastVisible, setToastVisible] = useState(false);
   const [toastColor, setToastColor] = useState("red");
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     async function fetchToken() {
@@ -64,7 +61,7 @@ export default function AddFleet(props) {
       "loginDetails",
       JSON.stringify(loginDetailObj)
     );
-
+    setIsVisible(false);
     setAuth(true);
   };
 
@@ -113,34 +110,8 @@ export default function AddFleet(props) {
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={onPress}>
-          <View row centerV marginT-10>
-            <View center style={styles.icon}>
-              <FontAwesome5
-                color="#181818"
-                size={actuatedNormalize(15)}
-                name="user-alt"
-              />
-            </View>
-            <Text marginH-20 subhead>
-              Edit Profile
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={onPress}>
-          <View row centerV marginT-10>
-            <View center style={styles.icon}>
-              <SimpleLineIcons
-                color="#181818"
-                size={actuatedNormalize(20)}
-                name="settings"
-              />
-            </View>
-            <Text marginH-20 subhead>
-              Settings
-            </Text>
-          </View>
-        </TouchableOpacity>
+      </View>
+      <View style={styles.card}>
         <TouchableOpacity
           onPress={() => {
             props.navigation.push("ChangePassword");
@@ -159,6 +130,25 @@ export default function AddFleet(props) {
             </Text>
           </View>
         </TouchableOpacity>
+      </View>
+      <View style={styles.card}>
+        <TouchableOpacity onPress={() => props.navigation.push("FAQ")}>
+          <View row centerV marginT-10>
+            <View center style={styles.icon}>
+              <FontAwesome5
+                color="#181818"
+                size={actuatedNormalize(15)}
+                name="link"
+              />
+            </View>
+            <Text marginH-20 subhead>
+              FAQ
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.card}>
         <TouchableOpacity
           onPress={() => {
             props.navigation.push("AboutLaswa");
@@ -179,12 +169,14 @@ export default function AddFleet(props) {
             </Text>
           </View>
         </TouchableOpacity>
+      </View>
+      <View style={styles.card}>
         <TouchableOpacity
           onPress={() => {
-            logOut();
+            setIsVisible(true);
           }}
         >
-          <View row centerV marginT-20>
+          <View row centerV>
             <View center style={styles.icon}>
               <Entypo
                 color="#181818"
@@ -197,6 +189,42 @@ export default function AddFleet(props) {
             </Text>
           </View>
         </TouchableOpacity>
+      </View>
+      <Modal animationType="slide" transparent={true} visible={isVisible}>
+        <View style={styles.modal}>
+          <View style={[styles.subModal, { backgroundColor: "#fff" }]} center>
+            <Text subheader>Are you sure you want to logout ?</Text>
+            <View row>
+              <TouchableOpacity onPress={() => setIsVisible(false)}>
+                <View
+                  style={styles.btn}
+                  background-blackColor
+                  center
+                  marginT-40
+                  marginR-10
+                >
+                  <Text whiteColor FontAven>
+                    No
+                  </Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => logOut()}>
+                <View
+                  style={styles.btn}
+                  background-primaryColor
+                  center
+                  marginT-40
+                  marginL-10
+                >
+                  <Text whiteColor FontAven>
+                    Yes
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
         <Toast
           visible={toastVisible}
           position={"bottom"}
@@ -209,7 +237,19 @@ export default function AddFleet(props) {
             color: "white",
           }}
         ></Toast>
-      </View>
+      </Modal>
+      <Toast
+        visible={toastVisible}
+        position={"bottom"}
+        autoDismiss={5000}
+        message={serverMessage}
+        swipeable={true}
+        onDismiss={() => setToastVisible(false)}
+        backgroundColor={toastColor}
+        messageStyle={{
+          color: "white",
+        }}
+      ></Toast>
     </View>
   );
 }
@@ -225,7 +265,7 @@ const styles = {
     padding: actuatedNormalize(10),
   },
   btn: {
-    width: width - actuatedNormalize(50),
+    width: actuatedNormalize(100),
     padding: actuatedNormalize(20),
     borderRadius: actuatedNormalize(10),
   },
@@ -238,10 +278,10 @@ const styles = {
     ...elevate(2),
   },
   card: {
-    height: height / 2,
+    minHeight: actuatedNormalize(50),
     backgroundColor: "white",
-    marginTop: actuatedNormalize(50),
-    padding: actuatedNormalize(20),
+    marginTop: actuatedNormalize(10),
+    padding: actuatedNormalize(5),
     borderRadius: actuatedNormalize(10),
     ...elevate(1),
   },
@@ -250,5 +290,17 @@ const styles = {
     width: actuatedNormalize(40),
     borderRadius: actuatedNormalize(5),
     backgroundColor: "#F6F6FF",
+  },
+  subModal: {
+    flex: 1,
+    marginTop: height / 1.5,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: actuatedNormalize(20),
+  },
+  modal: {
+    flex: 1,
+    height: height / actuatedNormalize(10),
+    backgroundColor: "rgba(28, 28, 28, 0.5)",
   },
 };

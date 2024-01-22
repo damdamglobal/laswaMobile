@@ -197,38 +197,40 @@ export default function BusinessProfileScreen(props) {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         enabled
       >
+        <View marginT-25 centerH>
+          <Text center headingT blackColor numberOfLines={1}>
+            Business Profile
+          </Text>
+
+          {businessProfile ? (
+            <Text smallF2 FontAven>
+              {businessProfile.companyName}
+              {!businessProfile.verify ? (
+                <Text sosColor> Awaiting Approval</Text>
+              ) : null}
+            </Text>
+          ) : null}
+
+          <TouchableOpacity
+            onPress={() => props.navigation.replace("BusinessDoc")}
+          >
+            <Text smallF2 marginT-5 FontAven underLine>
+              View Business Document
+            </Text>
+          </TouchableOpacity>
+          {loading ? (
+            <View center>
+              <ActivityIndicator size="small" color="#181818" />
+            </View>
+          ) : null}
+        </View>
         <ScrollView
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
-          <View style={styles.block} center>
-            <Text center headingT blackColor numberOfLines={1}>
-              Business Profile
-            </Text>
-
-            {businessProfile ? (
-              <Text smallF FontAven>
-                {businessProfile.companyName}
-                {!businessProfile.verify ? (
-                  <Text sosColor> Awaiting Approval</Text>
-                ) : null}
-              </Text>
-            ) : null}
-
-            <TouchableOpacity
-              onPress={() => props.navigation.replace("BusinessDoc")}
-            >
-              <Text smallF FontAven underLine>
-                View Business Document
-              </Text>
-            </TouchableOpacity>
-            {loading ? (
-              <View center>
-                <ActivityIndicator size="small" color="#181818" />
-              </View>
-            ) : null}
-            <View marginT-20>
+          <View style={styles.block} centerH marginT-25>
+            <View>
               <Text smallF gray FontAven>
                 Company Name
               </Text>
@@ -253,7 +255,7 @@ export default function BusinessProfileScreen(props) {
                 value={companyAddress}
               />
             </View>
-            <View marginT-20 style={styles.AreaOfOperation}>
+            <View marginT-20 marginB-5 style={styles.AreaOfOperation}>
               <Text smallF gray FontAven>
                 Area Of Operation
               </Text>
@@ -267,8 +269,8 @@ export default function BusinessProfileScreen(props) {
                 style={{
                   ...pickerSelectStyles,
                   iconContainer: {
-                    top: 20,
-                    right: 10,
+                    top: actuatedNormalize(10),
+                    right: actuatedNormalize(10),
                   },
                   placeholder: {
                     color: "gray",
@@ -284,7 +286,7 @@ export default function BusinessProfileScreen(props) {
                 value={areaOfOperation}
               />
             </View>
-            <View marginT-20 style={styles.AreaOfOperation}>
+            <View marginT-20 marginB-5 style={styles.AreaOfOperation}>
               <Text smallF gray FontAven>
                 Select State
               </Text>
@@ -296,8 +298,8 @@ export default function BusinessProfileScreen(props) {
                 style={{
                   ...pickerSelectStyles,
                   iconContainer: {
-                    top: 20,
-                    right: 10,
+                    top: actuatedNormalize(10),
+                    right: actuatedNormalize(10),
                   },
                   placeholder: {
                     color: "gray",
@@ -310,7 +312,6 @@ export default function BusinessProfileScreen(props) {
                   color: "gray",
                 }}
                 Icon={dropDownIcon}
-                //value={addressState}
               />
             </View>
 
@@ -478,7 +479,7 @@ const styles = {
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
-    height: 50,
+    height: 0,
     fontSize: 16,
     paddingVertical: 12,
     paddingHorizontal: 10,
@@ -487,7 +488,7 @@ const pickerSelectStyles = StyleSheet.create({
     paddingRight: 30, // to ensure the text is never behind the icon
   },
   inputAndroid: {
-    height: 50,
+    height: 0,
     fontSize: 16,
     paddingHorizontal: 10,
     paddingVertical: 8,

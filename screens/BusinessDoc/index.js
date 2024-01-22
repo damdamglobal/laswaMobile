@@ -79,7 +79,7 @@ export default function BusinessDocScreen(props) {
       <TouchableOpacity
         onPress={() => props.navigation.replace("BusinessInfo")}
       >
-        <Text smallF FontAven underLine>
+        <Text smallF2 marginT-5 FontAven underLine>
           View Business Info
         </Text>
       </TouchableOpacity>

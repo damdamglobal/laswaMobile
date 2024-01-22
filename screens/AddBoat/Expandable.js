@@ -1,12 +1,6 @@
 import _ from "lodash";
 import React, { useState } from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { Card, Carousel, ExpandableSection, View } from "react-native-ui-lib";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { actuatedNormalize } from "../../components/FontResponsive";
@@ -16,7 +10,7 @@ const ExpandableSectionScreen = (props) => {
 
   const getHeaderElement = () => {
     return (
-      <View row flex marginT-20>
+      <View row flex marginT-20 style={styles.devCard}>
         <View flex>
           <Text>{props.title}</Text>
         </View>
@@ -60,5 +54,12 @@ export default ExpandableSectionScreen;
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#fff",
+  },
+  devCard: {
+    backgroundColor: "#EFEFEF",
+    height: actuatedNormalize(40),
+    justifyContent: "center",
+    alignItems: "center",
+    padding: actuatedNormalize(5),
   },
 });

@@ -192,7 +192,7 @@ export default function BusinessProfileScreen(props) {
                 placeholder="Enter Residential address"
               />
             </View>
-            <View marginT-20 style={styles.AreaOfOperation}>
+            <View marginT-20 marginB-5 style={styles.AreaOfOperation}>
               <Text smallF gray FontAven>
                 Area Of Operation
               </Text>
@@ -206,8 +206,8 @@ export default function BusinessProfileScreen(props) {
                 style={{
                   ...pickerSelectStyles,
                   iconContainer: {
-                    top: 20,
-                    right: 10,
+                    top: actuatedNormalize(10),
+                    right: actuatedNormalize(10),
                   },
                   placeholder: {
                     color: "gray",
@@ -222,7 +222,7 @@ export default function BusinessProfileScreen(props) {
                 Icon={dropDownIcon}
               />
             </View>
-            <View marginT-20 style={styles.AreaOfOperation}>
+            <View marginT-20 marginB-5 style={styles.AreaOfOperation}>
               <Text smallF gray FontAven>
                 Select State
               </Text>
@@ -234,8 +234,8 @@ export default function BusinessProfileScreen(props) {
                 style={{
                   ...pickerSelectStyles,
                   iconContainer: {
-                    top: 20,
-                    right: 10,
+                    top: actuatedNormalize(10),
+                    right: actuatedNormalize(10),
                   },
                   placeholder: {
                     color: "gray",
@@ -258,7 +258,7 @@ export default function BusinessProfileScreen(props) {
               <TextInput
                 onChangeText={(text) => setLocalGovt(text)}
                 style={styles.TextInput}
-                placeholder="Enter LocalGovt Code"
+                placeholder="Enter Local Govt"
               />
             </View>
 
@@ -412,7 +412,7 @@ const styles = {
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
-    height: 50,
+    height: 0,
     fontSize: 16,
     paddingVertical: 12,
     paddingHorizontal: 10,

@@ -379,8 +379,8 @@ export default function AddOperatorScreen(props) {
                 style={{
                   ...pickerSelectStyles,
                   iconContainer: {
-                    top: 20,
-                    right: 10,
+                    top: actuatedNormalize(10),
+                    right: actuatedNormalize(10),
                   },
                   placeholder: {
                     color: "gray",
@@ -407,8 +407,8 @@ export default function AddOperatorScreen(props) {
                 style={{
                   ...pickerSelectStyles,
                   iconContainer: {
-                    top: 20,
-                    right: 10,
+                    top: actuatedNormalize(10),
+                    right: actuatedNormalize(10),
                   },
                   placeholder: {
                     color: "gray",
@@ -442,8 +442,8 @@ export default function AddOperatorScreen(props) {
                 </Text>
                 <View row marginT-30>
                   <View flex-2>
-                    <Text smallF FontAven>
-                      Image should be in png or pdf or jpeg
+                    <Text smallF2 FontAven>
+                      Image should be in png, pdf or jpeg
                     </Text>
 
                     <TouchableOpacity onPress={() => pickImage()}>
@@ -642,7 +642,7 @@ const styles = {
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
-    height: 50,
+    height: 0,
     fontSize: 16,
     paddingVertical: 12,
     paddingHorizontal: 10,
@@ -651,7 +651,7 @@ const pickerSelectStyles = StyleSheet.create({
     paddingRight: 30, // to ensure the text is never behind the icon
   },
   inputAndroid: {
-    height: 50,
+    height: 0,
     fontSize: 16,
     paddingHorizontal: 10,
     paddingVertical: 8,

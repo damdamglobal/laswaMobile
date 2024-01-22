@@ -161,7 +161,7 @@ export default function SignUpScreen(props) {
           keyboardShouldPersistTaps="handled"
         >
           <View style={styles.block} centerV>
-            <View center>
+            <View center marginB-10>
               <View center style={styles.sos}>
                 <Image
                   source={require("../../assets/splashq.png")}
@@ -175,9 +175,6 @@ export default function SignUpScreen(props) {
             <View row bottom>
               <Text marginL-20 subheading primaryColor>
                 Get Started
-              </Text>
-              <Text FontAven smallF primaryColor marginB-3>
-                As {profileType}
               </Text>
             </View>
             <View center>
@@ -372,7 +369,7 @@ export default function SignUpScreen(props) {
 
             <View center row marginT-50>
               <View style={styles.line} />
-              <Text FontAven>OR</Text>
+              <Text FontAven>Or</Text>
               <View style={styles.line} />
             </View>
             <TouchableOpacity
@@ -462,8 +459,8 @@ const styles = {
     backgroundColor: "rgba(28, 28, 28, 0.5)",
   },
   sos: {
-    height: width / 4,
-    width: width / 4,
+    height: width / 6,
+    width: width / 6,
     borderRadius: actuatedNormalize(100),
     backgroundColor: Colors.whiteColor,
     overflow: "hidden",

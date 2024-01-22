@@ -19,6 +19,9 @@ import BoatDetail from "../screens/BoatDetail";
 import BoatDoc from "../screens/BoatDoc";
 import AddOperator from "../screens/AddOperator/index";
 import Operator from "../screens/Operator/index";
+import ChangePassword from "../screens/ChangePassword/index.js";
+import AboutLaswa from "../screens/AboutLaswa/index.js";
+import FAQ from "../screens/FAQ/index.js";
 
 import {
   AuthContext,
@@ -46,6 +49,10 @@ const RootStack = () => {
       <Stack.Screen name="AddOperator" component={AddOperator} />
       <Stack.Screen name="BoatDoc" component={BoatDoc} />
       <Stack.Screen name="Operator" component={Operator} />
+      <Stack.Screen name="ChangePassword" component={ChangePassword} />
+      <Stack.Screen name="AboutLaswa" component={AboutLaswa} />
+      <Stack.Screen name="FAQ" component={FAQ} />
+
       <Stack.Screen
         name="AddPassengerManifest"
         component={AddPassengerManifest}

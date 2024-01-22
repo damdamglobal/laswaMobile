@@ -26,7 +26,7 @@ export default function BoatCard(props) {
           }}
         ></ImageBackground>
       </View>
-      <Text gray smallF numberOfLines={1}>
+      <Text gray smallF numberOfLines={1} marginT-5>
         {item.firstName} {item.lastName}
       </Text>
     </View>

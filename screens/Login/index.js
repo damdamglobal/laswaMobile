@@ -134,7 +134,7 @@ export default function LoginScreen(props) {
           <View center>
             <View marginT-20>
               <Text smallF gray FontAven>
-                Email
+                Email/UserName
               </Text>
               <TextInput
                 onChangeText={(text) => setEmail(text)}
@@ -226,7 +226,7 @@ export default function LoginScreen(props) {
           </View>
           <View center row marginT-50>
             <View style={styles.line} />
-            <Text FontAven>OR</Text>
+            <Text FontAven>Or</Text>
             <View style={styles.line} />
           </View>
           <TouchableOpacity
@@ -234,8 +234,8 @@ export default function LoginScreen(props) {
               props.navigation.push("Signup");
             }}
           >
-            <Text marginT-50 center subheader underline>
-              Get Started
+            <Text marginT-20 center smallF underline primaryColor>
+              Are you a Boat owner? Register
             </Text>
           </TouchableOpacity>
         </View>
@@ -283,8 +283,8 @@ const styles = {
     textDecorationLine: "underline",
   },
   sos: {
-    height: width / 4,
-    width: width / 4,
+    height: width / 6,
+    width: width / 6,
     borderRadius: actuatedNormalize(100),
     backgroundColor: Colors.whiteColor,
     overflow: "hidden",

@@ -43,8 +43,6 @@ const ProfileStack = () => {
   return (
     <Stack.Navigator screenOptions={options}>
       <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="AboutLaswa" component={AboutLaswa} />
-      <Stack.Screen name="ChangePassword" component={ChangePassword} />
     </Stack.Navigator>
   );
 };

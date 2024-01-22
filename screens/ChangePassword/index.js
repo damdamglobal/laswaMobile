@@ -77,26 +77,6 @@ export default function ForgotPassword(props) {
       });
   };
 
-  const logOut = async () => {
-    let loginDetailObj = {
-      email: "",
-      password: "",
-    };
-
-    let value = await AsyncStorage.getItem("loginDetails");
-    if (value) {
-      let loginDetails = JSON.parse(value);
-      loginDetailObj.email = loginDetails.email;
-    }
-
-    let loginDetail = await AsyncStorage.setItem(
-      "loginDetails",
-      JSON.stringify(loginDetailObj)
-    );
-
-    setAuth(true);
-  };
-
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -297,8 +277,8 @@ const styles = {
     backgroundColor: "rgba(28, 28, 28, 0.5)",
   },
   sos: {
-    height: width / 4,
-    width: width / 4,
+    height: width / 6,
+    width: width / 6,
     borderRadius: actuatedNormalize(100),
     backgroundColor: Colors.whiteColor,
     overflow: "hidden",

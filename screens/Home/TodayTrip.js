@@ -41,7 +41,7 @@ export default function TripCardFun(props) {
   };
 
   return (
-    <View marginT-20>
+    <View marginT-20 centerH>
       {props.trips.length > 0 ? (
         <>
           {props.trips.map((item, index) => {

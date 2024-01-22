@@ -17,7 +17,9 @@ export default function SOS() {
           Linking.openURL("whatsapp://send?text=hello&phone=+15551022251")
         }
       >
-        <Text whiteColor>SOS</Text>
+        <Text whiteColor FontAven>
+          SOS
+        </Text>
       </TouchableOpacity>
       <Modal animationType="slide" transparent={true} visible={isVisible}>
         <View style={styles.modal}>

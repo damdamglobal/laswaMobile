@@ -64,20 +64,9 @@ export default function Onboarding(props) {
                 getStarted();
               }}
             >
-              <View style={styles.btnOutline} center marginT-40>
-                <Text whiteColor FontAven>
-                  Vessel Owner Login
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                getStarted();
-              }}
-            >
               <View style={styles.btnOutline} center marginT-10>
                 <Text whiteColor FontAven>
-                  Operator Login
+                  Login
                 </Text>
               </View>
             </TouchableOpacity>

@@ -180,8 +180,8 @@ export default function TripHistory(props) {
         </View>
         <View flex marginL-20>
           <View flex>
-            <Text>Origin</Text>
-            <Text>{item.tripOrigin}</Text>
+            <Text subhead>Origin</Text>
+            <Text smallF2>{item.tripOrigin}</Text>
           </View>
           <View flex centerV row>
             <View style={styles.verticalLine} />
@@ -205,13 +205,15 @@ export default function TripHistory(props) {
             </View>
           </View>
           <View flex bottom>
-            <Text>Destination</Text>
-            <Text>{item.tripDestination}</Text>
+            <Text subhead>Destination</Text>
+            <Text smallF2>{item.tripDestination}</Text>
             <View row right marginH-25 centerV>
               <Text marginH-5 smallF>
                 {CalendarDate(item.createdAt)}
               </Text>
-              <Text successColor>{item.status}</Text>
+              <Text successColor subheader>
+                {item.status}
+              </Text>
             </View>
           </View>
           <>
