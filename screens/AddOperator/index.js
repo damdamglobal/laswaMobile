@@ -380,7 +380,7 @@ export default function AddOperatorScreen(props) {
                   ...pickerSelectStyles,
                   iconContainer: {
                     top: actuatedNormalize(10),
-                    right: actuatedNormalize(10),
+                    right: actuatedNormalize(0),
                   },
                   placeholder: {
                     color: "gray",
@@ -408,7 +408,7 @@ export default function AddOperatorScreen(props) {
                   ...pickerSelectStyles,
                   iconContainer: {
                     top: actuatedNormalize(10),
-                    right: actuatedNormalize(10),
+                    right: actuatedNormalize(0),
                   },
                   placeholder: {
                     color: "gray",

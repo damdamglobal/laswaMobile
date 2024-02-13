@@ -228,14 +228,14 @@ export default function TripHistory(props) {
             ) : (
               <>
                 {item.status == "Onboarding" ? (
-                  <View row marginT-10>
+                  <View row marginT-10 marginR-5>
                     <View flex style={styles.btnOutline} center marginH-25>
                       <TouchableOpacity onPress={() => startTrip()}>
                         <Text smallF>Start Trip</Text>
                       </TouchableOpacity>
                     </View>
 
-                    <View flex style={styles.btnOutline} center marginH-25>
+                    <View flex style={styles.btnOutline} center marginH-5>
                       <TouchableOpacity
                         onPress={() => {
                           props.props.navigation.push("AddPassengerManifest", {

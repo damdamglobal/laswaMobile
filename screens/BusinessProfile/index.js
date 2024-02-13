@@ -20,7 +20,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import axios from "axios";
 import { Country, State, City } from "country-state-city";
-
+import { AuthContext } from "../../context/index";
 import { elevate } from "react-native-elevate";
 import RNPickerSelect from "react-native-picker-select";
 
@@ -40,6 +40,7 @@ export default function BusinessProfileScreen(props) {
   const [serverMessage, setServerMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [token, setToken] = React.useState("");
+  const [auth, setAuth] = useContext(AuthContext);
 
   useEffect(() => {
     async function fetchStoresData() {
@@ -60,6 +61,25 @@ export default function BusinessProfileScreen(props) {
     }
     fetchStoresData();
   }, []);
+
+  const logOut = async () => {
+    let loginDetailObj = {
+      email: "",
+      password: "",
+    };
+
+    let value = await AsyncStorage.getItem("loginDetails");
+    if (value) {
+      let loginDetails = JSON.parse(value);
+      loginDetailObj.email = loginDetails.email;
+    }
+
+    let loginDetail = await AsyncStorage.setItem(
+      "loginDetails",
+      JSON.stringify(loginDetailObj)
+    );
+    setAuth(true);
+  };
 
   const dropDownIcon = () => {
     return (
@@ -166,9 +186,23 @@ export default function BusinessProfileScreen(props) {
           keyboardShouldPersistTaps="handled"
         >
           <View style={styles.block} center>
-            <Text center headingT blackColor>
-              Business Profile
-            </Text>
+            <View row paddingH-20 centerV>
+              <View flex-2>
+                <Text headingT blackColor>
+                  Business Profile
+                </Text>
+              </View>
+              <View flex right>
+                <TouchableOpacity onPress={() => logOut()}>
+                  <View style={styles.btn2} background-blackColor center>
+                    <Text whiteColor FontAven>
+                      Logout
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+
             <View marginT-20>
               <Text smallF gray FontAven>
                 Company Name
@@ -207,7 +241,7 @@ export default function BusinessProfileScreen(props) {
                   ...pickerSelectStyles,
                   iconContainer: {
                     top: actuatedNormalize(10),
-                    right: actuatedNormalize(10),
+                    right: actuatedNormalize(0),
                   },
                   placeholder: {
                     color: "gray",
@@ -235,7 +269,7 @@ export default function BusinessProfileScreen(props) {
                   ...pickerSelectStyles,
                   iconContainer: {
                     top: actuatedNormalize(10),
-                    right: actuatedNormalize(10),
+                    right: actuatedNormalize(0),
                   },
                   placeholder: {
                     color: "gray",
@@ -360,6 +394,11 @@ const styles = {
   btn: {
     width: width - actuatedNormalize(50),
     padding: actuatedNormalize(20),
+    borderRadius: actuatedNormalize(10),
+  },
+  btn2: {
+    width: actuatedNormalize(80),
+    padding: actuatedNormalize(10),
     borderRadius: actuatedNormalize(10),
   },
   block: {

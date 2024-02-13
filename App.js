@@ -39,11 +39,11 @@ Typography.loadTypographies({
     fontFamily: "AvenHeavy",
   },
   headingT: {
-    fontSize: actuatedNormalize(25),
+    fontSize: actuatedNormalize(23),
     fontFamily: "AvenHeavy",
   },
   subheading: {
-    fontSize: actuatedNormalize(20),
+    fontSize: actuatedNormalize(18),
     fontWeight: "500",
     fontFamily: "AvenHeavy",
   },

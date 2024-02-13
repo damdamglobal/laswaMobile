@@ -1,7 +1,7 @@
 import { scale, verticalScale, moderateScale } from "react-native-size-matters";
 
 export function actuatedNormalize(size) {
-  return moderateScale(size);
+  return scale(size);
 }
 export function VerticalScale(size) {
   return verticalScale(size);

@@ -147,9 +147,7 @@ export default function LoginScreen(props) {
             </View>
 
             <View marginT-20 style={{ position: "relative" }}>
-              <Text smallF gray FontAven>
-                Password
-              </Text>
+              <Text generalText>Password</Text>
               <TextInput
                 onChangeText={(text) => setPassword(text)}
                 style={styles.TextInput}

@@ -50,7 +50,7 @@ export default function YesNoCard(props) {
         <View marginH-10 style={[styles.expandDev]}>
           {isVisible ? (
             <View>
-              <Text smallF marginT-50>
+              <Text smallF2 marginT-50>
                 {props.details}
               </Text>
             </View>
