@@ -66,9 +66,9 @@ export default function AboutLaswa(props) {
 const styles = {
   card: {
     marginTop: actuatedNormalize(20),
-    minHeight: height / 1.3,
+    minHeight: height / 2,
     width: width - actuatedNormalize(50),
-    borderRadius: actuatedNormalize(20),
+    borderRadius: actuatedNormalize(10),
     overflow: "hidden",
     backgroundColor: "#fff",
     padding: actuatedNormalize(10),

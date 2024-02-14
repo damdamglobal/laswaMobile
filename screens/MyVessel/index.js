@@ -193,7 +193,7 @@ export default function OperatorScreen(props) {
           </View>
         </TouchableOpacity>
       </View>
-      <View flex paddingB-150>
+      <View flex paddingB-150 center>
         {tab == 1 ? <AllVessel Vessel={boat} props={props} /> : null}
         {tab == 2 ? (
           <SuspendedVessel Vessel={susOperators} props={props} />
@@ -202,7 +202,7 @@ export default function OperatorScreen(props) {
           <UnapprovedVessel Vessel={UnOperators} props={props} />
         ) : null}
       </View>
-      <View style={styles.btnCard} center flex>
+      <View style={styles.btnCard} center>
         {tab == 1 ? (
           <TouchableOpacity
             onPress={() => {
@@ -250,7 +250,7 @@ const styles = {
   },
   btnCard: {
     position: "absolute",
-    bottom: actuatedNormalize(70),
+    bottom: actuatedNormalize(80),
     width: width,
   },
 };

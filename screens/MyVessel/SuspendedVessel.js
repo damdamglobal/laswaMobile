@@ -22,7 +22,7 @@ export default function OperatorCardFun(props) {
       //horizontal={true}
       // snapToInterval={width - actuatedNormalize(100)}
       data={Vessel}
-      renderItem={({ item }) => <Card props={navigation} />}
+      renderItem={({ item }) => <Card props={navigation} item={item} />}
       ListEmptyComponent={() => (
         <EmptyCard props={navigation} ShowAddBTN={true} />
       )}

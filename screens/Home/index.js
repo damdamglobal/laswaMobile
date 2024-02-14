@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { FlatList, Dimensions, ScrollView } from "react-native";
-import { Text, View, Avatar } from "react-native-ui-lib";
+import { Text, View, Avatar, Incubator } from "react-native-ui-lib";
 import axios from "axios";
 import { GetUserBoat, GetUserOperators, GetAuthUserTrips } from "../../APIs";
 import Sos from "../../components/Sos";
@@ -13,6 +13,7 @@ import ActiveVessel from "./ActiveVessel";
 import TodayTrip from "./TodayTrip";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const { width, height } = Dimensions.get("window");
+const { Toast } = Incubator;
 
 import { GeneralDatContext } from "../../context/index";
 
@@ -27,6 +28,9 @@ export default function HomeFun(props) {
   const [totalBoatPage, setTotalBoatPage] = useState(0);
   const [totalTripPage, setTotalTripPage] = useState(0);
 
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastColor, setToastColor] = useState("red");
+
   const { trip, setTrip, boat, setBoat, operators, setOperators } =
     useContext(GeneralDatContext);
 
@@ -40,6 +44,15 @@ export default function HomeFun(props) {
 
       let value = await AsyncStorage.getItem("user");
       setUser(JSON.parse(value));
+
+      setToastVisible(true);
+      setToastColor("green");
+      setServerMessage(
+        `Welcome back ${JSON.parse(value).firstName} ${
+          JSON.parse(value).lastName
+        }`
+      );
+
       let businessProfile = JSON.parse(value);
       if (!businessProfile.BusinessProfile) {
         props.navigation.replace("BusinessProfile");
@@ -152,6 +165,18 @@ export default function HomeFun(props) {
           />
         </View>
       </ScrollView>
+      <Toast
+        visible={toastVisible}
+        position={"top"}
+        autoDismiss={5000}
+        message={serverMessage}
+        swipeable={true}
+        onDismiss={() => setToastVisible(false)}
+        backgroundColor={toastColor}
+        messageStyle={{
+          color: "white",
+        }}
+      ></Toast>
     </View>
   );
 }

@@ -306,7 +306,7 @@ export default function BoatCard(props) {
                   />
                 </View>
                 <View marginH-10>
-                  <Text>Rest Password</Text>
+                  <Text>Reset Password</Text>
                 </View>
               </View>
             </TouchableOpacity>
