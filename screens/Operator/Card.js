@@ -14,6 +14,7 @@ import {
   Entypo,
   MaterialIcons,
   MaterialCommunityIcons,
+  FontAwesome5,
 } from "@expo/vector-icons";
 const { TextField, Toast } = Incubator;
 import {
@@ -179,8 +180,8 @@ export default function BoatCard(props) {
                 )}
               </View>
             </View>
-            <View flex-2 marginH-5>
-              <Text subheader>
+            <View flex-2 marginH-20>
+              <Text subheader numberOfLines={1}>
                 {item.firstName} {item.lastName}
               </Text>
               <Text gray FontAven marginT-5>
@@ -312,6 +313,25 @@ export default function BoatCard(props) {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
+                setOtpModal(false);
+                navigation.navigation.push("UpdateOperator", { item: item });
+              }}
+            >
+              <View row centerV marginT-20>
+                <View style={styles.iconBox} center>
+                  <FontAwesome5
+                    color="#181818"
+                    size={actuatedNormalize(15)}
+                    name="user-tag"
+                  />
+                </View>
+                <View marginH-10>
+                  <Text>Update Operator Profile</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
                 setShowConfirm(!showConfirm);
               }}
             >
@@ -434,7 +454,7 @@ const styles = {
     borderWidth: actuatedNormalize(1),
     borderColor: "#edf5fc",
     borderRadius: actuatedNormalize(5),
-    ...elevate(2),
+    ...elevate(1),
   },
   btn: {
     width: actuatedNormalize(100),
@@ -447,7 +467,6 @@ const styles = {
     width: actuatedNormalize(70),
     borderRadius: actuatedNormalize(10),
     overflow: "hidden",
-    ...elevate(2),
   },
   subModal: {
     flex: 1,

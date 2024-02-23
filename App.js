@@ -63,7 +63,7 @@ Typography.loadTypographies({
     fontFamily: "Aven",
   },
   smallF2: {
-    fontSize: actuatedNormalize(13),
+    fontSize: actuatedNormalize(11),
     fontWeight: "400",
     fontFamily: "Aven",
   },

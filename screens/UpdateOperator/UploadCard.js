@@ -12,7 +12,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
 import axios from "axios";
-import { UploadBoatDoc } from "../../APIs";
+import { UploadOperatorDoc } from "../../APIs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const { Toast } = Incubator;
 
@@ -28,13 +28,7 @@ export default function UploadCard(props) {
       let loginToken = await AsyncStorage.getItem("token");
       setToken(JSON.parse(loginToken));
       let img = props.img;
-      if (img.length) {
-        img.forEach((element) => {
-          if (element.index == props.index) {
-            setImage(element.url);
-          }
-        });
-      }
+      setImage(img);
     }
 
     fetchStoresData();
@@ -70,13 +64,12 @@ export default function UploadCard(props) {
       name: filename,
       type: type,
     });
-    formData.append("docType", props.docTypeValue);
-    formData.append("boatId", props.item._id);
-    formData.append("index", props.index);
+    formData.append("docType", props.docTypeV);
+    formData.append("operatorId", props.item._id);
 
     setLoading(true);
     axios
-      .put(`${UploadBoatDoc}`, formData, {
+      .put(`${UploadOperatorDoc}`, formData, {
         headers: { Authorization: "Bearer " + token },
       })
       .then((res) => {

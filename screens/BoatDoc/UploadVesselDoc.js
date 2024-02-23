@@ -21,7 +21,7 @@ const Step3 = (props) => {
       <UploadCard
         item={props.item}
         docTypeValue="doc"
-        docType="Payment Receipt (₦25,000)"
+        docType="Payment Receipt"
         index={2}
         img={props.item.doc}
         setServerMessage={props.setServerMessage}

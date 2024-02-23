@@ -18,6 +18,7 @@ import AddFleet from "../screens/AddBoat/index";
 import BoatDetail from "../screens/BoatDetail";
 import BoatDoc from "../screens/BoatDoc";
 import AddOperator from "../screens/AddOperator/index";
+import UpdateOperator from "../screens/UpdateOperator/index";
 import Operator from "../screens/Operator/index";
 import ChangePassword from "../screens/ChangePassword/index.js";
 import AboutLaswa from "../screens/AboutLaswa/index.js";
@@ -47,6 +48,7 @@ const RootStack = () => {
       <Stack.Screen name="AddFleet" component={AddFleet} />
       <Stack.Screen name="BoatDetail" component={BoatDetail} />
       <Stack.Screen name="AddOperator" component={AddOperator} />
+      <Stack.Screen name="UpdateOperator" component={UpdateOperator} />
       <Stack.Screen name="BoatDoc" component={BoatDoc} />
       <Stack.Screen name="Operator" component={Operator} />
       <Stack.Screen name="ChangePassword" component={ChangePassword} />

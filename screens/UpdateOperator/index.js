@@ -14,10 +14,11 @@ import {
 import { AntDesign, Entypo, FontAwesome } from "@expo/vector-icons";
 import { actuatedNormalize } from "../../components/FontResponsive";
 import { View, Text, Incubator, Badge, Colors } from "react-native-ui-lib";
-import { AddOperator } from "../../APIs";
+import { UpdateOperator } from "../../APIs";
 const { Toast } = Incubator;
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import SOS from "../../components/Sos";
+import UploadCard from "./UploadCard";
 import PhoneCode from "react-native-phone-input";
 import Code from "../../components/PhoneCode";
 import * as ImagePicker from "expo-image-picker";
@@ -38,7 +39,6 @@ export default function AddOperatorScreen(props) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
   const [toastVisible, setToastVisible] = useState("");
   const [toastColor, setToastColor] = useState("red");
   const [serverMessage, setServerMessage] = useState("");
@@ -47,9 +47,10 @@ export default function AddOperatorScreen(props) {
   const [phoneNumber, setPhoneNumber] = useState("+234");
   const [numberCode, setNumberCode] = useState("+234");
   const [img, setImage] = useState("");
-  const [showPassword, setShowPassword] = useState(true);
   const [nextOfKinPhoneNumber, setNextOfKinPhoneNumber] = useState("");
   const [nextOfKinFullName, setNextOfKinFullName] = useState("");
+
+  let item = props.route.params.item;
 
   useEffect(() => {
     async function fetchStoresData() {
@@ -62,11 +63,21 @@ export default function AddOperatorScreen(props) {
         });
       }
       let listedState = State.getStatesOfCountry("NG");
-
       const transformedData = transformArray(listedState);
       setListState(transformedData);
       let loginToken = await AsyncStorage.getItem("token");
       setToken(JSON.parse(loginToken));
+      let items = props.route.params.item;
+      setFirstName(items.firstName);
+      setLastName(items.lastName);
+      setUserName(items.userName);
+      setRole(items.userType);
+      setPhoneNumber(items.phoneNumber);
+      setAddressState(items.state);
+      setLocalGovt(items.localGovt);
+      setNextOfKinFullName(items.nextOfKinFullName);
+      setNextOfKinPhoneNumber(items.nextOfKinPhoneNumber);
+      setImage(items.imgUrl);
     }
     fetchStoresData();
   }, []);
@@ -85,18 +96,6 @@ export default function AddOperatorScreen(props) {
       );
       setImage(manipResult.uri);
     }
-  };
-
-  const AutoGeneratePassword = () => {
-    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"; // All letters
-    let result = "";
-
-    for (let i = 0; i < 6; i++) {
-      const randomIndex = Math.floor(Math.random() * letters.length);
-      result += letters.charAt(randomIndex);
-    }
-    setPassword(result);
-    //return result;
   };
 
   const GetCode = (payload) => {
@@ -125,91 +124,21 @@ export default function AddOperatorScreen(props) {
     );
   };
 
-  const addOperator = () => {
-    if (firstName == "") {
-      setToastColor("red");
-      setToastVisible(true);
-      setServerMessage("First Name is required");
-      return;
-    }
-    if (lastName == "") {
-      setToastColor("red");
-      setToastVisible(true);
-      setServerMessage("last Name is required");
-      return;
-    }
-    if (userName == "") {
-      setToastColor("red");
-      setToastVisible(true);
-      setServerMessage("userName is required");
-      return;
-    }
-    if (localGovt == "") {
-      setToastColor("red");
-      setToastVisible(true);
-      setServerMessage("localGovt is required");
-      return;
-    }
-    if (addressState == "") {
-      setToastColor("red");
-      setToastVisible(true);
-      setServerMessage("State is required");
-      return;
-    }
-
-    if (role == "") {
-      setToastColor("red");
-      setToastVisible(true);
-      setServerMessage("role is required");
-      return;
-    }
-
-    if (phoneNumber == "") {
-      setToastColor("red");
-      setToastVisible(true);
-      setServerMessage("phoneNumber is required");
-      return;
-    }
-    if (password == "") {
-      setToastColor("red");
-      setToastVisible(true);
-      setServerMessage("operator password is required");
-      return;
-    }
-    if (img == "") {
-      setToastColor("red");
-      setToastVisible(true);
-      setServerMessage("Valid ID Card is required");
-      return;
-    }
-
-    if (nextOfKinFullName == "") {
-      setToastColor("red");
-      setToastVisible(true);
-      setServerMessage("Next Of Kin FullName is required");
-      return;
-    }
-
-    if (nextOfKinPhoneNumber == "") {
-      setToastColor("red");
-      setToastVisible(true);
-      setServerMessage("next Of Kin PhoneNumber is required");
-      return;
-    }
-
-    let localUri = img;
-    let filename = localUri.split("/").pop();
-    let match = /\.(\w+)$/.exec(filename);
-    let type = match ? `image/${match[1]}` : `image`;
-
+  const updateOperator = () => {
     const formData = new FormData();
 
-    formData.append("image", {
-      uri: localUri,
-      name: filename,
-      type: type,
-    });
-    formData.append("password", password);
+    if (img) {
+      let localUri = img;
+      let filename = localUri.split("/").pop();
+      let match = /\.(\w+)$/.exec(filename);
+      let type = match ? `image/${match[1]}` : `image`;
+      formData.append("image", {
+        uri: localUri,
+        name: filename,
+        type: type,
+      });
+    }
+
     formData.append("phoneNumber", phoneNumber);
     formData.append("userType", role);
     formData.append("state", addressState);
@@ -219,17 +148,17 @@ export default function AddOperatorScreen(props) {
     formData.append("userName", userName);
     formData.append("nextOfKinPhoneNumber", nextOfKinPhoneNumber);
     formData.append("nextOfKinFullName", nextOfKinFullName);
+    formData.append("operatorId", item._id);
 
     setLoading(true);
     axios
-      .post(`${AddOperator}`, formData, {
+      .put(`${UpdateOperator}`, formData, {
         headers: { Authorization: "Bearer " + token },
       })
       .then((res) => {
         setToastColor("green");
         setToastVisible(true);
         setServerMessage(res.data.message);
-        props.navigation.replace("Operator");
       })
       .catch((err) => {
         setToastColor("red");
@@ -256,7 +185,7 @@ export default function AddOperatorScreen(props) {
         </View>
         <View flex-2 center>
           <Text subheading numberOfLines={1}>
-            Add Operator
+            Update Operator
           </Text>
         </View>
         <View right flex>
@@ -282,6 +211,7 @@ export default function AddOperatorScreen(props) {
                 onChangeText={(text) => setFirstName(text)}
                 style={styles.TextInput}
                 placeholder="Enter First Name"
+                value={firstName}
               />
             </View>
             <View marginT-20>
@@ -291,7 +221,8 @@ export default function AddOperatorScreen(props) {
               <TextInput
                 onChangeText={(text) => setLastName(text)}
                 style={styles.TextInput}
-                placeholder="Enter First Name"
+                placeholder="Enter Last Name"
+                value={lastName}
               />
             </View>
             <View marginT-20 style={{ position: "relative" }}>
@@ -302,6 +233,8 @@ export default function AddOperatorScreen(props) {
                 onChangeText={(text) => setUserName(text)}
                 style={styles.TextInput}
                 placeholder="Enter UserName"
+                editable={false}
+                value={userName}
               />
               <View
                 style={{
@@ -316,53 +249,6 @@ export default function AddOperatorScreen(props) {
                   name="email"
                 />
               </View>
-            </View>
-
-            <View marginT-20 style={{ position: "relative" }}>
-              <Text smallF gray FontAven>
-                Operator Password
-              </Text>
-              <TextInput
-                onChangeText={(text) => setPassword(text)}
-                style={styles.TextInput}
-                placeholder="Enter Password"
-                secureTextEntry={showPassword}
-                autoCapitalize="none"
-                value={password}
-              />
-              <TouchableOpacity
-                style={{
-                  position: "absolute",
-                  top: actuatedNormalize(30),
-                  right: actuatedNormalize(10),
-                }}
-                onPress={() => setShowPassword(!showPassword)}
-              >
-                {!showPassword ? (
-                  <Entypo
-                    color="#999999"
-                    size={actuatedNormalize(20)}
-                    name="eye"
-                  />
-                ) : (
-                  <Entypo
-                    color="#999999"
-                    size={actuatedNormalize(20)}
-                    name="eye-with-line"
-                  />
-                )}
-              </TouchableOpacity>
-            </View>
-            <View
-              right
-              style={{ width: width - actuatedNormalize(50) }}
-              marginT-10
-            >
-              <TouchableOpacity onPress={AutoGeneratePassword}>
-                <Text underline smallF FontAven right>
-                  Auto generate Password
-                </Text>
-              </TouchableOpacity>
             </View>
 
             <View style={styles.blockPhone} marginT-20>
@@ -411,6 +297,7 @@ export default function AddOperatorScreen(props) {
                   color: "gray",
                 }}
                 Icon={dropDownIcon}
+                value={role}
               />
             </View>
             <View marginT-20 style={styles.AreaOfOperation}>
@@ -439,6 +326,7 @@ export default function AddOperatorScreen(props) {
                   color: "gray",
                 }}
                 Icon={dropDownIcon}
+                value={addressState}
               />
             </View>
 
@@ -450,6 +338,7 @@ export default function AddOperatorScreen(props) {
                 onChangeText={(text) => setLocalGovt(text)}
                 style={styles.TextInput}
                 placeholder="Enter LocalGovt"
+                value={localGovt}
               />
             </View>
 
@@ -465,6 +354,7 @@ export default function AddOperatorScreen(props) {
                   onChangeText={(text) => setNextOfKinFullName(text)}
                   style={styles.TextInput}
                   placeholder="Enter Next Of Kin Full Name"
+                  value={nextOfKinFullName}
                 />
               </View>
               <View style={styles.blockPhone} marginT-20>
@@ -485,10 +375,33 @@ export default function AddOperatorScreen(props) {
               </View>
             </View>
 
+            <View>
+              <UploadCard
+                item={item}
+                img={item.OperationalLicense}
+                docType="Operational License"
+                props={props}
+                setServerMessage={setServerMessage}
+                setToastVisible={setToastVisible}
+                setToastColor={setToastColor}
+                docTypeV="OperationalLicense"
+              />
+              <UploadCard
+                item={item}
+                img={item.IDCard}
+                docType="  Upload a valid ID Card"
+                props={props}
+                setServerMessage={setServerMessage}
+                setToastVisible={setToastVisible}
+                setToastColor={setToastColor}
+                docTypeV="IDCard"
+              />
+            </View>
+
             <View style={styles.card} background-whiteColorF>
               <View flex paddingT-20>
                 <Text subheader numberOfLines={1}>
-                  Upload Operator Photo*
+                  Operator Profile Image*
                 </Text>
                 <View row marginT-30>
                   <View flex-2>
@@ -551,7 +464,7 @@ export default function AddOperatorScreen(props) {
             ) : (
               <TouchableOpacity
                 onPress={() => {
-                  addOperator();
+                  updateOperator();
                 }}
               >
                 <View
@@ -561,7 +474,7 @@ export default function AddOperatorScreen(props) {
                   marginT-40
                 >
                   <Text whiteColor FontAven>
-                    Submit
+                    Update
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -669,6 +582,7 @@ const styles = {
     overflow: "hidden",
     padding: actuatedNormalize(10),
     //backgroundColor: "#f0f8fc",
+    ...elevate(2),
   },
   btn2: {
     width: width / 2,
@@ -688,23 +602,4 @@ const styles = {
   },
 };
 
-const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    height: 0,
-    fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderRadius: 10,
-    color: "#181818",
-    paddingRight: 30, // to ensure the text is never behind the icon
-  },
-  inputAndroid: {
-    height: 0,
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderRadius: 10,
-    color: "#181818",
-    paddingRight: 30, // to ensure the text is never behind the icon
-  },
-});
+const pickerSelectStyles = StyleSheet.create({});

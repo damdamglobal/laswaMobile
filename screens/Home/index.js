@@ -54,10 +54,12 @@ export default function HomeFun(props) {
       );
 
       let businessProfile = JSON.parse(value);
-      if (!businessProfile.BusinessProfile) {
-        props.navigation.replace("BusinessProfile");
-      } else if (!businessProfile.BusinessProfile.verify) {
-        props.navigation.replace("BusinessDoc");
+      if (businessProfile.profileType == "vesselOwner") {
+        if (!businessProfile.BusinessProfile) {
+          props.navigation.replace("BusinessProfile");
+        } else if (!businessProfile.BusinessProfile.verify) {
+          props.navigation.replace("BusinessDoc");
+        }
       }
     }
 

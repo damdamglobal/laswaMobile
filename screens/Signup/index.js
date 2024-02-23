@@ -185,7 +185,7 @@ export default function SignUpScreen(props) {
                 <TextInput
                   onChangeText={(text) => setFirstName(text)}
                   style={styles.TextInput}
-                  placeholder="Enter First Name"
+                  placeholder="Principal director First Name"
                 />
               </View>
               <View marginT-20>
@@ -195,7 +195,7 @@ export default function SignUpScreen(props) {
                 <TextInput
                   onChangeText={(text) => setLastName(text)}
                   style={styles.TextInput}
-                  placeholder="Enter Last Name"
+                  placeholder="Principal director Last Name"
                 />
               </View>
               <View marginT-20 style={{ position: "relative" }}>
@@ -205,7 +205,7 @@ export default function SignUpScreen(props) {
                 <TextInput
                   onChangeText={(text) => setEmail(text)}
                   style={styles.TextInput}
-                  placeholder="Enter Email"
+                  placeholder="Principal director Email"
                   textContentType="emailAddress"
                   autoCapitalize="none"
                 />
