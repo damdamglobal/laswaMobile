@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   ActivityIndicator,
   StyleSheet,
+  Platform,
 } from "react-native";
 
 import { Entypo } from "@expo/vector-icons";
@@ -282,7 +283,7 @@ export default function BusinessProfileScreen(props) {
                   value: null,
                   color: "gray",
                 }}
-                Icon={dropDownIcon}
+                Icon={Platform.OS === "ios" ? dropDownIcon : null}
                 value={areaOfOperation}
               />
             </View>
@@ -311,7 +312,7 @@ export default function BusinessProfileScreen(props) {
                   value: null,
                   color: "gray",
                 }}
-                Icon={dropDownIcon}
+                Icon={Platform.OS === "ios" ? dropDownIcon : null}
               />
             </View>
 

@@ -274,8 +274,8 @@ const styles = {
     height: actuatedNormalize(70),
     width: actuatedNormalize(70),
     borderRadius: actuatedNormalize(50),
-    backgroundColor: Colors.whiteColor,
-    ...elevate(2),
+    backgroundColor: "#fff",
+    ...elevate(1),
   },
   card: {
     minHeight: actuatedNormalize(50),

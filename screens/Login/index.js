@@ -54,6 +54,8 @@ export default function LoginScreen(props) {
   }, []);
 
   const LoginFun = async () => {
+    console.log("HERE 112");
+
     setServerMessage("");
     if (!email) {
       setServerMessage("Email is required");
@@ -99,7 +101,7 @@ export default function LoginScreen(props) {
         "token",
         JSON.stringify(res.data.token)
       );
-      // setMainScreen(true);
+      //setMainScreen(true);
       setSplashScreen(false);
       setAuth(false);
     } catch (err) {

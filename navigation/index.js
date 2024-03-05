@@ -93,7 +93,7 @@ function SplashScreenNavigation() {
   const [onboard, setOnboard] = React.useContext(OnboardingScreenContext);
   const [mainScreen, setMainScreen] = React.useContext(MainScreenContext);
 
-  if (onboard == "true") {
+  if (onboard) {
     return <OnboardingStack />;
   } else if (auth) {
     return <AuthStack />;

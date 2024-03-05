@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   ActivityIndicator,
   StyleSheet,
+  Platform,
 } from "react-native";
 
 import { AntDesign, Entypo, FontAwesome } from "@expo/vector-icons";
@@ -410,7 +411,7 @@ export default function AddOperatorScreen(props) {
                   value: null,
                   color: "gray",
                 }}
-                Icon={dropDownIcon}
+                Icon={Platform.OS === "ios" ? dropDownIcon : null}
               />
             </View>
             <View marginT-20 style={styles.AreaOfOperation}>
@@ -438,7 +439,7 @@ export default function AddOperatorScreen(props) {
                   value: null,
                   color: "gray",
                 }}
-                Icon={dropDownIcon}
+                Icon={Platform.OS === "ios" ? dropDownIcon : null}
               />
             </View>
 

@@ -3,7 +3,7 @@ export const OnboardingScreenContextFile = React.createContext();
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const OnboardingScreenProviderFile = (props) => {
-  const [onboard, setOnboard] = useState("true");
+  const [onboard, setOnboard] = useState(true);
 
   useEffect(() => {
     async function fetchStoresData() {

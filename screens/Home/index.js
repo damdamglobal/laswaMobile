@@ -54,7 +54,7 @@ export default function HomeFun(props) {
       );
 
       let businessProfile = JSON.parse(value);
-      if (businessProfile.profileType == "vesselOwner") {
+      if (businessProfile.userType == "vesselOwner") {
         if (!businessProfile.BusinessProfile) {
           props.navigation.replace("BusinessProfile");
         } else if (!businessProfile.BusinessProfile.verify) {

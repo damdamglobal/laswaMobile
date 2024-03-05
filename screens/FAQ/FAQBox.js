@@ -43,7 +43,7 @@ export default function YesNoCard(props) {
             <Entypo
               color="#fff"
               size={actuatedNormalize(15)}
-              name={isVisible ? "plus" : "minus"}
+              name={!isVisible ? "plus" : "minus"}
             />
           </View>
         </View>
